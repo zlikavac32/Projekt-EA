@@ -6,6 +6,8 @@ package ea;
 import javax.swing.JApplet;
 
 /**
+ * Ulaz u nasu aplikaciju.
+ * 
  * @author Marijan Šuflaj <msufflaj32@gmail.com>
  *
  */
