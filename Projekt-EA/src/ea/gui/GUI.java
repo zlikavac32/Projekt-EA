@@ -1,7 +1,6 @@
 package ea.gui;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 /**
  * @author Marijan Šuflaj <msufflaj32@gmail.com>
