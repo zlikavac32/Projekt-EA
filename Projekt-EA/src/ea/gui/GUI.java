@@ -1,9 +1,4 @@
-/**
- * 
- */
 package ea.gui;
-
-import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,31 +12,17 @@ public class GUI extends JFrame {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 8526916806161376960L;
-
+	private static final long serialVersionUID = -3200550997106801733L;
+	
 	/**
-	 * Stvara graficko sucelje appleta.
+	 * Stvara graficko sucelje i postavlja naslov.
 	 * 
-	 * @param title Naslov appleta
+	 * @param title 
 	 */
-	public GUI(String title) {
-		super(title);
-	}
-
+	public GUI(String title) {  super(title); }
+	
 	/**
-	 * Inicijalizira graficko sucelje. Dodaje komponente u applet.
+	 * Dodaje komponente.
 	 */
-	public void inicijaliziraj() {
-		setSize(500, 500);
-		setLayout(new BorderLayout(5, 5));
-		
-		add(new Graf(), BorderLayout.CENTER);
-		add(new Komande(), BorderLayout.EAST);
-		
-		JPanel logPanel = new JPanel(new BorderLayout());
-		logPanel.add(new Log(), BorderLayout.WEST);
-		
-		add(logPanel, BorderLayout.SOUTH);
-	}
-
+	public void inicijaliziraj() { }
 }
