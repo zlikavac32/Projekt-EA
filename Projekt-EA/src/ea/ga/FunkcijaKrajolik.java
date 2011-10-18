@@ -11,7 +11,7 @@ import ea.funkcija.IzvanDomeneIznimka;
  * @author Marijan Šuflaj <msufflaj32@gmail.com>
  *
  */
-public class RealnaVrijednostKrajolik implements Krajolik {
+public class FunkcijaKrajolik implements Krajolik {
 
 	private Izracunljiv funkcija;
 	
@@ -20,7 +20,7 @@ public class RealnaVrijednostKrajolik implements Krajolik {
 	/**
 	 * @param funkcija
 	 */
-	public RealnaVrijednostKrajolik(Izracunljiv funkcija) { this(funkcija, false); }
+	public FunkcijaKrajolik(Izracunljiv funkcija) { this(funkcija, false); }
 	
 	/**
 	 * Stvara novi krajolik predstavljen funkcijom
@@ -28,7 +28,7 @@ public class RealnaVrijednostKrajolik implements Krajolik {
 	 * @param funkcija Funckija koja predstavlja krajolik
 	 * @param invertiran 
 	 */
-	public RealnaVrijednostKrajolik(Izracunljiv funkcija, boolean invertiran) { 
+	public FunkcijaKrajolik(Izracunljiv funkcija, boolean invertiran) { 
 		this.funkcija = funkcija; 
 		this.invertiran = invertiran;
 	}

@@ -65,7 +65,7 @@ public class RealnaVrijednostGenom implements Genom<Double> {
 	 */
 	@Override
 	public void inicijaliziraj(Krajolik krajolik) {
-		if (!(krajolik instanceof RealnaVrijednostKrajolik)) { throw new IllegalArgumentException("Krajolik mora biti tipa RealnaVrijednostKrajolik"); }
+		if (!(krajolik instanceof FunkcijaKrajolik)) { throw new IllegalArgumentException("Krajolik mora biti tipa RealnaVrijednostKrajolik"); }
 	}
 
 	/**
