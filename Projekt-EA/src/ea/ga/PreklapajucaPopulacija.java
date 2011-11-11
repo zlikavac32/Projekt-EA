@@ -3,13 +3,15 @@
  */
 package ea.ga;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Zlikavac32
  *
  */
-public abstract class PreklapajucaPopulacija extends Populacija {
+public abstract class PreklapajucaPopulacija<T extends Krajolik<?>> extends Populacija<T> {
 	
 	protected int brojDjece;
 
@@ -21,19 +23,21 @@ public abstract class PreklapajucaPopulacija extends Populacija {
 	@Override
 	public void evoluiraj() {
 
-		Jedinka[] privremeno = Arrays.copyOf(jedinke, jedinke.length + brojDjece);
+		List<Jedinka<T>> privremeno = new ArrayList<Jedinka<T>>(jedinke.size() + brojDjece);
+		int limit = jedinke.size();
+		for (int i = 0; i < limit; i++) { privremeno.add(i, jedinke.get(i)); };
 		selektor.postaviPopulaciju(jedinke);
-		
-		for (int i = jedinke.length; i < privremeno.length; i++) {
-			Jedinka jedinka = selektor.vratiSljedecuJedinku().kopiraj();
+		limit = jedinke.size() + brojDjece;
+		for (int i = jedinke.size(); i < limit; i++) {
+			Jedinka<T> jedinka = selektor.vratiSljedecuJedinku().kopiraj();
 			if (koristiRekombinaciju) { jedinka.rekombiniraj(rekombinator, selektor.vratiSljedecuJedinku().kopiraj()); }
 			if (koristiMutaciju) { jedinka.mutiraj(mutator, vjerojatnostMutacije); }
-			privremeno[i] = jedinka;
+			privremeno.add(i, jedinka);
 		}
 		
-		Arrays.sort(privremeno);
-		jedinke = Arrays.copyOf(privremeno, jedinke.length);
-		
+		Collections.sort(privremeno);
+		limit = jedinke.size();
+		for (int i = 0; i < limit; i++) { jedinke.set(i, privremeno.get(i)); }
 	}
 
 }

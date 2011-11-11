@@ -8,7 +8,7 @@ package ea.ga;
  * @author Zlikavac32
  *
  */
-public class FenotipNepreklapajucaPopulacija extends NepreklapajucaPopulacija {
+public class FenotipNepreklapajucaPopulacija extends NepreklapajucaPopulacija<RealniKrajolik> {
 
 	/**
 	 * @param velicina
@@ -23,9 +23,11 @@ public class FenotipNepreklapajucaPopulacija extends NepreklapajucaPopulacija {
 	 */
 	@Override
 	public void inicijaliziraj() {
-		for (int i = 0; i < jedinke.length; i++) {
-			jedinke[i] = new FenotipJedinka();
-			jedinke[i].inicijaliziraj();
+		int limit = jedinke.size();
+		for (int i = 0; i < limit; i++) {
+			FenotipJedinka jedinka = new FenotipJedinka(this);
+			jedinka.inicijaliziraj();
+			jedinke.set(i, jedinka);
 		}
 	}
 

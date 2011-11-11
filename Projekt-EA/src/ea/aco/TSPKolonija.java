@@ -24,15 +24,15 @@ public abstract class TSPKolonija extends Kolonija {
 	protected double konstantaIsparavanja;
 
 	public TSPKolonija(
-		List<Par<String, Par<Integer, Integer>>> gradovi, int brojMrava, 
+		List<Par<String, Par<Double, Double>>> gradovi, int brojMrava, 
 		double konstantaIspravanja, RandomGenerator generator, double alfa
 	) {
 		this.generator = generator;
 		this.gradovi = new Grad[gradovi.size()];
 		this.alfa = alfa;
-		Iterator<Par<String, Par<Integer, Integer>>> iterator = gradovi.iterator();
+		Iterator<Par<String, Par<Double, Double>>> iterator = gradovi.iterator();
 		for (int i = 0; iterator.hasNext(); i++) { 
-			Par<String, Par<Integer, Integer>> gradOpis = iterator.next();
+			Par<String, Par<Double, Double>> gradOpis = iterator.next();
 			this.gradovi[i] = new Grad(gradOpis.drugi.prvi, gradOpis.drugi.drugi, gradOpis.prvi);
 		}
 		mravi = new TSPMrav[brojMrava];

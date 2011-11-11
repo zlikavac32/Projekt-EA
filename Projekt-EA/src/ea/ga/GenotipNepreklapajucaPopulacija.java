@@ -8,7 +8,7 @@ package ea.ga;
  * @author Zlikavac32
  *
  */
-public class GenotipNepreklapajucaPopulacija extends NepreklapajucaPopulacija {
+public class GenotipNepreklapajucaPopulacija extends NepreklapajucaPopulacija<RealniKrajolik> {
 
 	int brojBitova;
 	
@@ -26,9 +26,11 @@ public class GenotipNepreklapajucaPopulacija extends NepreklapajucaPopulacija {
 	 */
 	@Override
 	public void inicijaliziraj() {
-		for (int i = 0; i < jedinke.length; i++) {
-			jedinke[i] = new GenotipJedinka(brojBitova);
-			jedinke[i].inicijaliziraj();
+		int limit = jedinke.size();
+		for (int i = 0; i < limit; i++) {
+			GenotipJedinka jedinka = new GenotipJedinka(this, brojBitova);
+			jedinka.inicijaliziraj();
+			jedinke.set(i, jedinka);
 		}
 	}
 

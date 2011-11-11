@@ -6,33 +6,38 @@ package ea.ga;
 import ea.util.KoloSrece;
 
 /**
- * Sucelje koje definira jednu jedinku.
  * 
  * @author Zlikavac32
  *
  */
-public interface Jedinka extends Comparable<Jedinka>, KoloSrece.Racunljiv {
+public abstract class Jedinka<T extends Krajolik<?>> implements Comparable<Jedinka<T>>, KoloSrece.Racunljiv {
+
+	protected Populacija<T> populacija;
+
+	public Jedinka(Populacija<T> populacija) {
+		this.populacija = populacija;
+	}
 	
 	/**
 	 * Racuna faktor dobrote za trenutnu jedinku.
 	 * 
 	 * @return Faktor dobrote
 	 */
-	public double racunajFaktorDobrote();
+	public abstract double racunajFaktorDobrote();
 
 	/**
 	 * Kopira trenutnu jedinku.
 	 * 
 	 * @return Kopija jedinke
 	 */
-	public Jedinka kopiraj();
+	public abstract Jedinka<T> kopiraj();
 	
 	/**
 	 * Mutira trenutnu jedinku.
 	 * 
 	 * @param mutator Mutator koji se koristi
 	 */
-	public void mutiraj(int mutator, double vjerojatnostMutacije);
+	public abstract void mutiraj(int mutator, double vjerojatnostMutacije);
 	
 	/**
 	 * Mutira trenutnu jedinku za neku deltu.
@@ -41,7 +46,7 @@ public interface Jedinka extends Comparable<Jedinka>, KoloSrece.Racunljiv {
 	 * @param delta Delta koja odreduje nacin mutacije
 	 * @param vjerojatnostMutacije 
 	 */
-	public void mutiraj(int mutator, Object delta, double vjerojatnostMutacije);
+	public abstract void mutiraj(int mutator, Object delta, double vjerojatnostMutacije);
 	
 	/**
 	 * Rekombinira trenutnu jedinku sa partnerom koristeci rekombinator.
@@ -49,13 +54,13 @@ public interface Jedinka extends Comparable<Jedinka>, KoloSrece.Racunljiv {
 	 * @param rekombinator Rekombinator koji se koristi
 	 * @param partner Partner koji se koristi u rekombinaciji
 	 */
-	public void rekombiniraj(int rekombinator, Jedinka partner);
+	public abstract void rekombiniraj(int rekombinator, Jedinka<T> partner);
 
 	/**
 	 * Inicijalizira trenutnu jedinku.
 	 */
-	public void inicijaliziraj();
+	public abstract void inicijaliziraj();
 	
-	public Object vratiVrijednost();
+	public abstract Object vratiVrijednost();
 	
 }

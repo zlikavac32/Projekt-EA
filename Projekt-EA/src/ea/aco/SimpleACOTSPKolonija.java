@@ -16,7 +16,7 @@ import ea.util.Util;
  */
 public class SimpleACOTSPKolonija extends TSPKolonija {
 	
-	public SimpleACOTSPKolonija(List<Par<String, Par<Integer, Integer>>> gradovi, int brojMrava, double konstantaIsparavanja, RandomGenerator generator, double alfa) {
+	public SimpleACOTSPKolonija(List<Par<String, Par<Double, Double>>> gradovi, int brojMrava, double konstantaIsparavanja, RandomGenerator generator, double alfa) {
 		super(gradovi, brojMrava, konstantaIsparavanja, generator, alfa);
 	}
 

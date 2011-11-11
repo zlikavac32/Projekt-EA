@@ -1,9 +1,6 @@
 package ea.ga;
 
-import ea.Simulator;
-
-public class FenotipJedinka implements Jedinka {
-		
+public class FenotipJedinka extends Jedinka<RealniKrajolik> {
 	private double vrijednost;
 
 	protected double faktorDobrote;
@@ -17,10 +14,15 @@ public class FenotipJedinka implements Jedinka {
 	public static final int TEZINSKA_SREDINA_REKOMBINACIJA = 2;
 	
 	public static final int ALFA_INTERVAL_REKOMBINACIJA = 3;
+
 	
+	public FenotipJedinka(Populacija<RealniKrajolik> populacija) {
+		super(populacija);
+	}
+
 	@Override
 	public FenotipJedinka kopiraj() {
-		FenotipJedinka novaJedinka = new FenotipJedinka();
+		FenotipJedinka novaJedinka = new FenotipJedinka(populacija);
 		novaJedinka.vrijednost = vrijednost;
 		novaJedinka.faktorDobrote = faktorDobrote;
 		return novaJedinka;
@@ -43,20 +45,19 @@ public class FenotipJedinka implements Jedinka {
 			default:
 				throw new IllegalArgumentException("Mutator " + mutator + " nije valjan za realnu jedinku");
 		}
-		RealniKrajolik krajolik = (RealniKrajolik) Simulator.vratiKrajolik();
-		if (vrijednost < krajolik.vratiDonjuGranicu() || vrijednost > krajolik.vratiGornjuGranicu()) { vrijednost = staro; }
+		if (vrijednost < populacija.vratiKrajolik().vratiDonjuGranicu() || vrijednost > populacija.vratiKrajolik().vratiGornjuGranicu()) { vrijednost = staro; }
 		faktorDobrote = racunajFaktorDobrote(vrijednost);
 	}
 
 	
 	private void gaussMutacija(double delta, double vjerojatnostMutacije) {
-		if (Simulator.vratiRandomGenerator().vratiDouble() > vjerojatnostMutacije) { return ; }
-		vrijednost = vrijednost + Simulator.vratiRandomGenerator().vratiGauss() * delta;
+		if (populacija.vratiGenerator().vratiDouble() > vjerojatnostMutacije) { return ; }
+		vrijednost = vrijednost + populacija.vratiGenerator().vratiGauss() * delta;
 	}
 
 	private void deltaMutacija(double delta, double vjerojatnostMutacije) {
-		if (Simulator.vratiRandomGenerator().vratiDouble() > vjerojatnostMutacije) { return ; }
-		vrijednost = Simulator.vratiRandomGenerator().vratiDouble() * (2 * delta) + (vrijednost - delta);
+		if (populacija.vratiGenerator().vratiDouble() > vjerojatnostMutacije) { return ; }
+		vrijednost = populacija.vratiGenerator().vratiDouble() * (2 * delta) + (vrijednost - delta);
 	}
 
 	@Override
@@ -65,28 +66,28 @@ public class FenotipJedinka implements Jedinka {
 	}
 
 	public void inicijaliziraj() { 
-		RealniKrajolik krajolik = (RealniKrajolik) Simulator.vratiKrajolik();
-		vrijednost = krajolik.vratiDonjuGranicu() + (krajolik.vratiGornjuGranicu() - krajolik.vratiDonjuGranicu()) * Simulator.vratiRandomGenerator().vratiDouble();
+		vrijednost = populacija.vratiKrajolik().vratiDonjuGranicu() + 
+			(populacija.vratiKrajolik().vratiGornjuGranicu() - populacija.vratiKrajolik().vratiDonjuGranicu()) * 
+			populacija.vratiGenerator().vratiDouble();
 		faktorDobrote = racunajFaktorDobrote(vrijednost);
 	}
 
 	@Override
-	public int compareTo(Jedinka strani) {
+	public int compareTo(Jedinka<RealniKrajolik> strani) {
 		double mojFaktorDobrote = racunajFaktorDobrote();
 		double straniFaktorDobrote = strani.racunajFaktorDobrote();
 		//Smatramo da su dva broja jednaka ako im je razlika manja od 1e-9
 		return (Math.abs(mojFaktorDobrote - straniFaktorDobrote) < 1e-9) ? 0 : ((mojFaktorDobrote > straniFaktorDobrote) ? -1 : 1);
 	}
 
-	@SuppressWarnings("unchecked")
 	protected double racunajFaktorDobrote(double vrijednost) { 
-		return ((Krajolik<Double>) Simulator.vratiKrajolik()).racunajFaktorDobrote(vrijednost);
+		return populacija.vratiKrajolik().racunajFaktorDobrote(vrijednost);
 	}
 
 	public double racunajFaktorDobrote() { return faktorDobrote; }
 
 	@Override
-	public void rekombiniraj(int rekombinator, Jedinka partner) { 
+	public void rekombiniraj(int rekombinator, Jedinka<RealniKrajolik> partner) { 
 		double staro = vrijednost;
 		switch (rekombinator) {
 			case ARITMETICKA_SREDINA_REKOMBINACIJA :
@@ -101,9 +102,12 @@ public class FenotipJedinka implements Jedinka {
 			default:
 				throw new IllegalArgumentException("Rekombinator " + rekombinator + " nije valjan za realnu jedinku");
 		}
-		RealniKrajolik krajolik = (RealniKrajolik) Simulator.vratiKrajolik();
 		//Provjera Double.isNan ide iz razloga sto se kod tezinkse zna dogodit da pogodi za rekombinaciju obje najgore jedinke pa kao rezultat dobijem NaN
-		if (vrijednost < krajolik.vratiDonjuGranicu() || vrijednost > krajolik.vratiGornjuGranicu() || Double.isNaN(vrijednost)) { vrijednost = staro; }
+		if (
+			vrijednost < populacija.vratiKrajolik().vratiDonjuGranicu() || 
+			vrijednost > populacija.vratiKrajolik().vratiGornjuGranicu() || 
+			Double.isNaN(vrijednost)
+		) { vrijednost = staro; }
 		faktorDobrote = racunajFaktorDobrote(vrijednost);
 	}
 
@@ -118,12 +122,12 @@ public class FenotipJedinka implements Jedinka {
 //		vrijednost = Simulator.vratiRandomGenerator().vratiDouble() * (
 //			vrijednost - partner - 2 * intervalOdmak 
 //		);
-		vrijednost = (vrijednost - intervalOdmak) + Simulator.vratiRandomGenerator().vratiDouble() 
+		vrijednost = (vrijednost - intervalOdmak) + populacija.vratiGenerator().vratiDouble() 
 			* (partner - vrijednost + 2 * intervalOdmak);
 	}
 
 	private void tezinskaSredinaRekombinacija(double partner) {
-		double odmak = Simulator.vratiPopulaciju().vratiNajgoru().racunajFaktorDobrote();
+		double odmak = populacija.vratiNajgoru().racunajFaktorDobrote();
 		double prvaTezina = racunajFaktorDobrote() - odmak;
 		double drugaTezina = racunajFaktorDobrote(partner) - odmak;
 		vrijednost = (vrijednost * prvaTezina + partner * drugaTezina) / (prvaTezina + drugaTezina);

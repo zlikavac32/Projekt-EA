@@ -165,24 +165,64 @@ public class ACOGUI extends GUI {
 		}, 0, new ActionListener[] { 
 			sakrijOtkrij, sakrijOtkrij
 		});
-		konstantaIsparavanja = new TekstualnaVrijednost(KONSTANTA_ISPARAVANJA, "0.5");
+		konstantaIsparavanja = new TekstualnaVrijednost(KONSTANTA_ISPARAVANJA, "0.9");
 		alfa = new TekstualnaVrijednost(ALFA, "1");
-		beta = new TekstualnaVrijednost(BETA, "3");
+		beta = new TekstualnaVrijednost(BETA, "2");
 		beta.setEnabled(false);
 		gradovi = new TekstPodrucje(GRADOVI, 
-			"0, 0, A\n"
-			+ "1, 5, B\n"
-			+ "3, 8, C\n"
-			+ "10, 3, D\n"
-			+ "4, 7, E\n"
-			+ "10, 20, F\n"
-			+ "11, 8, G\n"
-			+ "7, 13, H\n"
-			+ "8, 8, I\n"
-			+ "9, 11, J\n"
-			+ "6, 15, K\n"
-			+ "1, 3, L\n"
-		, 10);
+			"1 565 575\n"
+			+ "2 25 185\n"
+			+ "3 345 750\n"
+			+ "4 945 685\n"
+			+ "5 845 655\n"
+			+ "6 880 660\n"
+			+ "7 25 230\n"
+			+ "8 525 1000\n"
+			+ "9 580 1175\n"
+			+ "10 650 1130\n"
+			+ "11 1605 620\n"
+			+ "12 1220 580\n"
+			+ "13 1465 200\n"
+			+ "14 1530 5\n"
+			+ "15 845 680\n"
+			+ "16 725 370\n"
+			+ "17 145 665\n"
+			+ "18 415 635\n"
+			+ "19 510 875\n"
+			+ "20 560 365\n"
+			+ "21 300 465\n"
+			+ "22 520 585\n"
+			+ "23 480 415\n"
+			+ "24 835 625\n"
+			+ "25 975 580\n"
+			+ "26 1215 245\n"
+			+ "27 1320 315\n"
+			+ "28 1250 400\n"
+			+ "29 660 180\n"
+			+ "30 410 250\n"
+			+ "31 420 555\n"
+			+ "32 575 665\n"
+			+ "33 1150 1160\n"
+			+ "34 700 580\n"
+			+ "35 685 595\n"
+			+ "36 685 610\n"
+			+ "37 770 610\n"
+			+ "38 795 645\n"
+			+ "39 720 635\n"
+			+ "40 760 650\n"
+			+ "41 475 960\n"
+			+ "42 95 260\n"
+			+ "43 875 920\n"
+			+ "44 700 500\n"
+			+ "45 555 815\n"
+			+ "46 830 485\n"
+			+ "47 1170 65\n"
+			+ "48 830 610\n"
+			+ "49 605 625\n"
+			+ "50 595 360\n"
+			+ "51 1340 725\n"
+			+ "52 1740 245\n",
+		 10);
 		
 	}
 
@@ -249,15 +289,22 @@ public class ACOGUI extends GUI {
 		} 
 		
 		
-		List<Par<String, Par<Integer, Integer>>> gradoviLista = new ArrayList<Par<String, Par<Integer, Integer>>>();
+		List<Par<String, Par<Double, Double>>> gradoviLista = new ArrayList<Par<String, Par<Double, Double>>>();
 		String[] linije = gradovi.vratiVrijednost().split("\n");
 		for (int i = 0; i < linije.length; i++) {
-			String dijelovi[] = linije[i].split(",");
-			int x = Integer.parseInt(dijelovi[0].trim());
-			int y = Integer.parseInt(dijelovi[1].trim());
-			Par<String, Par<Integer, Integer>> grad = new Par<String, Par<Integer, Integer>>(
-				dijelovi.length > 2 ? dijelovi[2].trim() : Integer.toString(i + 1), 
-				new Par<Integer, Integer>(x, y)
+//			String dijelovi[] = linije[i].split(",");
+//			int x = Integer.parseInt(dijelovi[0].trim());
+//			int y = Integer.parseInt(dijelovi[1].trim());
+//			Par<String, Par<Integer, Integer>> grad = new Par<String, Par<Integer, Integer>>(
+//				dijelovi.length > 2 ? dijelovi[2].trim() : Integer.toString(i + 1), 
+//				new Par<Integer, Integer>(x, y)
+//			);
+			String dijelovi[] = linije[i].split(" ");
+			double x = Double.parseDouble(dijelovi[1].trim());
+			double y = Double.parseDouble(dijelovi[2].trim());
+			Par<String, Par<Double, Double>> grad = new Par<String, Par<Double, Double>>(
+				dijelovi[0].trim(), 
+				new Par<Double, Double>(x, y)
 			);
 			gradoviLista.add(grad);
 		}

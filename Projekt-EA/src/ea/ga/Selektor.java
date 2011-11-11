@@ -3,18 +3,28 @@
  */
 package ea.ga;
 
+import java.util.List;
+
+import ea.util.RandomGenerator;
+
 /**
  * @author Zlikavac32
  *
  */
-public abstract class Selektor {
+public abstract class Selektor<T extends Krajolik<?>> {
 	
-	protected Jedinka[] populacija;
+	protected List<Jedinka<T>> populacija;
 	
-	public void postaviPopulaciju(Jedinka[] populacija) {
+	protected RandomGenerator randomGenerator;
+	
+	public Selektor(RandomGenerator generator) {
+		this.randomGenerator = generator;
+	}
+	
+	public void postaviPopulaciju(List<Jedinka<T>> populacija) {
 		this.populacija = populacija;
 	}
 	
-	public abstract Jedinka vratiSljedecuJedinku();
+	public abstract Jedinka<T> vratiSljedecuJedinku();
 
 }

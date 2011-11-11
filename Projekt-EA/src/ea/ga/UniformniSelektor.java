@@ -3,18 +3,22 @@
  */
 package ea.ga;
 
-import ea.Simulator;
+import ea.util.RandomGenerator;
 
 /**
  * @author Zlikavac32
  *
  */
-public class UniformniSelektor extends Selektor {
+public class UniformniSelektor<T extends Krajolik<?>> extends Selektor<T> {
 
+
+	public UniformniSelektor(RandomGenerator generator) {
+		super(generator);
+	}
 
 	@Override
-	public Jedinka vratiSljedecuJedinku() {
-		return populacija[Simulator.vratiRandomGenerator().vratiInt(populacija.length)];
+	public Jedinka<T> vratiSljedecuJedinku() {
+		return populacija.get(randomGenerator.vratiInt(populacija.size()));
 	}
 
 }

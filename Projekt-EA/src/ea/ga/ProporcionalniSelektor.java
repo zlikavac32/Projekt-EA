@@ -3,30 +3,36 @@
  */
 package ea.ga;
 
-import ea.Simulator;
+import java.util.List;
+
 import ea.util.KoloSrece;
+import ea.util.RandomGenerator;
 
 /**
  * @author Zlikavac32
  *
  */
-public class ProporcionalniSelektor extends Selektor {
+public class ProporcionalniSelektor<T extends Krajolik<?>> extends Selektor<T> {
 
 
-	protected KoloSrece koloSrece;
+	public ProporcionalniSelektor(RandomGenerator generator) {
+		super(generator);
+	}
+
+	protected KoloSrece<Jedinka<T>> koloSrece;
 	
 	@Override
-	public void postaviPopulaciju(Jedinka[] populacija) {
+	public void postaviPopulaciju(List<Jedinka<T>> populacija) {
 		super.postaviPopulaciju(populacija);
-		koloSrece = new KoloSrece(populacija, Simulator.vratiRandomGenerator());
+		koloSrece = new KoloSrece<Jedinka<T>>(populacija, randomGenerator);
 	}
 	
 	/**
 	 * @see ea.ga.Selektor#vratiSljedecuJedinku()
 	 */
 	@Override
-	public Jedinka vratiSljedecuJedinku() {
-		return (Jedinka) koloSrece.okreni();
+	public Jedinka<T> vratiSljedecuJedinku() {
+		return koloSrece.okreni();
 	}
 
 }

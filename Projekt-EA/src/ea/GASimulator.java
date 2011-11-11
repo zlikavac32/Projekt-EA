@@ -18,12 +18,12 @@ import ea.ga.Populacija;
 import ea.ga.Jedinka;
 import ea.ga.ProporcionalniSelektor;
 import ea.ga.FenotipJedinka;
+import ea.ga.RealniKrajolik;
 import ea.ga.Selektor;
 import ea.ga.SkracivanjeSelektor;
 import ea.ga.UniformniSelektor;
 import ea.ga.gui.GAGUI;
 import ea.gui.GUI;
-import ea.util.KriterijKraja;
 import ea.util.RandomGenerator;
 import ea.util.XKorakaKriterijKraja;
 
@@ -31,7 +31,7 @@ import ea.util.XKorakaKriterijKraja;
  * @author Zlikavac32
  *
  */
-public class GASimulator extends Simulator<Jedinka[]> {
+public class GASimulator extends Simulator<List<Jedinka<RealniKrajolik>>> {
 	
 	public static final int MAKSIMUM = 2;
 	
@@ -91,13 +91,19 @@ public class GASimulator extends Simulator<Jedinka[]> {
 	
 	private int brojDjece;
 	
-	private KriterijKraja<Populacija> kriterijKraja;
+	private XKorakaKriterijKraja<Populacija<?>> kriterijKraja;
 	
 	private int brojJedinki;
 
 	private int brojGeneracija;
 
 	private int populacijaVrsta;
+
+	protected FunkcijaKrajolik krajolik;
+
+	protected Populacija<RealniKrajolik> populacija;
+
+	private GAGUI gui;
 	
 	public GASimulator() { 
 		krajolik = new FunkcijaKrajolik();
@@ -186,7 +192,7 @@ public class GASimulator extends Simulator<Jedinka[]> {
 	
 	public void uzBrojGeneracija(int brojGeneracija) { 
 		this.brojGeneracija = brojGeneracija;
-		kriterijKraja = new XKorakaKriterijKraja<Populacija>(brojGeneracija); 
+		kriterijKraja = new XKorakaKriterijKraja<Populacija<?>>(brojGeneracija); 
 	}
 
 
@@ -196,25 +202,27 @@ public class GASimulator extends Simulator<Jedinka[]> {
 		}
 		this.populacijaVrsta = populacija;
 	}
+	
+	public void postaviGUI(GAGUI gui) { this.gui = gui; }
 
 	@Override
 	protected Void doInBackground() 
 		throws Exception {
 		
 		try { simuliraj(); }
-		catch (Throwable e) {
-			if (!(e instanceof InterruptedException)) {
-				GUI.zapisiUZapisnikGresku(e.getMessage()); 
-				e.printStackTrace();
-			}
+		catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+		catch (Exception e) {
+			GUI.zapisiUZapisnikGresku(e.getMessage()); 
+			e.printStackTrace();
 		}
 		
 		return null;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void simuliraj()
 		throws InterruptedException {
-		Populacija populacija = stvoriPopulaciju();
+		Populacija<RealniKrajolik> populacija = stvoriPopulaciju();
 		if (koristiRekombinaciju) { populacija.koristiRekombinaciju(rekombinacija); }
 		if (koristiMutaciju) { 
 			populacija.koristiMutaciju(mutacija); 
@@ -222,11 +230,15 @@ public class GASimulator extends Simulator<Jedinka[]> {
 			populacija.postaviVjerojatnostMutacije(vjerojatnostMutacije);
 		}
 				
+		populacija.postaviGenerator(randomGenerator);
+		populacija.postaviKrajolik(krajolik);
 		populacija.inicijaliziraj();
 		
-		GASimulator.populacija = populacija;
+		this.populacija = populacija;
+				
+		Jedinka<RealniKrajolik> najboljaJedinka = null;
 		
-		Jedinka najboljaJedinka = null;
+		gui.nacrtajFunkciju(krajolik);
 
         publish(populacija.vratiJedinke());
         
@@ -234,7 +246,7 @@ public class GASimulator extends Simulator<Jedinka[]> {
 			if (Globalno.vratiBrzinu() > 0) { Thread.sleep(Globalno.vratiBrzinu()); }
 			populacija.evoluiraj();
 			publish(populacija.vratiJedinke());
-			Jedinka mogucaNajboljaJedinka = populacija.vratiNajbolju();
+			Jedinka<RealniKrajolik> mogucaNajboljaJedinka = populacija.vratiNajbolju();
 			if (najboljaJedinka == null || najboljaJedinka.racunajFaktorDobrote() < mogucaNajboljaJedinka.racunajFaktorDobrote()) {
 				najboljaJedinka = mogucaNajboljaJedinka.kopiraj();
 			}
@@ -244,42 +256,44 @@ public class GASimulator extends Simulator<Jedinka[]> {
 	}
 	
 	@Override
-    protected void process(List<Jedinka[]> populacije) {
-		GAGUI.iscrtajPopulaciju(populacije.get(populacije.size() - 1));
-        setProgress((int) ((((XKorakaKriterijKraja<Populacija>) kriterijKraja).vratiBrojProteklihGeneracija() / (double) brojGeneracija) * 100));
+    protected void process(List<List<Jedinka<RealniKrajolik>>> populacije) {
+		gui.iscrtajPopulaciju(populacije.get(populacije.size() - 1), krajolik);
+        setProgress((int) ((kriterijKraja.vratiBrojProteklihGeneracija() / (double) brojGeneracija) * 100));
     }
 
-	private Populacija stvoriPopulaciju() {
-		Populacija populacija;
+	private Populacija<RealniKrajolik> stvoriPopulaciju() {
+		Populacija<RealniKrajolik> populacija;
 		if (reprezentacija == GENOTIP) { populacija = stvoriGenotipskuPopulaciju(); }
 		else { populacija = stvoriFenotipskuPopulciju(); }
 		populacija.postaviSelektor(stvoriSelektor());
 		return populacija;
 	}
 
-	private Populacija stvoriFenotipskuPopulciju() {
+	private Populacija<RealniKrajolik> stvoriFenotipskuPopulciju() {
 		if (populacijaVrsta == PREKLAPAJUCA) { return new FenotipPreklapajucaPopulacija(velicinaPopulacije, brojDjece); }
 		return new FenotipNepreklapajucaPopulacija(velicinaPopulacije, brojDjece); 
 	}
 
-	private Populacija stvoriGenotipskuPopulaciju() {
+	private Populacija<RealniKrajolik> stvoriGenotipskuPopulaciju() {
 		if (populacijaVrsta == PREKLAPAJUCA) { return new GenotipPreklapajucaPopulacija(velicinaPopulacije, brojDjece, brojBitova); }
 		return new GenotipNepreklapajucaPopulacija(velicinaPopulacije, brojDjece, brojBitova); 
 	}
 
-	private Selektor stvoriSelektor() {
+	private Selektor<RealniKrajolik> stvoriSelektor() {
 		switch (selektor) {
 			case SKRACIVANJE :
-				return new SkracivanjeSelektor(brojJedinki);
+				return new SkracivanjeSelektor<RealniKrajolik>(brojJedinki, randomGenerator);
 			case PROPORCIONALNA :
-				return new ProporcionalniSelektor();
+				return new ProporcionalniSelektor<RealniKrajolik>(randomGenerator);
 			case UNIFORMNA :
-				return new UniformniSelektor();
+				return new UniformniSelektor<RealniKrajolik>(randomGenerator);
 			case DVO_TURNIRSKA :
-				return new DvoTurnirskiSelektor();
+				return new DvoTurnirskiSelektor<RealniKrajolik>(randomGenerator);
 			default :
 				throw new IllegalArgumentException("Ne postoji definirana populacija");
 		}
 	}
+
+	public Populacija<RealniKrajolik> vratiPopulaciju() { return populacija; }
 	
 }

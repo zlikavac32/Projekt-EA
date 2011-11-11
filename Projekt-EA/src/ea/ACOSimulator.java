@@ -6,10 +6,8 @@ package ea;
 import java.util.List;
 
 import ea.aco.AntSystemTSPKolonija;
-import ea.aco.Grad;
 import ea.aco.Par;
 import ea.aco.SimpleACOTSPKolonija;
-//import ea.aco.SimpleACOTSPKolonija;
 import ea.aco.TSPKolonija;
 import ea.aco.gui.ACOGUI;
 import ea.gui.GUI;
@@ -21,7 +19,7 @@ import ea.aco.TSPMrav;
  * @author Zlikavac32
  *
  */
-public class ACOSimulator extends Simulator<Par<Grad[], Grad[]>> {
+public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 
 	public static final int SIMPLE_ACO_ALGORITAM = 0;
 	
@@ -31,7 +29,7 @@ public class ACOSimulator extends Simulator<Par<Grad[], Grad[]>> {
 	
 	private int brojGeneracija = 1;
 
-	private List<Par<String, Par<Integer, Integer>>> gradoviLista;
+	private List<Par<String, Par<Double, Double>>> gradoviLista;
 
 	private int brojMrava;
 
@@ -69,7 +67,7 @@ public class ACOSimulator extends Simulator<Par<Grad[], Grad[]>> {
 	}
 
 	public void koristeciGradove(
-			List<Par<String, Par<Integer, Integer>>> gradoviLista) {
+			List<Par<String, Par<Double, Double>>> gradoviLista) {
 		this.gradoviLista = gradoviLista;
 	}
 
@@ -97,11 +95,10 @@ public class ACOSimulator extends Simulator<Par<Grad[], Grad[]>> {
 		throws Exception {
 		
 		try { simuliraj(); }
+		catch (InterruptedException e) { Thread.currentThread().interrupt(); }
 		catch (Exception e) {
-			if (!(e instanceof InterruptedException)) {
-				GUI.zapisiUZapisnikGresku(e.getMessage()); 
-				e.printStackTrace();
-			}
+			GUI.zapisiUZapisnikGresku(e.getMessage()); 
+			e.printStackTrace();
 		}
 		
 		return null;
@@ -126,16 +123,16 @@ public class ACOSimulator extends Simulator<Par<Grad[], Grad[]>> {
 			kolonija.evoluiraj(brojMravaAzurira);
 			TSPMrav moguceNajbolje = (TSPMrav) kolonija.vratiNajbolje();
 			najbolje = (TSPMrav) kolonija.vratiGlobalnoNajbolje();
-			publish(new Par<Grad[], Grad[]>(najbolje.vratiPutanju(), moguceNajbolje.vratiPutanju()));	
+			publish(new Par<TSPMrav, TSPMrav>(najbolje, moguceNajbolje));	
 		}
 		GUI.zapisiUZapisnik("Najbolje rjesenje: " + najbolje);
 		if (najbolje != null) { GUI.zapisiUZapisnik("Ukupne udaljenosti: " + najbolje.vratiDuljinuPuta()); }
 	}
 	
 	@Override
-    protected void process(List<Par<Grad[], Grad[]>> populacije) {
-		Par<Grad[], Grad[]> zadnji = populacije.get(populacije.size() - 1);
-		ACOGUI.iscrtajPutanju(zadnji.prvi, zadnji.drugi);
+    protected void process(List<Par<TSPMrav, TSPMrav>> populacije) {
+		Par<TSPMrav, TSPMrav> zadnji = populacije.get(populacije.size() - 1);
+		ACOGUI.iscrtajPutanju(zadnji.prvi.vratiPutanju(), zadnji.drugi.vratiPutanju());
         setProgress((int) ((((XKorakaKriterijKraja<TSPKolonija>) kriterijKraja).vratiBrojProteklihGeneracija() / (double) brojGeneracija) * 100));
     }
 	

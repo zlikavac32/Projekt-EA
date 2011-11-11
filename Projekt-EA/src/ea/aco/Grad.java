@@ -9,13 +9,13 @@ package ea.aco;
  */
 public class Grad {
 	
-	public final int x;
+	public final double x;
 	
-	public final int y;
+	public final double y;
 	
 	public final String ime;
 	
-	public Grad(int x, int y, String ime) {
+	public Grad(double x, double y, String ime) {
 		this.x = x;
 		this.y = y;
 		this.ime = ime;

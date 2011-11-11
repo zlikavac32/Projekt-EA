@@ -3,13 +3,16 @@
  */
 package ea.util;
 
+import java.util.List;
+
+
 /**
  * @author Zlikavac32
  *
  */
-public class KoloSrece {
+public class KoloSrece<T extends KoloSrece.Racunljiv> {
 
-	private Racunljiv[] skup;
+	private List<T> skup;
 
 	private double[] koloSrece;
 	
@@ -19,7 +22,7 @@ public class KoloSrece {
 		public double racunajVrijednost();
 	}
 	
-	public KoloSrece(Racunljiv[] skup, RandomGenerator generator) { 
+	public KoloSrece(List<T> skup, RandomGenerator generator) { 
 		this.skup = skup; 
 		this.generator = generator;
 		stvoriKoloSrece();
@@ -28,9 +31,9 @@ public class KoloSrece {
 	private void stvoriKoloSrece() {
 		double suma = 0;
 		double odmak = Double.POSITIVE_INFINITY;
-		
-		for (int i = 0; i < skup.length; i++) { 
-			double faktorDobrote = skup[i].racunajVrijednost();
+		int limit = skup.size();
+		for (int i = 0; i < limit; i++) { 
+			double faktorDobrote = skup.get(i).racunajVrijednost();
 			if (faktorDobrote < odmak) { odmak = faktorDobrote; }
 		}
 		
@@ -38,27 +41,27 @@ public class KoloSrece {
 		
 		suma = 0;
 		
-		for (int i = 0; i < skup.length; i++) { 
-			suma += skup[i].racunajVrijednost() + odmak; 
+		for (int i = 0; i < limit; i++) { 
+			suma += skup.get(i).racunajVrijednost() + odmak; 
 		}
 		
 		double ukupnaSuma = suma;
 		
-		koloSrece = new double[skup.length];
+		koloSrece = new double[limit];
 				
 		suma = 0;
 		
-		for (int i = 0; i < skup.length; i++) {
-			suma += (skup[i].racunajVrijednost() + odmak) / ukupnaSuma;
+		for (int i = 0; i < limit; i++) {
+			suma += (skup.get(i).racunajVrijednost() + odmak) / ukupnaSuma;
 			koloSrece[i] = suma;
 		}
 	}
 	
-	public Racunljiv okreni() {
+	public T okreni() {
 		double vrijednost = generator.vratiDouble();
 		
 		int l = 0;
-		int d = skup.length - 1;
+		int d = skup.size() - 1;
 		
 		while (l < d) {
 			int m = (l + d) / 2;
@@ -66,7 +69,7 @@ public class KoloSrece {
 			else { l = m + 1; }
 		}
 		
-		return skup[l];
+		return skup.get(l);
 	}
 	
 }

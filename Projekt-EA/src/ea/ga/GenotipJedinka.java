@@ -2,10 +2,7 @@ package ea.ga;
 
 import java.util.Arrays;
 
-import ea.Simulator;
-import ea.util.RandomGenerator;
-
-public class GenotipJedinka implements Jedinka {
+public class GenotipJedinka extends Jedinka<RealniKrajolik> {
 	
 
 	/**
@@ -29,7 +26,8 @@ public class GenotipJedinka implements Jedinka {
 	
 	protected double faktorDobrote;
 	
-	public GenotipJedinka(int brojBitova) { 
+	public GenotipJedinka(Populacija<RealniKrajolik> populacija, int brojBitova) {
+		super(populacija); 
 		if (brojBitova < 1 || brojBitova > 63) { 
 			throw new IllegalArgumentException("Broj bitova mora biti u rasponu [0,63]");
 		}
@@ -37,9 +35,8 @@ public class GenotipJedinka implements Jedinka {
 	}
 	
 
-	@SuppressWarnings("unchecked")
 	protected double racunajFaktorDobrote(double vrijednost) { 
-		return ((Krajolik<Double>) Simulator.vratiKrajolik()).racunajFaktorDobrote(vrijednost);
+		return populacija.vratiKrajolik().racunajFaktorDobrote(vrijednost);
 	}
 	
 	@Override
@@ -47,7 +44,7 @@ public class GenotipJedinka implements Jedinka {
 
 	@Override
 	public GenotipJedinka kopiraj() {
-		GenotipJedinka novaJedinka = new GenotipJedinka(brojBitova);
+		GenotipJedinka novaJedinka = new GenotipJedinka(populacija, brojBitova);
 		if (bitovi != null) {
 			novaJedinka.bitovi = Arrays.copyOf(bitovi, bitovi.length);
 		}
@@ -76,9 +73,8 @@ public class GenotipJedinka implements Jedinka {
 		if (brojBitova < 0 || brojBitova > 63) { 
 			throw new IllegalArgumentException("Broj bitova mora biti u rasponu [0,63]");
 		}
-		RandomGenerator randomGenerator = Simulator.vratiRandomGenerator();
 		for (int i = 0; i < bitovi.length; i++) {
-			if (randomGenerator.vratiDouble() > vjerojatnostMutacije) { continue; }
+			if (populacija.vratiGenerator().vratiDouble() > vjerojatnostMutacije) { continue; }
 			bitovi[i] = (byte) (1 - bitovi[i]);
 		}
 	}
@@ -95,10 +91,9 @@ public class GenotipJedinka implements Jedinka {
 	}
 
 	public void inicijaliziraj() { 
-		RandomGenerator randomGenerator = Simulator.vratiRandomGenerator();
 		bitovi = new byte[brojBitova];
 		for (int i = 0; i < brojBitova; i++) {
-			bitovi[i] = (byte) (randomGenerator.vratiDouble() < .5 ? 1 : 0);
+			bitovi[i] = (byte) (populacija.vratiGenerator().vratiDouble() < .5 ? 1 : 0);
 		}
 		faktorDobrote = racunajFaktorDobrote(dekodiraj(bitovi));
  	}
@@ -110,13 +105,12 @@ public class GenotipJedinka implements Jedinka {
 			if (bitovi[i] == 1) { vrijednost += potencija; }
 			potencija <<= 1;
 		}
-		FunkcijaKrajolik krajolik = (FunkcijaKrajolik) Simulator.vratiKrajolik();
-		return vrijednost / ((1L << brojBitova) - 1) * (krajolik.vratiGornjuGranicu() - krajolik.vratiDonjuGranicu()) 
-			+ krajolik.vratiDonjuGranicu();
+		return vrijednost / ((1L << brojBitova) - 1) * (populacija.vratiKrajolik().vratiGornjuGranicu() - populacija.vratiKrajolik().vratiDonjuGranicu()) 
+			+ populacija.vratiKrajolik().vratiDonjuGranicu();
 	}
 
 	@Override
-	public int compareTo(Jedinka strani) {
+	public int compareTo(Jedinka<RealniKrajolik> strani) {
 		double mojFaktorDobrote = racunajFaktorDobrote();
 		double straniFaktorDobrote = strani.racunajFaktorDobrote();
 		//Smatramo da su dva broja jednaka ako im je razlika manja od 1e-9
@@ -124,7 +118,7 @@ public class GenotipJedinka implements Jedinka {
 	}
 
 	@Override
-	public void rekombiniraj(int rekombinator, Jedinka partner) { 
+	public void rekombiniraj(int rekombinator, Jedinka<RealniKrajolik> partner) { 
 		switch (rekombinator) {
 			case JEDAN_CVOR_REKOMBINACIJA :
 				jedanCvorRekombinacija(((GenotipJedinka) partner).bitovi);
@@ -142,9 +136,9 @@ public class GenotipJedinka implements Jedinka {
 		if (partner.length != brojBitova) { 
 			throw new IllegalArgumentException("Broj bitova oba partnera mora biti isti");
 		}
-		int prva = Simulator.vratiRandomGenerator().vratiInt(brojBitova);
-		int druga = Simulator.vratiRandomGenerator().vratiInt(brojBitova);
-		byte tempBitovi[] = Arrays.copyOf(partner, 0);
+		int prva = populacija.vratiGenerator().vratiInt(brojBitova);
+		int druga = populacija.vratiGenerator().vratiInt(brojBitova);
+		byte tempBitovi[] = Arrays.copyOf(partner, partner.length);
 		if (prva > druga) {
 			int temp = prva;
 			prva = druga;
@@ -162,8 +156,8 @@ public class GenotipJedinka implements Jedinka {
 		if (partner.length != brojBitova) { 
 			throw new IllegalArgumentException("Broj bitova oba partnera mora biti isti");
 		}
-		int lokacija = Simulator.vratiRandomGenerator().vratiInt(brojBitova);
-		byte tempBitovi[] = Arrays.copyOf(partner, 0);
+		int lokacija = populacija.vratiGenerator().vratiInt(brojBitova);
+		byte tempBitovi[] = Arrays.copyOf(partner, partner.length);
 		for (int i = 0; i < lokacija; i++) { tempBitovi[i] = bitovi[i]; }
 		for (int i = lokacija; i < partner.length; i++) { bitovi[i] = tempBitovi[i]; }
 		if (racunajFaktorDobrote(dekodiraj(tempBitovi)) > racunajFaktorDobrote(dekodiraj(bitovi))) {

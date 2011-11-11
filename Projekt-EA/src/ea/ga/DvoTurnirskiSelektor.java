@@ -3,23 +3,26 @@
  */
 package ea.ga;
 
-import ea.Simulator;
 import ea.util.RandomGenerator;
+
 
 /**
  * @author Zlikavac32
  *
  */
-public class DvoTurnirskiSelektor extends Selektor {
+public class DvoTurnirskiSelektor<T extends Krajolik<?>> extends Selektor<T> {
+
+	public DvoTurnirskiSelektor(RandomGenerator generator) {
+		super(generator);
+	}
 
 	/**
 	 * @see ea.ga.Selektor#vratiSljedecuJedinku()
 	 */
 	@Override
-	public Jedinka vratiSljedecuJedinku() {
-		RandomGenerator randomGenerator = Simulator.vratiRandomGenerator();
-		Jedinka prva = populacija[randomGenerator.vratiInt(populacija.length)];
-		Jedinka druga = populacija[randomGenerator.vratiInt(populacija.length)];
+	public Jedinka<T> vratiSljedecuJedinku() {
+		Jedinka<T> prva = populacija.get(randomGenerator.vratiInt(populacija.size()));
+		Jedinka<T> druga = populacija.get(randomGenerator.vratiInt(populacija.size()));
 		return (prva.racunajFaktorDobrote() > druga.racunajFaktorDobrote()) ? prva : druga;
 	}
 

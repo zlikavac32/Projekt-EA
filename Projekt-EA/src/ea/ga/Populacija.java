@@ -3,13 +3,18 @@
  */
 package ea.ga;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ea.util.RandomGenerator;
+
 /**
  * @author Zlikavac32
  *
  */
-public abstract class Populacija {
+public abstract class Populacija<T extends Krajolik<?>> {
 	
-	protected Jedinka[] jedinke;
+	protected List<Jedinka<T>> jedinke;
 	
 	protected Object delta;
 	
@@ -23,20 +28,26 @@ public abstract class Populacija {
 
 	protected double vjerojatnostMutacije;
 	
-	protected Selektor selektor;
+	protected Selektor<T> selektor;
+
+	protected T krajolik;
+
+	protected RandomGenerator generator;
 
 	public Populacija(int velicina) {
-		jedinke = new Jedinka[velicina];
+		jedinke = new ArrayList<Jedinka<T>>(velicina);
+		for (int i = 0; i < velicina; i++) { jedinke.add(null); }
 	}
 
-	public Jedinka vratiNajbolju() {
-		if (jedinke.length == 0) { return null; }
-		Jedinka najbolja = jedinke[0];
+	public Jedinka<T> vratiNajbolju() {
+		if (jedinke.size() == 0) { return null; }
+		Jedinka<T> najbolja = jedinke.get(0);
 		double najboljiFaktorDobrote = najbolja.racunajFaktorDobrote();
-		for (int i = 1; i < jedinke.length; i++) {
-			double moguciNajboljiFaktorDobrote = jedinke[i].racunajFaktorDobrote();
+		int limit = jedinke.size();
+		for (int i = 1; i < limit; i++) {
+			double moguciNajboljiFaktorDobrote = jedinke.get(i).racunajFaktorDobrote();
 			if (moguciNajboljiFaktorDobrote > najboljiFaktorDobrote) {
-				najbolja = jedinke[i];
+				najbolja = jedinke.get(i);
 				najboljiFaktorDobrote = moguciNajboljiFaktorDobrote;
 			}
 		}
@@ -44,14 +55,15 @@ public abstract class Populacija {
 		return najbolja.kopiraj();
 	}
 
-	public Jedinka vratiNajgoru() {
-		if (jedinke.length == 0) { return null; }
-		Jedinka najgora = jedinke[0];
+	public Jedinka<T> vratiNajgoru() {
+		if (jedinke.size() == 0) { return null; }
+		Jedinka<T> najgora = jedinke.get(0);
 		double najgoriFaktorDobrote = najgora.racunajFaktorDobrote();
-		for (int i = 1; i < jedinke.length; i++) {
-			double moguciNajgoriFaktorDobrote = jedinke[i].racunajFaktorDobrote();
+		int limit = jedinke.size();
+		for (int i = 1; i < limit; i++) {
+			double moguciNajgoriFaktorDobrote = jedinke.get(i).racunajFaktorDobrote();
 			if (moguciNajgoriFaktorDobrote < najgoriFaktorDobrote) {
-				najgora = jedinke[i];
+				najgora = jedinke.get(i);
 				najgoriFaktorDobrote = moguciNajgoriFaktorDobrote;
 			}
 		}
@@ -75,18 +87,20 @@ public abstract class Populacija {
 	public String toString() {
 		StringBuilder graditelj = new StringBuilder();
 		graditelj.append("sa jedinkama\n[\n");
-		for (int i = 0; i < jedinke.length; i++) {
+		int limit = jedinke.size();
+		for (int i = 0; i < limit; i++) {
 			graditelj.append("\t");
-			graditelj.append(jedinke[i]);
+			graditelj.append(jedinke.get(i));
 			graditelj.append("\n");
 		}
 		graditelj.append("]");
 		return graditelj.toString();
 	}
 	
-	public Jedinka[] vratiJedinke() {
-		Jedinka[] vrati = new Jedinka[jedinke.length];
-		for (int i = 0; i < jedinke.length; i++) { vrati[i] = jedinke[i].kopiraj(); }
+	public List<Jedinka<T>> vratiJedinke() {
+		List<Jedinka<T>> vrati = new ArrayList<Jedinka<T>>(jedinke.size());
+		int limit = jedinke.size();
+		for (int i = 0; i < limit; i++) { vrati.add(i, jedinke.get(i)); }
 		return vrati;
 	}
 
@@ -94,13 +108,22 @@ public abstract class Populacija {
 		this.vjerojatnostMutacije = vjerojatnostMutacije;
 	}
 	
-	public void postaviSelektor(Selektor selektor) {
+	public void postaviSelektor(Selektor<T> selektor) {
 		this.selektor = selektor;
 	}
 	
-	public Selektor vratiSelektor() { return selektor; }
+	public Selektor<T> vratiSelektor() { return selektor; }
 	
 	public abstract void evoluiraj();
 	
 	public abstract void inicijaliziraj();
+	
+	public T vratiKrajolik() { return krajolik; }
+	
+	public RandomGenerator vratiGenerator() { return generator; }
+	
+	public void postaviGenerator(RandomGenerator generator) { this.generator = generator; }
+	
+	public void postaviKrajolik(T krajolik) { this.krajolik = krajolik; }
+	
 }

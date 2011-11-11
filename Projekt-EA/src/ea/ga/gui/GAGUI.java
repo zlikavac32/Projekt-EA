@@ -9,6 +9,7 @@ import static ea.ga.gui.GAGUIKonstante.*;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -30,7 +31,6 @@ import de.congrace.exp4j.UnknownFunctionException;
 import de.congrace.exp4j.UnparsableExpressionException;
 
 import ea.GASimulator;
-import ea.Simulator;
 import ea.ga.Jedinka;
 import ea.ga.RealniKrajolik;
 import ea.gui.DijeljenaPloca;
@@ -50,7 +50,7 @@ public class GAGUI extends GUI {
 
 	private RadioGumbi trazi;
 
-	private TekstualnaVrijednost brojTocaka;
+	private static TekstualnaVrijednost brojTocaka;
 	
 	private TekstualnaVrijednost gornjaGranica;
 
@@ -132,7 +132,7 @@ public class GAGUI extends GUI {
 
 	protected JFreeChart graf;
 
-	protected static XYPlot nacrt;
+	protected XYPlot nacrt;
 	
 	/**
 	 * 
@@ -281,13 +281,12 @@ public class GAGUI extends GUI {
 		return grafPloca;
 	}
 
-	private void nacrtajFunkciju() {
+	public void nacrtajFunkciju(RealniKrajolik krajolik) {
 
 		XYSeries podatci = new XYSeries("Funckija");
 
 		int brojElemenata = Integer.parseInt(brojTocaka.vratiVrijednost());
 		if (brojElemenata < 1) { throw new IllegalArgumentException("Broj tocaka mora biti veci od 0"); }
-		RealniKrajolik krajolik = (RealniKrajolik) Simulator.vratiKrajolik();
 		double dolje = krajolik.vratiDonjuGranicu();
 		double gore = krajolik.vratiGornjuGranicu();
 		double korak = (gore - dolje) / brojElemenata;
@@ -429,28 +428,30 @@ public class GAGUI extends GUI {
 		
 		simulator.koristeciFunkciju(new ExpressionBuilder(funkcijaString).withVariableNames("x").build());
 		
-		nacrtajFunkciju();
-		
 		try {
 			simulator.uzBrojGeneracija(Integer.parseInt(brojGeneracija.vratiVrijednost()));
 		} catch (NumberFormatException e) { 
 			zapisiUZapisnik("Broj generacija mora biti cijeli broj");
 			return ;
 		}
+		
+		simulator.postaviGUI(this);
+		
 		simulator.addPropertyChangeListener(new ZaustaviSimulaciju(gumb));
 		simulator.execute();
 		
 		this.simulator = simulator;
 		
+		
 		gumb.setText(ZAUSTAVI);
 				
 	}
 
-	public static void iscrtajPopulaciju(Jedinka[] jedinke) {
+	public void iscrtajPopulaciju(List<Jedinka<RealniKrajolik>> jedinke, RealniKrajolik krajolik) {
 		XYSeries podatci = new XYSeries("podatci");
-		RealniKrajolik krajolik = (RealniKrajolik) Simulator.vratiKrajolik();
-		for (int i = 0; i < jedinke.length; i++) {
-			double x = (Double) jedinke[i].vratiVrijednost();
+		int limit = jedinke.size();
+		for (int i = 0; i < limit; i++) {
+			double x = (Double) jedinke.get(i).vratiVrijednost();
 			podatci.add(x, krajolik.racunajVrijednost(x));
 		}
 		XYSeriesCollection kolekcijaJedinki = new XYSeriesCollection(podatci);
