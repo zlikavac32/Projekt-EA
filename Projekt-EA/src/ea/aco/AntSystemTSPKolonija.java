@@ -21,6 +21,8 @@ public class AntSystemTSPKolonija extends TSPKolonija {
 	
 	protected double beta;
 	
+	protected double pohlepnaUdaljenost;
+	
 	public AntSystemTSPKolonija(
 		List<Par<String, Par<Double, Double>>> gradovi, int brojMrava, double konstantaIsparavanja, 
 		RandomGenerator generator, double alfa, double beta
@@ -32,7 +34,11 @@ public class AntSystemTSPKolonija extends TSPKolonija {
 	@Override
 	public void inicijaliziraj() {
 		super.inicijaliziraj();
-		double pocetniTrag = 1 / napraviPohlepnoPretrazivanje();
+		pohlepnaUdaljenost = napraviPohlepnoPretrazivanje();
+		if (Double.compare(pohlepnaUdaljenost, 0) == 0) {
+			pohlepnaUdaljenost = 1e-20; //Postavi na mali broj tako da kada se podijeli bude veliki broj
+		} 
+		double pocetniTrag = 1 / pohlepnaUdaljenost;
 		heuristika = new double[udaljenosti.length][udaljenosti.length];
 		for (int i = 0; i < udaljenosti.length; i++) {
 			udaljenosti[i][i] = 0;

@@ -10,9 +10,9 @@ package ea.util;
  */
 public class XKorakaKriterijKraja<T> implements KriterijKraja<T> {
 
-	int brojKoraka;
+	protected int brojKoraka;
 	
-	int brojac = 0;
+	protected int brojac = 0;
 	
 	public XKorakaKriterijKraja(int brojGeneracija) {
 		if (brojGeneracija < 0) { throw new IllegalArgumentException("Broj generacija mora biti veci ili jednak 0"); }

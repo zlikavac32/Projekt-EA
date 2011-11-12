@@ -207,14 +207,15 @@ public abstract class GUI extends JFrame {
 		throws UnknownFunctionException, UnparsableExpressionException;
 
 	protected void zaustaviSimulaciju(JButton gumb) {
+		simulator.ispisiRjesenje();
 		simulator.cancel(true);
 		gumb.setText(POKRENI);
 	}
 	
 	protected abstract JPanel stvoriKontroleKontejner();
 
-	public static void zapisiUZapisnik(String zapis) { SwingUtilities.invokeLater(new ZapisiUZapisnik(zapis)); }
+	public void zapisiUZapisnik(String zapis) { SwingUtilities.invokeLater(new ZapisiUZapisnik(zapis)); }
 
-	public static void zapisiUZapisnikGresku(String zapis) { zapisiUZapisnik("GRESKA: " + zapis); }
+	public void zapisiUZapisnikGresku(String zapis) { zapisiUZapisnik("GRESKA: " + zapis); }
 	
 }

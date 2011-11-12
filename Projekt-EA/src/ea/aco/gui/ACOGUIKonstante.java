@@ -35,4 +35,8 @@ class ACOGUIKonstante {
 	
 	static final String GRADOVI = "Gradovi";
 	
+	static final String BROJ_KORAKA = "Broj koraka";
+
+	static final String MAX_MIN_ANT_SYSTEM = "Max-Min Ant System";
+	
 }

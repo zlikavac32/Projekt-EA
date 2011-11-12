@@ -34,6 +34,7 @@ public class TSPMrav extends Mrav implements Iterable<Integer> {
 	 */
 	@Override
 	public int compareTo(Mrav mrav) {
+		if (mrav == null) { return -1; }
 		TSPMrav mravN = (TSPMrav) mrav;
 		if (Math.abs(duljinaPuta - mravN.duljinaPuta) < 1e-9) { return 0; }
 		return duljinaPuta < mravN.duljinaPuta ? -1 : 1;

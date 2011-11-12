@@ -5,6 +5,7 @@ package ea;
 
 import javax.swing.SwingWorker;
 
+import ea.gui.GUI;
 import ea.util.RandomGenerator;
 
 //import ea.ga.Krajolik;
@@ -20,6 +21,12 @@ import ea.util.RandomGenerator;
 public abstract class Simulator<T> extends SwingWorker<Void, T> {
 	
 	protected RandomGenerator randomGenerator;
+	
+	protected GUI gui;
+	
+	public void postaviGUI(GUI gui) { this.gui = gui; }
+	
+	public abstract void ispisiRjesenje();
 	
 //	protected static RandomGenerator randomGenerator;
 //	

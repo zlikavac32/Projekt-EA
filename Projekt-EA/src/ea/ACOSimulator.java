@@ -6,11 +6,11 @@ package ea;
 import java.util.List;
 
 import ea.aco.AntSystemTSPKolonija;
+import ea.aco.MaxMinAntSystemTSPKolonija;
 import ea.aco.Par;
 import ea.aco.SimpleACOTSPKolonija;
 import ea.aco.TSPKolonija;
 import ea.aco.gui.ACOGUI;
-import ea.gui.GUI;
 import ea.util.RandomGenerator;
 import ea.util.XKorakaKriterijKraja;
 import ea.aco.TSPMrav;
@@ -24,6 +24,8 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 	public static final int SIMPLE_ACO_ALGORITAM = 0;
 	
 	public static final int ANT_SYSTEM_ALGORITAM = 1;
+
+	public static final int MAX_MIN_ANT_SYSTEM_ALGORITM = 2;
 	
 	private XKorakaKriterijKraja<TSPKolonija> kriterijKraja;
 	
@@ -43,6 +45,10 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 
 	private int brojMravaAzurira;
 
+	private int brojKoraka;
+
+	private TSPMrav najbolje = null;
+	
 	public ACOSimulator() { 
 		randomGenerator = new RandomGenerator();
 	}
@@ -84,8 +90,8 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 	}
 	
 	public void koristeciAlgoritam(int algoritam) {
-		if (algoritam != SIMPLE_ACO_ALGORITAM && algoritam != ANT_SYSTEM_ALGORITAM) {
-			throw new IllegalArgumentException("Podrzani algoritmi su SIMPLE_ACO_ALGORITAM i ANT_SYSTEM_ALGORITAM");
+		if (algoritam != SIMPLE_ACO_ALGORITAM && algoritam != ANT_SYSTEM_ALGORITAM && algoritam != MAX_MIN_ANT_SYSTEM_ALGORITM) {
+			throw new IllegalArgumentException("Podrzani algoritmi su SIMPLE_ACO_ALGORITAM, MAX_MIN_ANT_SYSTEM_ALGORITM i ANT_SYSTEM_ALGORITAM");
 		}
 		this.algoritam = algoritam;
 	}
@@ -93,11 +99,11 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 	@Override
 	protected Void doInBackground() 
 		throws Exception {
-		
+				
 		try { simuliraj(); }
 		catch (InterruptedException e) { Thread.currentThread().interrupt(); }
 		catch (Exception e) {
-			GUI.zapisiUZapisnikGresku(e.getMessage()); 
+			gui.zapisiUZapisnikGresku(e.getMessage()); 
 			e.printStackTrace();
 		}
 		
@@ -111,13 +117,15 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 		TSPKolonija kolonija = null;
 		if (algoritam == ANT_SYSTEM_ALGORITAM) {
 			kolonija = new AntSystemTSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa, beta);
-		} else {
+		} else if (algoritam == ANT_SYSTEM_ALGORITAM) {
 			kolonija = new SimpleACOTSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa);
+		} else {
+			kolonija = new MaxMinAntSystemTSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa, brojKoraka);
 		}
+		
 		kolonija.inicijaliziraj();
 		ACOGUI.iscrtajGradove(kolonija.vratiGradove());
 		kriterijKraja = new XKorakaKriterijKraja<TSPKolonija>(brojGeneracija);
-		TSPMrav najbolje = null;
 		while (!kriterijKraja.jeKraj(kolonija)) {
 			if (Globalno.vratiBrzinu() > 0) { Thread.sleep(Globalno.vratiBrzinu()); }
 			kolonija.evoluiraj(brojMravaAzurira);
@@ -125,8 +133,7 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 			najbolje = (TSPMrav) kolonija.vratiGlobalnoNajbolje();
 			publish(new Par<TSPMrav, TSPMrav>(najbolje, moguceNajbolje));	
 		}
-		GUI.zapisiUZapisnik("Najbolje rjesenje: " + najbolje);
-		if (najbolje != null) { GUI.zapisiUZapisnik("Ukupne udaljenosti: " + najbolje.vratiDuljinuPuta()); }
+		ispisiRjesenje();
 	}
 	
 	@Override
@@ -135,5 +142,15 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 		ACOGUI.iscrtajPutanju(zadnji.prvi.vratiPutanju(), zadnji.drugi.vratiPutanju());
         setProgress((int) ((((XKorakaKriterijKraja<TSPKolonija>) kriterijKraja).vratiBrojProteklihGeneracija() / (double) brojGeneracija) * 100));
     }
+
+	public void uzBrojKoraka(int brojKoraka) {
+		this.brojKoraka = brojKoraka;
+	}
+
+	@Override
+	public void ispisiRjesenje() {
+		gui.zapisiUZapisnik("Najbolje rjesenje: " + najbolje);
+		if (najbolje != null) { gui.zapisiUZapisnik("Ukupne udaljenosti: " + najbolje.vratiDuljinuPuta()); }
+	}
 	
 }

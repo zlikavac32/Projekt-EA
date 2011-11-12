@@ -69,6 +69,8 @@ public class ACOGUI extends GUI {
 
 	private TekstualnaVrijednost brojMravaAzurira;
 	
+	private TekstualnaVrijednost brojKoraka;
+	
 	
 	private Ploca gradoviPloca = new Ploca();
 	
@@ -87,6 +89,8 @@ public class ACOGUI extends GUI {
 	private Ploca alfaPloca = new Ploca();
 
 	private Ploca betaPloca = new Ploca();
+	
+	private Ploca brojKorakaPloca = new Ploca();
 	
 	/**
 	 * 
@@ -119,13 +123,13 @@ public class ACOGUI extends GUI {
 		DijeljenaPloca[] elementi = new DijeljenaPloca[] {
 			gradovi, sjeme, brojMrava, brojMravaAzurira, 
 			algoritam, konstantaIsparavanja, 
-			alfa, beta, brojGeneracija
+			alfa, beta, brojGeneracija, brojKoraka
 		};
 		
 		Ploca[] ploce = new Ploca[] {
 			gradoviPloca, sjemePloca, brojMravaPloca, brojMravaAzuriraPloca, 
 			algoritamPloca, konstantaIsparavanjaPloca, 
-			alfaPloca, betaPloca, brojGeneracijaPloca
+			alfaPloca, betaPloca, brojGeneracijaPloca, brojKorakaPloca
 		};
 		
 		for (int i = 0; i < elementi.length; i++) {
@@ -153,6 +157,9 @@ public class ACOGUI extends GUI {
 				beta.setEnabled(flag);
 				flag = algoritam.vratiOdabrani().getActionCommand().equals(SIMPLE_ACO);
 				brojMravaAzurira.setEnabled(flag);
+				
+				flag = algoritam.vratiOdabrani().getActionCommand().equals(MAX_MIN_ANT_SYSTEM);
+				brojKoraka.setEnabled(flag);
 			}
 		};
 		
@@ -161,9 +168,9 @@ public class ACOGUI extends GUI {
 		brojGeneracija = new TekstualnaVrijednost(BROJ_GENERACIJA, "20");
 		sjeme = new TekstualnaVrijednost(SJEME, "123456");
 		algoritam = new RadioGumbi(ALGORITAM, new String[] {
-			SIMPLE_ACO, ANT_SYSTEM
+			SIMPLE_ACO, ANT_SYSTEM, MAX_MIN_ANT_SYSTEM
 		}, 0, new ActionListener[] { 
-			sakrijOtkrij, sakrijOtkrij
+			sakrijOtkrij, sakrijOtkrij, sakrijOtkrij
 		});
 		konstantaIsparavanja = new TekstualnaVrijednost(KONSTANTA_ISPARAVANJA, "0.9");
 		alfa = new TekstualnaVrijednost(ALFA, "1");
@@ -222,8 +229,9 @@ public class ACOGUI extends GUI {
 			+ "50 595 360\n"
 			+ "51 1340 725\n"
 			+ "52 1740 245\n",
-		 10);
-		
+		10);
+		brojKoraka = new TekstualnaVrijednost(BROJ_KORAKA, "20");
+		brojKoraka.setEnabled(false);
 	}
 
 	protected ChartPanel stvoriGraf() {
@@ -312,9 +320,14 @@ public class ACOGUI extends GUI {
 		simulator.koristeciGradove(gradoviLista);
 		
 		
-		int odabraniAlgoritam = algoritam.vratiOdabrani().getActionCommand().equals(SIMPLE_ACO) ?
-			ACOSimulator.SIMPLE_ACO_ALGORITAM : ACOSimulator.ANT_SYSTEM_ALGORITAM;
-		
+		int odabraniAlgoritam; 
+		if (algoritam.vratiOdabrani().getActionCommand().equals(SIMPLE_ACO)) {
+			odabraniAlgoritam = ACOSimulator.SIMPLE_ACO_ALGORITAM;
+		} else if (algoritam.vratiOdabrani().getActionCommand().equals(ANT_SYSTEM)) {
+			odabraniAlgoritam = ACOSimulator.ANT_SYSTEM_ALGORITAM;
+		} else {
+			odabraniAlgoritam = ACOSimulator.MAX_MIN_ANT_SYSTEM_ALGORITM;
+		}
 		simulator.koristeciAlgoritam(odabraniAlgoritam);
 
 		try {
@@ -329,6 +342,14 @@ public class ACOGUI extends GUI {
 				simulator.koristeciBeta(Double.parseDouble(beta.vratiVrijednost()));
 			} catch (NumberFormatException e) { 
 				zapisiUZapisnik("Beta mora biti broj");
+				return ;
+			} 
+		} else if (odabraniAlgoritam == ACOSimulator.MAX_MIN_ANT_SYSTEM_ALGORITM) {
+
+			try {
+				simulator.uzBrojKoraka(Integer.parseInt(brojKoraka.vratiVrijednost()));
+			} catch (NumberFormatException e) { 
+				zapisiUZapisnik("Broj koraka mora biti cijeli broj");
 				return ;
 			} 
 		} else {
@@ -355,6 +376,7 @@ public class ACOGUI extends GUI {
 			return ;
 		}
 		
+		simulator.postaviGUI(this);
 		simulator.addPropertyChangeListener(new ZaustaviSimulaciju(gumb));
 		simulator.execute();
 		

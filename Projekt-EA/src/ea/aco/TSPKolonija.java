@@ -93,7 +93,11 @@ public abstract class TSPKolonija extends Kolonija {
 			if (!putanja.hasNext()) { continue; }
 			Integer pocetak = putanja.next();
 			Integer kraj = null;
-			double delta = 1 / mrav.duljinaPuta;
+			double nazivnik = mrav.duljinaPuta;
+			if (Double.compare(mrav.duljinaPuta, 0) == 0) {
+				nazivnik = 1e-20;
+			}
+			double delta = 1 / nazivnik;
 			while (putanja.hasNext()) {
 				kraj = putanja.next();
 				tragovi[pocetak][kraj] = tragovi[kraj][pocetak] += delta;

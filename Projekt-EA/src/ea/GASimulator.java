@@ -23,7 +23,6 @@ import ea.ga.Selektor;
 import ea.ga.SkracivanjeSelektor;
 import ea.ga.UniformniSelektor;
 import ea.ga.gui.GAGUI;
-import ea.gui.GUI;
 import ea.util.RandomGenerator;
 import ea.util.XKorakaKriterijKraja;
 
@@ -102,9 +101,9 @@ public class GASimulator extends Simulator<List<Jedinka<RealniKrajolik>>> {
 	protected FunkcijaKrajolik krajolik;
 
 	protected Populacija<RealniKrajolik> populacija;
-
-	private GAGUI gui;
 	
+	protected Jedinka<RealniKrajolik> najboljaJedinka;
+
 	public GASimulator() { 
 		krajolik = new FunkcijaKrajolik();
 		randomGenerator = new RandomGenerator();
@@ -202,8 +201,6 @@ public class GASimulator extends Simulator<List<Jedinka<RealniKrajolik>>> {
 		}
 		this.populacijaVrsta = populacija;
 	}
-	
-	public void postaviGUI(GAGUI gui) { this.gui = gui; }
 
 	@Override
 	protected Void doInBackground() 
@@ -212,7 +209,7 @@ public class GASimulator extends Simulator<List<Jedinka<RealniKrajolik>>> {
 		try { simuliraj(); }
 		catch (InterruptedException e) { Thread.currentThread().interrupt(); }
 		catch (Exception e) {
-			GUI.zapisiUZapisnikGresku(e.getMessage()); 
+			gui.zapisiUZapisnikGresku(e.getMessage()); 
 			e.printStackTrace();
 		}
 		
@@ -236,9 +233,7 @@ public class GASimulator extends Simulator<List<Jedinka<RealniKrajolik>>> {
 		
 		this.populacija = populacija;
 				
-		Jedinka<RealniKrajolik> najboljaJedinka = null;
-		
-		gui.nacrtajFunkciju(krajolik);
+		((GAGUI) gui).nacrtajFunkciju(krajolik);
 
         publish(populacija.vratiJedinke());
         
@@ -252,12 +247,12 @@ public class GASimulator extends Simulator<List<Jedinka<RealniKrajolik>>> {
 			}
 		}
 		
-		GUI.zapisiUZapisnik("Najbolja jedinka: " + najboljaJedinka);
+		ispisiRjesenje();
 	}
 	
 	@Override
     protected void process(List<List<Jedinka<RealniKrajolik>>> populacije) {
-		gui.iscrtajPopulaciju(populacije.get(populacije.size() - 1), krajolik);
+		((GAGUI) gui).iscrtajPopulaciju(populacije.get(populacije.size() - 1), krajolik);
         setProgress((int) ((kriterijKraja.vratiBrojProteklihGeneracija() / (double) brojGeneracija) * 100));
     }
 
@@ -295,5 +290,10 @@ public class GASimulator extends Simulator<List<Jedinka<RealniKrajolik>>> {
 	}
 
 	public Populacija<RealniKrajolik> vratiPopulaciju() { return populacija; }
+
+	@Override
+	public void ispisiRjesenje() {
+		gui.zapisiUZapisnik("Najbolja jedinka: " + najboljaJedinka);
+	}
 	
 }
