@@ -36,7 +36,7 @@ public abstract class TSPKolonija extends Kolonija {
 			this.gradovi[i] = new Grad(gradOpis.drugi.prvi, gradOpis.drugi.drugi, gradOpis.prvi);
 		}
 		mravi = new TSPMrav[brojMrava];
-		this.konstantaIsparavanja = konstantaIspravanja;
+		this.konstantaIsparavanja = 1 - konstantaIspravanja;
 	}
 	
 	@Override
@@ -71,7 +71,7 @@ public abstract class TSPKolonija extends Kolonija {
 	public void obaviIsparavnje() {
 		for (int i = 0; i < tragovi.length; i++) {
 			for (int j = 0; j < tragovi.length; j++) {
-				tragovi[i][j] = tragovi[j][i] *= (1 - konstantaIsparavanja);
+				tragovi[i][j] = tragovi[j][i] *= konstantaIsparavanja;
 			}
 		}
 //		System.out.println("-----------------------------------");
@@ -92,14 +92,13 @@ public abstract class TSPKolonija extends Kolonija {
 			Iterator<Integer> putanja = mrav.iterator();
 			if (!putanja.hasNext()) { continue; }
 			Integer pocetak = putanja.next();
-			Integer kraj = null;
 			double nazivnik = mrav.duljinaPuta;
 			if (Double.compare(mrav.duljinaPuta, 0) == 0) {
 				nazivnik = 1e-20;
 			}
 			double delta = 1 / nazivnik;
 			while (putanja.hasNext()) {
-				kraj = putanja.next();
+				Integer kraj = putanja.next();
 				tragovi[pocetak][kraj] = tragovi[kraj][pocetak] += delta;
 				pocetak = kraj;
 			}

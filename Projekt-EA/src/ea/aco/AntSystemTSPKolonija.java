@@ -115,9 +115,9 @@ public class AntSystemTSPKolonija extends TSPKolonija {
 	@Override
 	public void evoluiraj(int brojMravaAzurira) {
 		obaviSetnje();
+		obnoviGlobalnoNajbolje();
 		obaviIsparavnje();
 		azurirajTragove(mravi.length);	
-		obnoviGlobalnoNajbolje();
 	}
 
 	@Override

@@ -163,16 +163,16 @@ public class ACOGUI extends GUI {
 			}
 		};
 		
-		brojMravaAzurira = new TekstualnaVrijednost(BROJ_MRAVA_AZURIRA, "2");
+		brojMravaAzurira = new TekstualnaVrijednost(BROJ_MRAVA_AZURIRA, "10");
 		brojMrava = new TekstualnaVrijednost(BROJ_MRAVA, "50");	
-		brojGeneracija = new TekstualnaVrijednost(BROJ_GENERACIJA, "20");
+		brojGeneracija = new TekstualnaVrijednost(BROJ_GENERACIJA, "2000");
 		sjeme = new TekstualnaVrijednost(SJEME, "123456");
 		algoritam = new RadioGumbi(ALGORITAM, new String[] {
 			SIMPLE_ACO, ANT_SYSTEM, MAX_MIN_ANT_SYSTEM
 		}, 0, new ActionListener[] { 
 			sakrijOtkrij, sakrijOtkrij, sakrijOtkrij
 		});
-		konstantaIsparavanja = new TekstualnaVrijednost(KONSTANTA_ISPARAVANJA, "0.9");
+		konstantaIsparavanja = new TekstualnaVrijednost(KONSTANTA_ISPARAVANJA, "0.5");
 		alfa = new TekstualnaVrijednost(ALFA, "1");
 		beta = new TekstualnaVrijednost(BETA, "2");
 		beta.setEnabled(false);

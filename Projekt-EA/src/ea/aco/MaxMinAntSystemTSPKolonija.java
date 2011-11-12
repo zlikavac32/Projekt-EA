@@ -62,17 +62,17 @@ public class MaxMinAntSystemTSPKolonija extends AntSystemTSPKolonija {
 		Iterator<Integer> putanja = mrav.iterator();
 		if (!putanja.hasNext()) { return; }
 		Integer pocetak = putanja.next();
-		Integer kraj = null;
 		double nazivnik = mrav.duljinaPuta;
 		if (Double.compare(mrav.duljinaPuta, 0) == 0) {
 			nazivnik = 1e-20;
 		}
 		double delta = 1 / nazivnik + najboljeDelta;
 		while (putanja.hasNext()) {
-			kraj = putanja.next();
+			Integer kraj = putanja.next();
 			tragovi[pocetak][kraj] = tragovi[kraj][pocetak] += delta;
 			//Mislim da ovako ide taj tauMin
-			if (tragovi[pocetak][kraj] < tauMin || tragovi[pocetak][kraj] > tauMin) { tragovi[pocetak][kraj] = tragovi[kraj][pocetak] = tauMax; }
+			if (tragovi[pocetak][kraj] < tauMin) { tragovi[pocetak][kraj] = tragovi[kraj][pocetak] = tauMin; }
+			else if (tragovi[pocetak][kraj] > tauMin) { tragovi[pocetak][kraj] = tragovi[pocetak][kraj] = tauMax; }
 			pocetak = kraj;
 		}
 	}

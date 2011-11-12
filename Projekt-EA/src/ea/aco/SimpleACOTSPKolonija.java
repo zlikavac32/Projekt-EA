@@ -62,9 +62,9 @@ public class SimpleACOTSPKolonija extends TSPKolonija {
 	@Override
 	public void evoluiraj(int brojMravaAzurira) {
 		obaviSetnje();
+		obnoviGlobalnoNajbolje();
 		azurirajTragove(brojMravaAzurira);
 		obaviIsparavnje();	
-		obnoviGlobalnoNajbolje();
 	}
 
 	@Override

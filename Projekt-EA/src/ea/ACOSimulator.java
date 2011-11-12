@@ -117,7 +117,7 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 		TSPKolonija kolonija = null;
 		if (algoritam == ANT_SYSTEM_ALGORITAM) {
 			kolonija = new AntSystemTSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa, beta);
-		} else if (algoritam == ANT_SYSTEM_ALGORITAM) {
+		} else if (algoritam == SIMPLE_ACO_ALGORITAM) {
 			kolonija = new SimpleACOTSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa);
 		} else {
 			kolonija = new MaxMinAntSystemTSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa, brojKoraka);
