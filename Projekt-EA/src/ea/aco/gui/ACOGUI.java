@@ -18,6 +18,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -97,18 +98,75 @@ public class ACOGUI extends GUI {
 	 */
 	private static final long serialVersionUID = -8465945028324200176L;
 
-	private static XYSeriesCollection putanjeKolekcija;
+	private XYSeriesCollection putanjeKolekcija;
 	
-	private static XYSeriesCollection najboljaPutanjaKolekcija;
+	private XYSeriesCollection najboljaPutanjaKolekcija;
 
-	protected static XYSeriesCollection kolekcija;
+	protected XYSeriesCollection kolekcija;
 
-	protected static JFreeChart graf;
+	protected JFreeChart graf;
 
-	protected static XYPlot nacrt;
+	protected XYPlot nacrt;
 
 	public ACOGUI(String title) { super(title); }
 	
+	private class NacrtajGradove implements Runnable {
+		
+		Grad[] gradovi;
+		
+		NacrtajGradove(Grad[] gradovi) { this.gradovi = gradovi; }
+
+		@Override
+		public void run() {
+			XYSeries podatci = new XYSeries("Gradovi");
+			XYShapeRenderer renderer = (XYShapeRenderer) nacrt.getRenderer(0);
+			renderer.removeAnnotations();
+			for (Grad grad : gradovi) { 
+				podatci.add(grad.x, grad.y); 
+				renderer.addAnnotation(new XYTextAnnotation(grad.ime, grad.x, grad.y));
+			}
+			nacrt.setRenderer(0, null);
+			kolekcija.removeSeries(0);
+			kolekcija.addSeries(podatci);
+			nacrt.setRenderer(0, renderer);
+			nacrt.setDataset(kolekcija);
+		}
+		
+		
+		
+	}
+	
+	private class NacrtajPutanju implements Runnable {
+
+		Grad[] najbolji;
+		
+		Grad[] gradovi;
+		
+		NacrtajPutanju(Grad[] najbolji, Grad[] gradovi) {
+			this.najbolji = najbolji;
+			this.gradovi = gradovi;
+		}
+		
+		@Override
+		public void run() {
+			XYSeries podatci = new XYSeries(PUTANJA, false, true);
+			Grad prvi = gradovi[0];
+			for (Grad grad : gradovi) { podatci.add(grad.x, grad.y); }
+			podatci.add(prvi.x, prvi.y); 
+			putanjeKolekcija.removeSeries(0);
+			putanjeKolekcija.addSeries(podatci);
+			nacrt.setDataset(1, putanjeKolekcija);
+
+			podatci = new XYSeries(NAJBOLJA_PUTANJA, false, true);
+			prvi = najbolji[0];
+			for (Grad grad : najbolji) { podatci.add(grad.x, grad.y); }
+			podatci.add(prvi.x, prvi.y); 
+			najboljaPutanjaKolekcija.removeSeries(0);
+			najboljaPutanjaKolekcija.addSeries(podatci);
+			nacrt.setDataset(2, najboljaPutanjaKolekcija);
+		}
+		
+	}
 	
 	protected JPanel stvoriKontroleKontejner() {
 		
@@ -387,37 +445,8 @@ public class ACOGUI extends GUI {
 				
 	}
 	
-	public static void iscrtajPutanju(Grad[] najbolji, Grad[] gradovi) {
-		XYSeries podatci = new XYSeries(PUTANJA, false, true);
-		Grad prvi = gradovi[0];
-		for (Grad grad : gradovi) { podatci.add(grad.x, grad.y); }
-		podatci.add(prvi.x, prvi.y); 
-		putanjeKolekcija.removeSeries(0);
-		putanjeKolekcija.addSeries(podatci);
-		nacrt.setDataset(1, putanjeKolekcija);
-
-		podatci = new XYSeries(NAJBOLJA_PUTANJA, false, true);
-		prvi = najbolji[0];
-		for (Grad grad : najbolji) { podatci.add(grad.x, grad.y); }
-		podatci.add(prvi.x, prvi.y); 
-		najboljaPutanjaKolekcija.removeSeries(0);
-		najboljaPutanjaKolekcija.addSeries(podatci);
-		nacrt.setDataset(2, najboljaPutanjaKolekcija);
-	}
+	public void iscrtajPutanju(Grad[] najbolji, Grad[] gradovi) { SwingUtilities.invokeLater(new NacrtajPutanju(najbolji, gradovi)); }
 
 
-	public static void iscrtajGradove(Grad[] gradovi) {
-		XYSeries podatci = new XYSeries("Gradovi");
-		XYShapeRenderer renderer = (XYShapeRenderer) nacrt.getRenderer(0);
-		renderer.removeAnnotations();
-		for (Grad grad : gradovi) { 
-			podatci.add(grad.x, grad.y); 
-			renderer.addAnnotation(new XYTextAnnotation(grad.ime, grad.x, grad.y));
-		}
-		nacrt.setRenderer(0, null);
-		kolekcija.removeSeries(0);
-		kolekcija.addSeries(podatci);
-		nacrt.setRenderer(0, renderer);
-		nacrt.setDataset(kolekcija);
-	}
+	public void iscrtajGradove(Grad[] gradovi) { SwingUtilities.invokeLater(new NacrtajGradove(gradovi));	}
 }

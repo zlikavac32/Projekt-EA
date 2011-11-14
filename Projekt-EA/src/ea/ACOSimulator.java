@@ -124,7 +124,7 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 		}
 		
 		kolonija.inicijaliziraj();
-		ACOGUI.iscrtajGradove(kolonija.vratiGradove());
+		((ACOGUI) gui).iscrtajGradove(kolonija.vratiGradove());
 		kriterijKraja = new XKorakaKriterijKraja<TSPKolonija>(brojGeneracija);
 		while (!kriterijKraja.jeKraj(kolonija)) {
 			if (Globalno.vratiBrzinu() > 0) { Thread.sleep(Globalno.vratiBrzinu()); }
@@ -139,7 +139,7 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 	@Override
     protected void process(List<Par<TSPMrav, TSPMrav>> populacije) {
 		Par<TSPMrav, TSPMrav> zadnji = populacije.get(populacije.size() - 1);
-		ACOGUI.iscrtajPutanju(zadnji.prvi.vratiPutanju(), zadnji.drugi.vratiPutanju());
+		((ACOGUI) gui).iscrtajPutanju(zadnji.prvi.vratiPutanju(), zadnji.drugi.vratiPutanju());
         setProgress((int) ((((XKorakaKriterijKraja<TSPKolonija>) kriterijKraja).vratiBrojProteklihGeneracija() / (double) brojGeneracija) * 100));
     }
 
