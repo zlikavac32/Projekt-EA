@@ -89,8 +89,8 @@
 					<ul>
 						<li><strong>Ništa</strong> - ne koristi se mutacija</li>
 						<li id="linearnaMutacija">
-							<strong>Linearna</strong> - vrijednost jedinke se poveća ili smanji sa 
-							vjerojatnošću od 50% za uniformno odabrani broj iz intervala
+							<strong>Linearna</strong> - vrijednost jedinke poprimi vrijednost
+                            uniformno odabranu iz intervala
 							[v - <a href="#delta" title="Delta">delta</a>, v + <a href="#delta" title="Delta">delta</a>] 
 							gdje je v trenutna vrijednost jedinke
 						</li>
@@ -104,7 +104,7 @@
 				<dt id="delta"><strong>Delta</strong></dt>
 				<dd>
 					Vrijednost koja se korisit za popravljanje rezultata kod 
-					<a href="#linearnaMutacija" title="Delta mutacija">delta mutacije</a>
+					<a href="#linearnaMutacija" title="Delta mutacija">linearne mutacije</a>
 					i <a href="#gaussMutacija" title="Gauss mutacija">Gauss mutacije</a>
 				</dd>
 				<dt><strong>Vrsta rekombinacije fenotip</strong></dt>
@@ -126,22 +126,64 @@
 						</li>
 						<li>
 							<strong>Težinka sredina</strong> - nova jedinka je težinska sredina roditelja.
-							Računa se pomoću formule (v1 * t1 + v2 * t2) / (t1 + t2) gdje su
+							Računa se pomoću formule 
+                            <img src="./img/tezinskaSredina.gif" title="Tezinska sredina formula" 
+                                alt="Tezinska sredina formula" 
+                            />
+                            gdje su
 							<ul>
-								<li><strong>v1</strong> - vrijednost prvog roditelja</li>
-								<li><strong>v2</strong> - vrijednost drugog roditelja</li>
-								<li><strong>t1</strong> - težina prvog roditelja (funkcijska vrijednost pomaknuta za najgoru jedinku u populaciji)</li>
-								<li><strong>t2</strong> - težina drugog roditelja (funkcijska vrijednost pomaknuta za najgoru jedinku u populaciji)</li>
+								<li>
+                                    <img src="./img/v1.gif" title="Vjerojatnost prvog roditelja" 
+                                        alt="Vjerojatnost prvog roditelja" 
+                                    />
+                                    - vrijednost prvog roditelja
+                                </li>
+								<li>
+                                    <img src="./img/v2.gif" title="Vjerojatnost drugog roditelja" 
+                                        alt="Vjerojatnost drugog roditelja" 
+                                    />
+                                    - vrijednost drugog roditelja
+                                </li>
+								<li>
+                                    <img src="./img/t1.gif" title="Tezina prvog roditelja" 
+                                        alt="Tezina prvog roditelja" 
+                                    />
+                                    - težina prvog roditelja (funkcijska vrijednost pomaknuta za najgoru jedinku u populaciji)
+                                </li>
+								<li>
+                                    <img src="./img/t1.gif" title="Tezina drugog roditelja" 
+                                        alt="Tezina drugog roditelja" 
+                                    />
+                                    - težina drugog roditelja (funkcijska vrijednost pomaknuta za najgoru jedinku u populaciji)
+                                </li>
 							</ul>
 						</li>
 						<li>
 							<strong>Alfa interval</strong> - nova jedinka je uniformno odabrana 
-							vrijednost iz intervala [v1 - alfa * (v2 - v1), v2 + alfa * (v2 - v1)]
+							vrijednost iz intervala 
+                            <img src="./img/alfaInterval.gif" title="Alfa interval formula" 
+                                alt="Alfa interval formula" 
+                            />
 							gdje su
 							<ul>
-								<li><strong>v1</strong> - vrijednost prvog roditelja</li>
-								<li><strong>v2</strong> - vrijednost drugog roditelja</li>
-								<li><strong>alfa</strong> - koeficijent postavljen na vrijednost 0.3</li>
+								<li>
+                                    <img src="./img/v1.gif" title="Vjerojatnost prvog roditelja" 
+                                        alt="Vjerojatnost prvog roditelja" 
+                                    />
+                                    - vrijednost prvog roditelja
+                                </li>
+								<li>
+                                    <img src="./img/v2.gif" title="Vjerojatnost drugog roditelja" 
+                                        alt="Vjerojatnost drugog roditelja" 
+                                    />
+                                    - vrijednost drugog roditelja
+                                </li>
+								<li>
+                                    <img src="./img/alfa.gif" title="Alfa" 
+                                        alt="Alfa" 
+                                    />
+                                    - koeficijent postavljen na vrijednost 0.3
+                                </li>
 							</ul>
 						</li>
 					</ul>

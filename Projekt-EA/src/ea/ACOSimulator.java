@@ -8,7 +8,7 @@ import java.util.List;
 import ea.aco.AntSystemTSPKolonija;
 import ea.aco.MaxMinAntSystemTSPKolonija;
 import ea.aco.Par;
-import ea.aco.SimpleACOTSPKolonija;
+import ea.aco.SimpleACATSPKolonija;
 import ea.aco.TSPKolonija;
 import ea.aco.gui.ACOGUI;
 import ea.util.RandomGenerator;
@@ -118,7 +118,7 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 		if (algoritam == ANT_SYSTEM_ALGORITAM) {
 			kolonija = new AntSystemTSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa, beta);
 		} else if (algoritam == SIMPLE_ACO_ALGORITAM) {
-			kolonija = new SimpleACOTSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa);
+			kolonija = new SimpleACATSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa);
 		} else {
 			kolonija = new MaxMinAntSystemTSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa, brojKoraka);
 		}

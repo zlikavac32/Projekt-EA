@@ -34,15 +34,20 @@ public class MaxMinAntSystemTSPKolonija extends AntSystemTSPKolonija {
 	
 	@Override
 	public void evoluiraj(int brojMravaAzurira) {
-		super.evoluiraj(brojMravaAzurira);
+		evoluirajSpecificno(1);
 		if (trebaResetirat.jeKraj(najbolje)) { resetirajTragove(); }
+	}
+	
+	@Override
+	public void evoluiraj() {
+		evoluirajSpecificno(1);
 	}
 	
 	@Override
 	public void inicijaliziraj() {
 		super.inicijaliziraj();
 		tauMax = 1 / (konstantaIsparavanja * pohlepnaUdaljenost);
-		tauMin = tauMax / alfa;
+		tauMin = tauMax / 5;
 		resetirajTragove();
 	}
 	
@@ -83,7 +88,7 @@ public class MaxMinAntSystemTSPKolonija extends AntSystemTSPKolonija {
 		super.obnoviGlobalnoNajbolje();
 		if (najbolje.compareTo(najboljiMrav) < 0) {
 			tauMax = 1 / (konstantaIsparavanja * ((TSPMrav) najbolje).duljinaPuta);
-			tauMin = tauMax / alfa;
+			tauMin = tauMax / 5;
 			najboljeDelta = 1 / ((TSPMrav) najbolje).duljinaPuta;
 		}
 	}

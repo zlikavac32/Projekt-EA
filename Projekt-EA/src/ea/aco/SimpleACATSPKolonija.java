@@ -14,9 +14,9 @@ import ea.util.Util;
  * @author Zlikavac32
  *
  */
-public class SimpleACOTSPKolonija extends TSPKolonija {
+public class SimpleACATSPKolonija extends TSPKolonija {
 	
-	public SimpleACOTSPKolonija(List<Par<String, Par<Double, Double>>> gradovi, int brojMrava, double konstantaIsparavanja, RandomGenerator generator, double alfa) {
+	public SimpleACATSPKolonija(List<Par<String, Par<Double, Double>>> gradovi, int brojMrava, double konstantaIsparavanja, RandomGenerator generator, double alfa) {
 		super(gradovi, brojMrava, konstantaIsparavanja, generator, alfa);
 	}
 

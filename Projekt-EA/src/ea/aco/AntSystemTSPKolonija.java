@@ -38,7 +38,7 @@ public class AntSystemTSPKolonija extends TSPKolonija {
 		if (Double.compare(pohlepnaUdaljenost, 0) == 0) {
 			pohlepnaUdaljenost = 1e-20; //Postavi na mali broj tako da kada se podijeli bude veliki broj
 		} 
-		double pocetniTrag = 1 / pohlepnaUdaljenost;
+		double pocetniTrag = mravi.length / pohlepnaUdaljenost;
 		heuristika = new double[udaljenosti.length][udaljenosti.length];
 		for (int i = 0; i < udaljenosti.length; i++) {
 			udaljenosti[i][i] = 0;
@@ -114,13 +114,18 @@ public class AntSystemTSPKolonija extends TSPKolonija {
 
 	@Override
 	public void evoluiraj(int brojMravaAzurira) {
+		evoluirajSpecificno(mravi.length);
+	}
+	
+	protected void evoluirajSpecificno(int brojMravaAzurira) {
 		obaviSetnje();
 		obnoviGlobalnoNajbolje();
 		obaviIsparavnje();
-		azurirajTragove(mravi.length);	
+		azurirajTragove(brojMravaAzurira);	
+		
 	}
 
 	@Override
-	public void evoluiraj() { evoluiraj(mravi.length); }
+	public void evoluiraj() { evoluirajSpecificno(mravi.length); }
 
 }

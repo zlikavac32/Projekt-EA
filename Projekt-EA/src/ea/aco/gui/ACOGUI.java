@@ -179,15 +179,15 @@ public class ACOGUI extends GUI {
 		inicijalizirajElementeKontrola();
 		
 		DijeljenaPloca[] elementi = new DijeljenaPloca[] {
-			gradovi, sjeme, brojMrava, brojMravaAzurira, 
+			gradovi, sjeme, brojMrava, 
 			algoritam, konstantaIsparavanja, 
-			alfa, beta, brojGeneracija, brojKoraka
+			alfa, beta, brojMravaAzurira, brojKoraka, brojGeneracija
 		};
 		
 		Ploca[] ploce = new Ploca[] {
-			gradoviPloca, sjemePloca, brojMravaPloca, brojMravaAzuriraPloca, 
+			gradoviPloca, sjemePloca, brojMravaPloca, 
 			algoritamPloca, konstantaIsparavanjaPloca, 
-			alfaPloca, betaPloca, brojGeneracijaPloca, brojKorakaPloca
+			alfaPloca, betaPloca, brojMravaAzuriraPloca, brojKorakaPloca, brojGeneracijaPloca
 		};
 		
 		for (int i = 0; i < elementi.length; i++) {
@@ -211,7 +211,7 @@ public class ACOGUI extends GUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				boolean flag = algoritam.vratiOdabrani().getActionCommand().equals(ANT_SYSTEM);
+				boolean flag = !algoritam.vratiOdabrani().getActionCommand().equals(SIMPLE_ACO);
 				beta.setEnabled(flag);
 				flag = algoritam.vratiOdabrani().getActionCommand().equals(SIMPLE_ACO);
 				brojMravaAzurira.setEnabled(flag);
@@ -395,29 +395,29 @@ public class ACOGUI extends GUI {
 			return ;
 		} 
 		
-		if (odabraniAlgoritam == ACOSimulator.ANT_SYSTEM_ALGORITAM) {
-			try {
-				simulator.koristeciBeta(Double.parseDouble(beta.vratiVrijednost()));
-			} catch (NumberFormatException e) { 
-				zapisiUZapisnik("Beta mora biti broj");
-				return ;
-			} 
-		} else if (odabraniAlgoritam == ACOSimulator.MAX_MIN_ANT_SYSTEM_ALGORITM) {
-
-			try {
-				simulator.uzBrojKoraka(Integer.parseInt(brojKoraka.vratiVrijednost()));
-			} catch (NumberFormatException e) { 
-				zapisiUZapisnik("Broj koraka mora biti cijeli broj");
-				return ;
-			} 
-		} else {
-
+		if (odabraniAlgoritam == ACOSimulator.SIMPLE_ACO_ALGORITAM) {
 			try {
 				simulator.koristeciBrojMravaZaAzuriranje(Integer.parseInt(brojMravaAzurira.vratiVrijednost()));
 			} catch (NumberFormatException e) { 
 				zapisiUZapisnik("Broj mrava za azuriranje mora biti cijeli broj");
 				return ;
 			} 
+		} else {
+
+			try {
+				simulator.koristeciBeta(Double.parseDouble(beta.vratiVrijednost()));
+			} catch (NumberFormatException e) { 
+				zapisiUZapisnik("Beta mora biti broj");
+				return ;
+			} 
+			if (odabraniAlgoritam == ACOSimulator.MAX_MIN_ANT_SYSTEM_ALGORITM) {
+				try {
+					simulator.uzBrojKoraka(Integer.parseInt(brojKoraka.vratiVrijednost()));
+				} catch (NumberFormatException e) { 
+					zapisiUZapisnik("Broj koraka mora biti cijeli broj");
+					return ;
+				} 
+			}
 		}
 		
 		try {

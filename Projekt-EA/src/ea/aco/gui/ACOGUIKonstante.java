@@ -15,13 +15,13 @@ class ACOGUIKonstante {
 	
 	static final String BROJ_MRAVA = "Broj mrava";
 	
-	static final String BROJ_GENERACIJA = "Broj generacija";
+	static final String BROJ_GENERACIJA = "Broj šetnji";
 	
 	static final String NAJBOLJA_PUTANJA = "Najbolja putanja";
 	
 	static final String ALGORITAM = "Algoritam";
 	
-	static final String SIMPLE_ACO = "Simple ACO";
+	static final String SIMPLE_ACO = "Simple ACA";
 	
 	static final String ANT_SYSTEM = "Ant System";
 	
@@ -35,7 +35,7 @@ class ACOGUIKonstante {
 	
 	static final String GRADOVI = "Gradovi";
 	
-	static final String BROJ_KORAKA = "Broj koraka";
+	static final String BROJ_KORAKA = "Broj šetnji resetiraj";
 
 	static final String MAX_MIN_ANT_SYSTEM = "Max-Min Ant System";
 	

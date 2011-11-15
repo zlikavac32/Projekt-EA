@@ -59,7 +59,7 @@ public class KolonijaMravaAlgoritam extends JApplet {
 					
 					@Override
 					public void run() {
-						GUI gui = new ACOGUI("Genetski algoritam");
+						GUI gui = new ACOGUI("Optimizacija kolonijom mrava");
 						gui.inicijaliziraj();
 						gui.setVisible(true);
 					}
