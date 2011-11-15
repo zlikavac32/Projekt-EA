@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+		<title>Genetski algoritam</title>
+	</head>
+
+	<body>
+		<h1>Genetski algoritam</h1>
+		<p>
+			PAŽNJA!<br />
+			Biblioteka JFreeChart koja se koristi je malo veća te stoga i učitavanje appleta prvi puta traje malo duže. Budite strpljivi.<br />
+			Također morate imati instaliran Java plugin za Vaš preglednik kako biste mogli pokrenuti program.
+		</p>
+		<script src="http://www.java.com/js/deployJava.js"></script>
+		<script> 
+			var attributes = { 
+				code : 'ea.GenetskiAlgoritam', 
+				archive : "ea.jar,exp4j-0.2.9.jar,jcommon-1.0.16.jar,jfreechart-1.0.13.jar" ,
+				width : 140, 
+				height : 35
+			} ;  
+			deployJava.runApplet(attributes, { }, '1.6'); 
+		</script>
+		<div>
+			<p>
+				<a href="index.html" title="Evolucijski algoritmi">Evolucijski algoritmi</a>
+			</p>
+			<h2>Pojašnjenje opcija</h2>
+			<dl>
+				<dt><strong>Funkcija</strong></dt>
+				<dd>
+					funkcija čiji se ekstrem traži. Neke česte funkcije su
+					<ul>
+						<li><strong>x^y</strong> - x sa eksponentom y gdje je y neki broj</li>
+						<li><strong>sin(x)</strong> - sinus od x</li>
+						<li><strong>cos(x)</strong> - kosinus od x</li>
+						<li><strong>exp(x)</strong> - e sa eksponentom x</li>
+					</ul>
+				</dd>
+				<dt><strong>Sjeme</strong></dt>
+				<dd>
+					Cijeli broj koji se koristi kao sjeme za generator nasumičnih brojeva
+				</dd>
+				<dt><strong>Od - Do</strong></dt>
+				<dd>
+					Granice domene funkcije. Određuje raspon koji se pretražuje i iscrtava
+				</dd>
+				<dt><strong>Broj točaka</strong></dt>
+				<dd>
+					Broj koji kaže koliko će se točaka izračunati radi crtanja funkcije. Veći broj 
+					točaka, funkcija je bolje iscrtana
+				</dd>	
+				<dt><strong>Traži</strong></dt>
+				<dd>
+					Određuje tražimo li minimum ili maksimum funkcije
+				</dd>
+				<dt id="velicinaPopulacije"><strong>Veličina populacije</strong></dt>
+				<dd>
+					Broj jedinki unutar jedne populacije
+				</dd>
+				<dt><strong>Reprezentacija</strong></dt>
+				<dd>
+					Određuje način reprezentacije jedinke. 
+					<ul>
+						<li id="genotip"><strong>Genotip</strong> - jedinka je prikazana pomoću niza 0 i 1</li>
+						<li id="fenotip">
+							<strong>Fenotip</strong> - jedinka je prikazana svojom stvarnom 
+							vrijednošću
+						</li>
+					</ul>
+				</dd>
+				<dt id="brojBitova"><strong>Broj bitova</strong></dt>
+				<dd>
+					U slučaju da je odabran <a href="#genotip" title="Genotipski prikaz">
+						genotipski prikaz</a>, određuje koliko se bitova koristi
+					za prikaz jedne jedinke
+				</dd>
+				<dt><strong>Vrsta mutacije fenotip</strong></dt>
+				<dd>
+					Određuje koja se mutacija koristi za 
+					<a href="#fenotip" title="Fenotipski prikaz">
+						fenotipski prikaz
+					</a>. Mutacija se dogodi samo
+					ako je vjerojatnost mutacije unutar intervala [0, 
+					<a href="#vjerojatnostMutacije" title="Vjerojatnost mutacije">
+						vjerojatnost mutacije
+					</a>]
+					<ul>
+						<li><strong>Ništa</strong> - ne koristi se mutacija</li>
+						<li id="linearnaMutacija">
+							<strong>Linearna</strong> - vrijednost jedinke se poveća ili smanji sa 
+							vjerojatnošću od 50% za uniformno odabrani broj iz intervala
+							[v - <a href="#delta" title="Delta">delta</a>, v + <a href="#delta" title="Delta">delta</a>] 
+							gdje je v trenutna vrijednost jedinke
+						</li>
+						<li id="gaussMutacija">
+							<strong>Gauss</strong> - vrijednost jedinke se promijeni
+							za slučajan broj po normalnoj razdiobi 
+							N(0, <a href="#delta" title="Delta">delta</a>)
+						</li>
+					</ul>
+				</dd>
+				<dt id="delta"><strong>Delta</strong></dt>
+				<dd>
+					Vrijednost koja se korisit za popravljanje rezultata kod 
+					<a href="#linearnaMutacija" title="Delta mutacija">delta mutacije</a>
+					i <a href="#gaussMutacija" title="Gauss mutacija">Gauss mutacije</a>
+				</dd>
+				<dt><strong>Vrsta rekombinacije fenotip</strong></dt>
+				<dd>
+					Rekombinacija koja se koristi kod 
+					<a href="#fenotip" title="Fenotipski prikaz">
+						fenotipskog prikaza
+					</a>. Rekombinacija se obavlja
+					tako da se jedinka rekombinira sa drugom jedinkom gdje su obje odabrane koristeći
+					jednu od 
+					<a href="#selekcijskaMetoda" title="Selekcijska metoda">
+						selekcijskih metoda
+					</a>
+					<ul>
+						<li><strong>Ništa</strong> - ne koristi se rekombinacija</li>
+						<li>
+							<strong>Aritmetička sredina</strong> - nova jedinka je aritmetička sredina
+							roditelja
+						</li>
+						<li>
+							<strong>Težinka sredina</strong> - nova jedinka je težinska sredina roditelja.
+							Računa se pomoću formule (v1 * t1 + v2 * t2) / (t1 + t2) gdje su
+							<ul>
+								<li><strong>v1</strong> - vrijednost prvog roditelja</li>
+								<li><strong>v2</strong> - vrijednost drugog roditelja</li>
+								<li><strong>t1</strong> - težina prvog roditelja (funkcijska vrijednost pomaknuta za najgoru jedinku u populaciji)</li>
+								<li><strong>t2</strong> - težina drugog roditelja (funkcijska vrijednost pomaknuta za najgoru jedinku u populaciji)</li>
+							</ul>
+						</li>
+						<li>
+							<strong>Alfa interval</strong> - nova jedinka je uniformno odabrana 
+							vrijednost iz intervala [v1 - alfa * (v2 - v1), v2 + alfa * (v2 - v1)]
+							gdje su
+							<ul>
+								<li><strong>v1</strong> - vrijednost prvog roditelja</li>
+								<li><strong>v2</strong> - vrijednost drugog roditelja</li>
+								<li><strong>alfa</strong> - koeficijent postavljen na vrijednost 0.3</li>
+							</ul>
+						</li>
+					</ul>
+				</dd>
+				<dt><strong>Vrsta mutacije genotip</strong></dt>
+				<dd>
+					Određuje koja se mutacije koristi za 
+					<a href="#genotip" title="Genotipski prikaz">
+						genotipski prikaz
+					</a>
+					<ul>
+						<li><strong>Ništa</strong> - ne koristi se mutacija</li>
+						<li id="okretBita">
+							<strong>Okret bita</strong> - invertira bit ako nam je vjerojatnost
+							mutacije unutar intervala [0, 
+							<a href="#vjerojatnostMutacije" title="Vjerojatnost mutacije">
+								vjerojatnost mutacije
+							</a>]
+						</li>
+					</ul>
+				</dd>
+				<dt id="vjerojatnostMutacije"><strong>Vjerojatnost mutacije</strong></dt>
+				<dd>
+					Određuje koja je vjerojatnost mutacije jednog bita kod
+					<a href="#okretBita" title="Okret bita mutacija">okret bita mutacije</a>
+					ili izvršavanja 
+					<a href="#linearnaMutacija" title="Delta mutacija">linearne mutacije</a>
+					i <a href="#gaussMutacija" title="Gauss mutacija">Gauss mutacije</a>
+				</dd>
+				<dt><strong>Vrsta rekombinacije genotip</strong></dt>
+				<dd>
+					Rekombinacija koja se koristi kod 
+					<a href="#genotip" title="Genotipski prikaz">
+						genotipski prikaz
+					</a>. Rekombinacija se obavlja
+					tako da se jedinka rekombinira sa drugom jedinkom gdje su obje odabrane koristeći
+					jednu od 
+					<a href="#selekcijskaMetoda" title="Selekcijska metoda">
+						selekcijskih metoda
+					</a>
+					<ul>
+						<li><strong>Ništa</strong> - ne koristi se rekombinacija</li>
+						<li>
+							<strong>Jedna točka</strong> - odabire se točka rezanja T.
+							Prvo dijete je kombinacija bitova prvog roditelja u rasponu
+							[0, T> i drugog roditelja [T, 
+								<a href="#brojBitova" title="Broj bitova">broj bitova</a>
+							>. 
+							Drugo dijete je kombinacija bitova drugog roditelja u rasponu
+							[0, T> i prvog roditelja [T, 
+								<a href="#brojBitova" title="Broj bitova">broj bitova</a>
+							>. Odabire se ono dijete koje ima veći faktor dobrote
+						</li>
+						<li>
+							<strong>Dvije točke</strong> - odabiru se dvije točke rezanja, T1 i T2.
+							Prvo dijete je kombinacija bitova prvog roditelja u rasponu
+							[0, T1>, drugog roditelja [T1, T2> i opet prvog roditelja [T2, 
+								<a href="#brojBitova" title="Broj bitova">broj bitova</a>
+							>. 
+							Drugo dijete je kombinacija bitova drugog roditelja u rasponu
+							[0, T1>, prvog roditelja [T1, T2> i opet drugog roditelja [T2, 
+								<a href="#brojBitova" title="Broj bitova">broj bitova</a>
+							>. Odabire se ono dijete koje ima veći faktor dobrote
+						</li>
+					</ul>
+				</dd>
+				<dt><strong>Vrsta populacije</strong></dt>
+				<dd>
+					Određuje vrstu populacije 
+					<ul>
+						<li id="nepreklapajuca">
+							<strong>Nepreklapajuća</strong> - stvara se 
+							<a href="#brojDjece" title="Broj djece">
+								broj djece
+							</a> od roditelja koji su 
+							selektirani jednom od 
+							<a href="#selekcijskaMetoda" title="Selekcijska metoda">
+								selekcijskih metoda
+							</a>. U sljedeću generaciju ulaze samo najbolja djeca (bez roditelja)
+						</li>
+						<li id="preklapajuca">
+							<strong>Preklapajuća</strong> - stvara se 
+							<a href="#brojDjece" title="Broj djece">
+								broj djece
+							</a> od roditelja koji su 
+							selektirani jednom od 
+							<a href="#selekcijskaMetoda" title="Selekcijska metoda">
+								selekcijskih metoda
+							</a>
+							. U sljedeću generaciju ulaze samo najbolje jedinke (djeca + roditelji)
+						</li>
+					</ul>
+				</dd>
+				<dt id="brojDjece"><strong>Broj djece</strong></dt>
+				<dd>
+					Određuje koliko djece nastaje prilikom evolucije. Za
+					<a href="#nepreklapajuca" title="Nepreklapajuca populacija">
+						nepreklapajuću populaciju
+					</a> taj broj mora biti veći ili jednak 
+					<a href="#velicinaPopulacije" title="Velicina populacije">
+						veličini populacije
+					</a>
+				</dd>
+				<dt id="selekcijskaMetoda"><strong>Selekcija</strong></dt>
+				<dd>
+					Određuje na koji način se selektiraju roditelji
+					<ul>
+						<li>
+							<strong>Uniformna</strong> - vjerojatnost odabira svakog roditelja jest
+							1 / <a href="#velicinaPopulacije" title="Velicina populacije">
+								Veličina populacije
+							</a>
+						</li>
+						<li>
+							<strong>Proporcionalna</strong> - vjerojatnost odabira svakog roditelja jest
+							faktorDobrote / ukupniFaktorDobroteCijelePopulacije
+						</li>
+						<li id="dvoTurnirskaSM">
+							<strong>Dvo-turnirska</strong> - jedan roditelj se bira na način da se prvo 
+							uniformno odaberu dvije jedinke kandidati. Roditelj postaje ona koja ima
+							veći faktor dobrote
+						</li>
+						<li>
+							<strong>Skraćivanje</strong> - Od cijele populacije se bira 
+							<a href="#brJedZaOdb" title="Broj jedinki za skracivanje">
+								X najboljih jedinki
+							</a>. Iz te manje populacije najboljih jedinki se uniformno biraju roditelji
+						</li>
+					</ul>
+				</dd>
+				<dt id="brJedZaOdb"><strong>Broj jedinki za skraćivanje</strong></dt>
+				<dd>
+					Određuje koliko se najboljih jedinki koristi prilikom procesa stvaranja
+					nove generacije
+				</dd>
+				<dt><strong>Broj generacija</strong></dt>
+				<dd>
+					Određuje nakon koliko generacija se prestaje sa evoluiranjem populacije
+				</dd>
+			</dl>
+		</div>
+		<hr>
+		<div>
+			Korišteni alati otvorenog koda
+			<ul>
+				<li>
+					<a href="http://www.jfree.org/jfreechart/" title="JFreeChart">JFreeChart</a>
+				</li>
+				<li>
+					<a href="http://projects.congrace.de/exp4j/" title="exp4j">exp4j</a>
+				</li>
+			</ul>
+		</div>
+	</body>	
+</html>
