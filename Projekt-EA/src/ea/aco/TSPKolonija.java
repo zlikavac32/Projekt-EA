@@ -19,6 +19,8 @@ public abstract class TSPKolonija extends Kolonija {
 	
 	protected double[][] tragovi;
 	
+	protected double[][] tragoviCache;
+	
 	protected double alfa;
 	
 	protected double konstantaIsparavanja;
@@ -42,6 +44,7 @@ public abstract class TSPKolonija extends Kolonija {
 	@Override
 	public void inicijaliziraj() {
 		indeksi = new int[gradovi.length];
+		tragoviCache = new double[gradovi.length][gradovi.length];
 		for (int i = 0; i < indeksi.length; i++) { indeksi[i] = i; }
 		udaljenosti = new double[gradovi.length][gradovi.length];
 		tragovi = new double[gradovi.length][gradovi.length];
@@ -66,6 +69,15 @@ public abstract class TSPKolonija extends Kolonija {
 	}
 	
 	protected abstract void obaviSetnju(TSPMrav mrav);
+	
+	protected void azurirajTragoviCache() {
+		for (int i = 0; i < udaljenosti.length; i++) {
+			tragoviCache[i][i] = 0;
+			for (int j = i + 1; j < udaljenosti.length; j++) {
+				tragoviCache[i][j] = tragoviCache[j][i] = Math.pow(tragovi[i][j], alfa);
+			}
+		}
+	}
 	
 	@Override
 	public void obaviIsparavnje() {

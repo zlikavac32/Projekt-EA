@@ -88,7 +88,7 @@ public class AntSystemTSPKolonija extends TSPKolonija {
 			//TODO: Osmisli nacin da se koristi KoloSrece razred
 			for (int j = i; j < dohvatljivi.length; j++) { 
 				int sljedeci = dohvatljivi[j];
-				suma += vjerojatnostiOdabira[sljedeci] = Math.pow(tragovi[prethodni][sljedeci], alfa) * heuristika[prethodni][sljedeci];
+				suma += vjerojatnostiOdabira[sljedeci] = tragoviCache[prethodni][sljedeci];
 			}
 			for (int j = i; j < dohvatljivi.length; j++) { 
 				int sljedeci = dohvatljivi[j];
@@ -110,6 +110,17 @@ public class AntSystemTSPKolonija extends TSPKolonija {
 	}
 
 	@Override
+	protected void azurirajTragoviCache() {
+		for (int i = 0; i < udaljenosti.length; i++) {
+			tragoviCache[i][i] = 0;
+			for (int j = i + 1; j < udaljenosti.length; j++) {
+				tragoviCache[i][j] = tragoviCache[j][i] = Math.pow(tragovi[i][j], alfa) * heuristika[i][j];
+			}
+		}
+		
+	}
+	
+	@Override
 	public void azurirajTragove() { azurirajTragove(mravi.length); }
 
 	@Override
@@ -118,6 +129,7 @@ public class AntSystemTSPKolonija extends TSPKolonija {
 	}
 	
 	protected void evoluirajSpecificno(int brojMravaAzurira) {
+		azurirajTragoviCache();
 		obaviSetnje();
 		obnoviGlobalnoNajbolje();
 		obaviIsparavnje();

@@ -35,7 +35,7 @@ public class SimpleACATSPKolonija extends TSPKolonija {
 			//TODO: Osmisli nacin da se koristi KoloSrece razred
 			for (int j = i; j < dohvatljivi.length; j++) { 
 				int sljedeci = dohvatljivi[j];
-				suma += vjerojatnostiOdabira[sljedeci] = Math.pow(tragovi[prethodni][sljedeci], alfa);
+				suma += vjerojatnostiOdabira[sljedeci] = tragoviCache[prethodni][sljedeci];
 			}
 			for (int j = i; j < dohvatljivi.length; j++) { 
 				int sljedeci = dohvatljivi[j];
@@ -61,6 +61,7 @@ public class SimpleACATSPKolonija extends TSPKolonija {
 
 	@Override
 	public void evoluiraj(int brojMravaAzurira) {
+		azurirajTragoviCache();
 		obaviSetnje();
 		obnoviGlobalnoNajbolje();
 		azurirajTragove(brojMravaAzurira);
