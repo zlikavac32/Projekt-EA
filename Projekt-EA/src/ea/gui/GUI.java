@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -148,12 +150,13 @@ public abstract class GUI extends JFrame {
 		JPanel akcijeKontrolePloca = new JPanel(new BorderLayout());
 		akcijeKontrolePloca.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
 		
-		JSlider brzina = new JSlider(JSlider.HORIZONTAL, 0, 1000, 150);
-		brzina.setMajorTickSpacing(250);
-		brzina.setMinorTickSpacing(25);
+		JSlider brzina = new JSlider(JSlider.HORIZONTAL, 0, 1000, 850);
+		Dictionary<Integer, JLabel> labele = new Hashtable<Integer, JLabel>(2);
+		labele.put(0, new JLabel("Min"));
+		labele.put(1000, new JLabel("Max"));
 		brzina.setSnapToTicks(true);
 		brzina.setPaintLabels(true);
-		brzina.setPaintTicks(true);
+		brzina.setLabelTable(labele);
 		brzina.setToolTipText("Brzina");
 		brzina.addChangeListener(new ChangeListener() {
 			
@@ -161,7 +164,7 @@ public abstract class GUI extends JFrame {
 			public void stateChanged(ChangeEvent e) {
 				JSlider brzina = (JSlider) e.getSource();
 				if (!brzina.getValueIsAdjusting()) {
-					Globalno.postaviBrzinu(brzina.getValue());
+					Globalno.postaviBrzinu(1000 - brzina.getValue());
 				}
 			}
 		});
