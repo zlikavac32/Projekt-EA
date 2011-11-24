@@ -47,7 +47,7 @@ public class FenotipJedinka extends Jedinka<RealniKrajolik> {
 			default:
 				throw new IllegalArgumentException("Mutator " + mutator + " nije valjan za realnu jedinku");
 		}
-		if (vrijednost < populacija.vratiKrajolik().vratiDonjuGranicu() || vrijednost > populacija.vratiKrajolik().vratiGornjuGranicu()) { vrijednost = staro; }
+		if (!populacija.vratiKrajolik().jeValjanGenom(new Double[] { vrijednost })) { vrijednost = staro; }
 		faktorDobrote = racunajFaktorDobrote(vrijednost);
 	}
 
@@ -68,8 +68,8 @@ public class FenotipJedinka extends Jedinka<RealniKrajolik> {
 	}
 
 	public void inicijaliziraj() { 
-		vrijednost = populacija.vratiKrajolik().vratiDonjuGranicu() + 
-			(populacija.vratiKrajolik().vratiGornjuGranicu() - populacija.vratiKrajolik().vratiDonjuGranicu()) * 
+		vrijednost = populacija.vratiKrajolik().vratiDonjuGranicu()[0] + 
+			(populacija.vratiKrajolik().vratiGornjuGranicu()[0] - populacija.vratiKrajolik().vratiDonjuGranicu()[0]) * 
 			populacija.vratiGenerator().vratiDouble();
 		faktorDobrote = racunajFaktorDobrote(vrijednost);
 	}
@@ -83,7 +83,7 @@ public class FenotipJedinka extends Jedinka<RealniKrajolik> {
 	}
 
 	protected double racunajFaktorDobrote(double vrijednost) { 
-		return populacija.vratiKrajolik().racunajFaktorDobrote(vrijednost);
+		return populacija.vratiKrajolik().racunajFaktorDobrote(new Double[] { vrijednost });
 	}
 
 	public double racunajFaktorDobrote() { return faktorDobrote; }
@@ -106,9 +106,8 @@ public class FenotipJedinka extends Jedinka<RealniKrajolik> {
 		}
 		//Provjera Double.isNan ide iz razloga sto se kod tezinkse zna dogodit da pogodi za rekombinaciju obje najgore jedinke pa kao rezultat dobijem NaN
 		if (
-			vrijednost < populacija.vratiKrajolik().vratiDonjuGranicu() || 
-			vrijednost > populacija.vratiKrajolik().vratiGornjuGranicu() || 
-			Double.isNaN(vrijednost)
+			Double.isNaN(vrijednost) ||
+			!populacija.vratiKrajolik().jeValjanGenom(new Double[] { vrijednost })
 		) { vrijednost = staro; }
 		faktorDobrote = racunajFaktorDobrote(vrijednost);
 	}

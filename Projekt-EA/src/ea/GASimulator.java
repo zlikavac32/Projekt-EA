@@ -106,6 +106,7 @@ public class GASimulator extends Simulator<List<Jedinka<RealniKrajolik>>> {
 
 	public GASimulator() { 
 		krajolik = new FunkcijaKrajolik();
+		krajolik.postaviVarijable(new String[] { "x" });
 		randomGenerator = new RandomGenerator();
 	}
 	
@@ -117,8 +118,8 @@ public class GASimulator extends Simulator<List<Jedinka<RealniKrajolik>>> {
 	
 	public void unutarGranica(double dolje, double gore) { 
 		if (dolje > gore) { throw new IllegalArgumentException("Donja granica je veca od gornje");	}
-		((FunkcijaKrajolik) krajolik).postaviDonjuGranicu(dolje);
-		((FunkcijaKrajolik) krajolik).postaviGornjuGranicu(gore);
+		((FunkcijaKrajolik) krajolik).postaviDonjuGranicu(new double[] { dolje });
+		((FunkcijaKrajolik) krajolik).postaviGornjuGranicu(new double[] { gore });
 	}
 	
 	public void traziEkstrem(int ekstrem) { 

@@ -38,7 +38,7 @@ public class GenotipJedinka extends Jedinka<RealniKrajolik> {
 	
 
 	protected double racunajFaktorDobrote(double vrijednost) { 
-		return populacija.vratiKrajolik().racunajFaktorDobrote(vrijednost);
+		return populacija.vratiKrajolik().racunajFaktorDobrote(new Double[] { vrijednost });
 	}
 	
 	@Override
@@ -107,8 +107,8 @@ public class GenotipJedinka extends Jedinka<RealniKrajolik> {
 			if (bitovi[i] == 1) { vrijednost += potencija; }
 			potencija <<= 1;
 		}
-		return vrijednost / ((1L << brojBitova) - 1) * (populacija.vratiKrajolik().vratiGornjuGranicu() - populacija.vratiKrajolik().vratiDonjuGranicu()) 
-			+ populacija.vratiKrajolik().vratiDonjuGranicu();
+		return vrijednost / ((1L << brojBitova) - 1) * (populacija.vratiKrajolik().vratiGornjuGranicu()[0] - populacija.vratiKrajolik().vratiDonjuGranicu()[0]) 
+			+ populacija.vratiKrajolik().vratiDonjuGranicu()[0];
 	}
 
 	@Override

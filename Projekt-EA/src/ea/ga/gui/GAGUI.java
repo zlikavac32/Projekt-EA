@@ -154,8 +154,8 @@ public class GAGUI extends GUI {
 
 			int brojElemenata = Integer.parseInt(brojTocaka.vratiVrijednost());
 			if (brojElemenata < 1) { throw new IllegalArgumentException("Broj tocaka mora biti veci od 0"); }
-			double dolje = krajolik.vratiDonjuGranicu();
-			double gore = krajolik.vratiGornjuGranicu();
+			double dolje = krajolik.vratiDonjuGranicu()[0];
+			double gore = krajolik.vratiGornjuGranicu()[0];
 			double korak = (gore - dolje) / brojElemenata;
 			for (int i = 0; i <= brojElemenata; i++) {
 				podatci.add(dolje, krajolik.racunajVrijednost(dolje));
