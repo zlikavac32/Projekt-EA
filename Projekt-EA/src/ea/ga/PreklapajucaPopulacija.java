@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ea.util.Krajolik;
+
 /**
  * @author Zlikavac32
  *

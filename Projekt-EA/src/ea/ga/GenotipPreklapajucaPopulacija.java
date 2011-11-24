@@ -3,6 +3,8 @@
  */
 package ea.ga;
 
+import ea.util.RealniKrajolik;
+
 
 /**
  * @author Zlikavac32

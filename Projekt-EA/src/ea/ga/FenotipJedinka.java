@@ -1,5 +1,7 @@
 package ea.ga;
 
+import ea.util.RealniKrajolik;
+
 public class FenotipJedinka extends Jedinka<RealniKrajolik> {
 	private double vrijednost;
 

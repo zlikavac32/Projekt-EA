@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ea.ga;
+package ea.util;
 
 public interface Krajolik<T> {
 	

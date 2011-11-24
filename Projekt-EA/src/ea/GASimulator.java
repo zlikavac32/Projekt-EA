@@ -11,19 +11,19 @@ import ea.ga.FenotipNepreklapajucaPopulacija;
 import ea.ga.FenotipPreklapajucaPopulacija;
 import ea.ga.GenotipJedinka;
 import ea.ga.DvoTurnirskiSelektor;
-import ea.ga.FunkcijaKrajolik;
 import ea.ga.GenotipNepreklapajucaPopulacija;
 import ea.ga.GenotipPreklapajucaPopulacija;
 import ea.ga.Populacija;
 import ea.ga.Jedinka;
 import ea.ga.ProporcionalniSelektor;
 import ea.ga.FenotipJedinka;
-import ea.ga.RealniKrajolik;
 import ea.ga.Selektor;
 import ea.ga.SkracivanjeSelektor;
 import ea.ga.UniformniSelektor;
 import ea.ga.gui.GAGUI;
+import ea.util.FunkcijaKrajolik;
 import ea.util.RandomGenerator;
+import ea.util.RealniKrajolik;
 import ea.util.XKorakaKriterijKraja;
 
 /**

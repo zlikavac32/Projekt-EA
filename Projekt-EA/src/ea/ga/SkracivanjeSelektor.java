@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ea.util.Krajolik;
 import ea.util.RandomGenerator;
 
 /**

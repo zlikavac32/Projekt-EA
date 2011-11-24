@@ -5,6 +5,7 @@ package ea.ga;
 
 import java.util.List;
 
+import ea.util.Krajolik;
 import ea.util.RandomGenerator;
 
 /**

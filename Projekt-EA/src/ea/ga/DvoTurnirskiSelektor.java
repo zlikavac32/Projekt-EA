@@ -3,6 +3,7 @@
  */
 package ea.ga;
 
+import ea.util.Krajolik;
 import ea.util.RandomGenerator;
 
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ea.ga;
+package ea.util;
 
 import de.congrace.exp4j.Calculable;
 

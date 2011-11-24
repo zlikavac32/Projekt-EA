@@ -2,6 +2,8 @@ package ea.ga;
 
 import java.util.Arrays;
 
+import ea.util.RealniKrajolik;
+
 public class GenotipJedinka extends Jedinka<RealniKrajolik> {
 	
 

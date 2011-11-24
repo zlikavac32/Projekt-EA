@@ -4,6 +4,7 @@
 package ea.ga;
 
 import ea.util.KoloSrece;
+import ea.util.Krajolik;
 
 /**
  * 

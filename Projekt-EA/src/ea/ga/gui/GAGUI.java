@@ -33,11 +33,11 @@ import de.congrace.exp4j.UnparsableExpressionException;
 
 import ea.GASimulator;
 import ea.ga.Jedinka;
-import ea.ga.RealniKrajolik;
 import ea.gui.DijeljenaPloca;
 import ea.gui.GUI;
 import ea.gui.RadioGumbi;
 import ea.gui.TekstualnaVrijednost;
+import ea.util.RealniKrajolik;
 
 /**
  * @author Zlikavac32
