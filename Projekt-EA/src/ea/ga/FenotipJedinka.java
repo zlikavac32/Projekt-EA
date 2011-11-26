@@ -74,14 +74,6 @@ public class FenotipJedinka extends Jedinka<RealniKrajolik> {
 		faktorDobrote = racunajFaktorDobrote(vrijednost);
 	}
 
-	@Override
-	public int compareTo(Jedinka<RealniKrajolik> strani) {
-		double mojFaktorDobrote = racunajFaktorDobrote();
-		double straniFaktorDobrote = strani.racunajFaktorDobrote();
-		//Smatramo da su dva broja jednaka ako im je razlika manja od 1e-9
-		return (Math.abs(mojFaktorDobrote - straniFaktorDobrote) < 1e-9) ? 0 : ((mojFaktorDobrote > straniFaktorDobrote) ? -1 : 1);
-	}
-
 	protected double racunajFaktorDobrote(double vrijednost) { 
 		return populacija.vratiKrajolik().racunajFaktorDobrote(new Double[] { vrijednost });
 	}

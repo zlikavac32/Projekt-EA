@@ -112,14 +112,6 @@ public class GenotipJedinka extends Jedinka<RealniKrajolik> {
 	}
 
 	@Override
-	public int compareTo(Jedinka<RealniKrajolik> strani) {
-		double mojFaktorDobrote = racunajFaktorDobrote();
-		double straniFaktorDobrote = strani.racunajFaktorDobrote();
-		//Smatramo da su dva broja jednaka ako im je razlika manja od 1e-9
-		return (Math.abs(mojFaktorDobrote - straniFaktorDobrote) < 1e-9) ? 0 : ((mojFaktorDobrote > straniFaktorDobrote) ? -1 : 1);
-	}
-
-	@Override
 	public void rekombiniraj(int rekombinator, Jedinka<RealniKrajolik> partner) { 
 		switch (rekombinator) {
 			case JEDAN_CVOR_REKOMBINACIJA :

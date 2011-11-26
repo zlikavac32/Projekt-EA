@@ -63,5 +63,14 @@ public abstract class Jedinka<T extends Krajolik<?>> implements Comparable<Jedin
 	public abstract void inicijaliziraj();
 	
 	public abstract Object vratiVrijednost();
+
+	@Override
+	public int compareTo(Jedinka<T> strani) {
+		double mojFaktorDobrote = racunajFaktorDobrote();
+		double straniFaktorDobrote = strani.racunajFaktorDobrote();
+		if (mojFaktorDobrote > straniFaktorDobrote) { return -1; }
+		else if (mojFaktorDobrote < straniFaktorDobrote) { return 1; }
+		return 0;
+	}
 	
 }
