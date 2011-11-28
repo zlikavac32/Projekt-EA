@@ -83,7 +83,7 @@ public class MaxMinAntSystemTSPKolonija extends AntSystemTSPKolonija {
 			tragovi[pocetak][kraj] = tragovi[kraj][pocetak] += delta;
 			//Mislim da ovako ide taj tauMin
 			if (tragovi[pocetak][kraj] < tauMin) { tragovi[pocetak][kraj] = tragovi[kraj][pocetak] = tauMin; }
-			else if (tragovi[pocetak][kraj] > tauMin) { tragovi[pocetak][kraj] = tragovi[pocetak][kraj] = tauMax; }
+			else if (tragovi[pocetak][kraj] > tauMax) { tragovi[pocetak][kraj] = tragovi[pocetak][kraj] = tauMax; }
 			pocetak = kraj;
 		}
 	}

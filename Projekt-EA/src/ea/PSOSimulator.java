@@ -77,11 +77,13 @@ public class PSOSimulator extends Simulator<RealnaVarijablaCestica[]> {
 			e.printStackTrace();
 		}
 		
-		Roj<Double[]> roj = new StandradniRealnaVarijablaRoj(5, randomGenerator, 2, krajolik, new SusjedstvoGraditelj<Double[]>() {
+		//((PSOGUI) gui).nacrtajFunkciju(krajolik);
+		
+		Roj<Double[]> roj = new StandradniRealnaVarijablaRoj(20, randomGenerator, 2, krajolik, new SusjedstvoGraditelj<Double[]>() {
 			
 			@Override
 			public Susjedstvo<Double[]> stvoriSusjedstvo() {
-				return new LokalnoSusjedstvo<Double[]>(1);
+				return new LokalnoSusjedstvo<Double[]>(5);
 			}
 			
 		}, new DinamickaOgranicavajucaInercijaBrzinaKalkulator(2.05, 2.05, new double[] {

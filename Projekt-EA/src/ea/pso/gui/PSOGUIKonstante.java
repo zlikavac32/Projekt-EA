@@ -9,34 +9,20 @@ package ea.pso.gui;
  */
 class PSOGUIKonstante {
 	
-	static final String BROJ_MRAVA_AZURIRA = "Broj mrava ažurira";
+	static final String FUNKCIJA = "20 + x^2 - cos(6.28 * x) + y^2 - sin(6.28 * y)";
 	
-	static final String PUTANJA = "Putanja";
+	static final String STANDARDNI_BRZINA_KALKULATOR = "Standradni";
 	
-	static final String BROJ_MRAVA = "Broj mrava";
+	static final String INERCIJA_BRZINA_KALKULATOR = "Konstantna inercija";
 	
-	static final String BROJ_GENERACIJA = "Broj šetnji";
+	static final String DINAMICKA_INERCIJA_BRZINA_KALKUALTOR = "Dinamicka inercija";
 	
-	static final String NAJBOLJA_PUTANJA = "Najbolja putanja";
+	static final String DINAMICKA_OGRANICAVAJUCA_INERCIJA_KALKUALTOR = "Dinamicka ogranicavajuca inercija";
 	
-	static final String ALGORITAM = "Algoritam";
-	
-	static final String SIMPLE_ACO = "Simple ACA";
-	
-	static final String ANT_SYSTEM = "Ant System";
-	
-	static final String SJEME = "Sjeme";
-	
-	static final String KONSTANTA_ISPARAVANJA = "Konstanta isparavanja";
-	
-	static final String ALFA = "Alfa";
-	
-	static final String BETA = "Beta";
-	
-	static final String GRADOVI = "Gradovi";
-	
-	static final String BROJ_KORAKA = "Broj šetnji resetiraj";
+	static final String OGRANICAVAJUCA_BRZINA_KALKULATOR = "Ogranicavajuca brzina";
 
-	static final String MAX_MIN_ANT_SYSTEM = "Max-Min Ant System";
+	static final String GLOBALNO_SUSJEDSTVO = "Globalno susjedstvo";
+	
+	static final String LOKALNO_SUSJEDSTVO = "Lokalno susjedstvo";
 	
 }

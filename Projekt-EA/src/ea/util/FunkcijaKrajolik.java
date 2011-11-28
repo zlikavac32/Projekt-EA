@@ -19,10 +19,9 @@ public class FunkcijaKrajolik extends RealniKrajolik {
 	
 	@Override
 	public double racunajFaktorDobrote(Double[] vrijednost) {
-		for (int i = 0; i < vrijednost.length; i++) {
-			funkcija.setVariable(varijable[i], vrijednost[i]);
-		}
-		double tempVrijednost = funkcija.calculate();
+		double[] novo = new double[vrijednost.length];
+		for (int i = 0; i < vrijednost.length; i++) { novo[i] = vrijednost[i]; }
+		double tempVrijednost = racunajVrijednost(novo);
 		return invertiran ? -tempVrijednost : tempVrijednost;
 	}
 
@@ -44,8 +43,10 @@ public class FunkcijaKrajolik extends RealniKrajolik {
 	public void postaviVarijable(String[] varijable) { this.varijable = varijable; }
 
 	@Override
-	public double racunajVrijednost(double vrijednost) { 
-		funkcija.setVariable("x", vrijednost);
+	public synchronized double racunajVrijednost(double[] vrijednost) { 
+		for (int i = 0; i < vrijednost.length; i++) {
+			funkcija.setVariable(varijable[i], vrijednost[i]);
+		}
 		return funkcija.calculate();
 	}
 

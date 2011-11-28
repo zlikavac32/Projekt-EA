@@ -48,7 +48,7 @@ public abstract class TSPKolonija extends Kolonija {
 		for (int i = 0; i < indeksi.length; i++) { indeksi[i] = i; }
 		udaljenosti = new double[gradovi.length][gradovi.length];
 		tragovi = new double[gradovi.length][gradovi.length];
-		double pocetniTrag = 1e-3;
+		double pocetniTrag = 1e-2;
 		for (int i = 0; i < udaljenosti.length; i++) {
 			udaljenosti[i][i] = 0;
 			tragovi[i][i] = 0;

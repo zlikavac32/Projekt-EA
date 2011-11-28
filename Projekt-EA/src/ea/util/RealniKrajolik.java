@@ -21,6 +21,6 @@ public abstract class RealniKrajolik implements Krajolik<Double[]> {
 	
 	public void postaviDonjuGranicu(double[] donjaGranica) { this.donjaGranica = donjaGranica; }
 	
-	public abstract double racunajVrijednost(double vrijednost);
+	public abstract double racunajVrijednost(double[] vrijednost);
 	
 }

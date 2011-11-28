@@ -16,7 +16,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -140,17 +140,19 @@ public class GAGUI extends GUI {
 	 */
 	private static final long serialVersionUID = -8465945028324200176L;
 	
-	private class NacrtajFunkciju implements Runnable {
+	private class NacrtajFunkciju extends SwingWorker<Void, Void> {
 		
 		RealniKrajolik krajolik;
+		private XYSeries podatci;
 		
 		NacrtajFunkciju(RealniKrajolik krajolik) {
 			this.krajolik = krajolik;
 		}
 
 		@Override
-		public void run() {
-			XYSeries podatci = new XYSeries("Funckija");
+		protected Void doInBackground() 
+			throws Exception {
+			podatci = new XYSeries("Funckija");
 
 			int brojElemenata = Integer.parseInt(brojTocaka.vratiVrijednost());
 			if (brojElemenata < 1) { throw new IllegalArgumentException("Broj tocaka mora biti veci od 0"); }
@@ -158,19 +160,27 @@ public class GAGUI extends GUI {
 			double gore = krajolik.vratiGornjuGranicu()[0];
 			double korak = (gore - dolje) / brojElemenata;
 			for (int i = 0; i <= brojElemenata; i++) {
-				podatci.add(dolje, krajolik.racunajVrijednost(dolje));
+				podatci.add(dolje, krajolik.racunajVrijednost(new double[] { dolje }));
+				//System.out.println("(" + dolje + ", " + krajolik.racunajVrijednost(new double[] { dolje }) + ")");
 				dolje += korak;			
 			}
+			return null;
+		}
+		
+		@Override
+		protected void done() {
 			kolekcija.removeSeries(0);
 			kolekcija.addSeries(podatci);
 		}
 	}
 	
-	private class NacrtajJedinke implements Runnable {
+	private class NacrtajJedinke extends SwingWorker<Void, Void> {
 		
 		RealniKrajolik krajolik;
 		
 		List<Jedinka<RealniKrajolik>> jedinke;
+
+		private XYSeries podatci;
 		
 		NacrtajJedinke(List<Jedinka<RealniKrajolik>> jedinke, RealniKrajolik krajolik) {
 			this.jedinke = jedinke;
@@ -178,13 +188,19 @@ public class GAGUI extends GUI {
 		}
 
 		@Override
-		public void run() {
-			XYSeries podatci = new XYSeries("podatci");
+		public Void doInBackground()
+			throws Exception {
+			podatci = new XYSeries("podatci");
 			int limit = jedinke.size();
 			for (int i = 0; i < limit; i++) {
 				double x = (Double) jedinke.get(i).vratiVrijednost();
-				podatci.add(x, krajolik.racunajVrijednost(x));
+				podatci.add(x, krajolik.racunajVrijednost(new double[] { x }));
 			}
+			return null;
+		}
+		
+		@Override
+		protected void done() {
 			XYSeriesCollection kolekcijaJedinki = new XYSeriesCollection(podatci);
 			nacrt.setDataset(1, kolekcijaJedinki);
 		}
@@ -334,7 +350,7 @@ public class GAGUI extends GUI {
 	}
 
 	public void nacrtajFunkciju(RealniKrajolik krajolik) {
-		SwingUtilities.invokeLater(new NacrtajFunkciju(krajolik));
+		new NacrtajFunkciju(krajolik).execute();
 	}
 	
 	protected void pokreniSimulaciju(JButton gumb) 
@@ -487,6 +503,6 @@ public class GAGUI extends GUI {
 	}
 
 	public void iscrtajPopulaciju(List<Jedinka<RealniKrajolik>> jedinke, RealniKrajolik krajolik) {
-		SwingUtilities.invokeLater(new NacrtajJedinke(jedinke, krajolik));
+		new NacrtajJedinke(jedinke, krajolik).execute();
 	}
 }
