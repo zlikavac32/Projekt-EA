@@ -129,7 +129,7 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 		while (!kriterijKraja.jeKraj(kolonija)) {
 			if (Globalno.vratiBrzinu() > 0) { Thread.sleep(Globalno.vratiBrzinu()); }
 			kolonija.evoluiraj(brojMravaAzurira);
-			TSPMrav moguceNajbolje = (TSPMrav) kolonija.vratiNajbolje();
+			TSPMrav moguceNajbolje = (TSPMrav) kolonija.vratiLokalnoNajbolje();
 			najbolje = (TSPMrav) kolonija.vratiGlobalnoNajbolje();
 			publish(new Par<TSPMrav, TSPMrav>(najbolje, moguceNajbolje));	
 		}

@@ -1,0 +1,56 @@
+/**
+ * 
+ */
+package ea.pso;
+
+import ea.util.RandomGenerator;
+import ea.util.RealniKrajolik;
+
+/**
+ * @author Zlikavac32
+ *
+ */
+public class StandradniRealnaVarijablaRoj extends Roj<Double[]> {
+
+	private int brojVarijabli;
+
+	public StandradniRealnaVarijablaRoj(
+		int brojCestica, RandomGenerator generator, int brojVarijabli, RealniKrajolik krajolik, SusjedstvoGraditelj<Double[]> susjedstvoGraditelj,
+		BrzinaKalkulator<Double[]> brzinaKalkulator 
+	) {
+		super(brojCestica, generator, krajolik, susjedstvoGraditelj, brzinaKalkulator);
+		this.brojVarijabli = brojVarijabli;
+	}
+
+	/**
+	 * @see ea.pso.Roj#inicijaliziraj()
+	 */
+	@Override
+	public void inicijaliziraj() {
+		cestice = new RealnaVarijablaCestica[brojCestica];
+		for (int i = 0; i < cestice.length; i++) { 
+			cestice[i] = new RealnaVarijablaCestica(brojVarijabli, (RealniKrajolik) krajolik, susjedstvoGraditelj.stvoriSusjedstvo(), brzinaKalkulator);
+			cestice[i].inicijaliziraj(generator);
+		}
+		for (int i = 0; i < cestice.length; i++) {
+			Susjedstvo<Double[]> susjedstvo = cestice[i].vratiSusjedstvo();
+			susjedstvo.stvori(i, cestice);
+			susjedstvo.azuriraj();
+		}
+	}
+
+	/**
+	 * @see ea.pso.Roj#evoluiraj()
+	 */
+	@Override
+	public void evoluiraj() {
+		for (int i = 0; i < cestice.length; i++) {
+			cestice[i].evoluiraj(generator);
+		}
+		for (int i = 0; i < cestice.length; i++) {
+			cestice[i].vratiSusjedstvo().azuriraj();
+		}
+		brzinaKalkulator.zavrsiKrug();
+	}
+
+}

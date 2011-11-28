@@ -27,18 +27,6 @@ public class TSPMrav extends Mrav implements Iterable<Integer> {
 		this.udaljenosti = udaljenosti;
 		this.gradovi = gradovi;
 	}
-	
-	/**
-	 * Pretpostavka je da su dva puta jednaka ako se razlikuju za manje od 1e-9
-	 * @see ea.aco.Mrav#compareTo(ea.aco.Mrav)
-	 */
-	@Override
-	public int compareTo(Mrav mrav) {
-		if (mrav == null) { return -1; }
-		TSPMrav mravN = (TSPMrav) mrav;
-		if (Math.abs(duljinaPuta - mravN.duljinaPuta) < 1e-9) { return 0; }
-		return duljinaPuta < mravN.duljinaPuta ? -1 : 1;
-	}
 
 	public void dodajGradUPut(int grad) {
 		if (indeks == put.length) { throw new IndexOutOfBoundsException("Dodano previse gradova"); }
@@ -111,5 +99,11 @@ public class TSPMrav extends Mrav implements Iterable<Integer> {
 	}
 
 	public double vratiDuljinuPuta() { return duljinaPuta; }
+
+	@Override
+	public double racunajFaktorDobrote() {
+		if (duljinaPuta == 0) { return Double.MAX_VALUE; }
+		return 1 / duljinaPuta; 
+	}
 
 }

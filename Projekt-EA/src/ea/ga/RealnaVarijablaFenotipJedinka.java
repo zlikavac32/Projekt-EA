@@ -2,7 +2,7 @@ package ea.ga;
 
 import ea.util.RealniKrajolik;
 
-public class FenotipJedinka extends Jedinka<RealniKrajolik> {
+public class RealnaVarijablaFenotipJedinka extends Jedinka<RealniKrajolik> {
 	private double vrijednost;
 
 	protected double faktorDobrote;
@@ -18,13 +18,13 @@ public class FenotipJedinka extends Jedinka<RealniKrajolik> {
 	public static final int ALFA_INTERVAL_REKOMBINACIJA = 3;
 
 	
-	public FenotipJedinka(Populacija<RealniKrajolik> populacija) {
+	public RealnaVarijablaFenotipJedinka(Populacija<RealniKrajolik> populacija) {
 		super(populacija);
 	}
 
 	@Override
-	public FenotipJedinka kopiraj() {
-		FenotipJedinka novaJedinka = new FenotipJedinka(populacija);
+	public RealnaVarijablaFenotipJedinka kopiraj() {
+		RealnaVarijablaFenotipJedinka novaJedinka = new RealnaVarijablaFenotipJedinka(populacija);
 		novaJedinka.vrijednost = vrijednost;
 		novaJedinka.faktorDobrote = faktorDobrote;
 		return novaJedinka;
@@ -47,7 +47,7 @@ public class FenotipJedinka extends Jedinka<RealniKrajolik> {
 			default:
 				throw new IllegalArgumentException("Mutator " + mutator + " nije valjan za realnu jedinku");
 		}
-		if (!populacija.vratiKrajolik().jeValjanGenom(new Double[] { vrijednost })) { vrijednost = staro; }
+		if (!populacija.vratiKrajolik().jeValjanaVrijednost(new Double[] { vrijednost })) { vrijednost = staro; }
 		faktorDobrote = racunajFaktorDobrote(vrijednost);
 	}
 
@@ -85,13 +85,13 @@ public class FenotipJedinka extends Jedinka<RealniKrajolik> {
 		double staro = vrijednost;
 		switch (rekombinator) {
 			case ARITMETICKA_SREDINA_REKOMBINACIJA :
-				aritmetickaSredinaRekombinacija(((FenotipJedinka) partner).vrijednost);
+				aritmetickaSredinaRekombinacija(((RealnaVarijablaFenotipJedinka) partner).vrijednost);
 				break;
 			case TEZINSKA_SREDINA_REKOMBINACIJA :
-				tezinskaSredinaRekombinacija(((FenotipJedinka) partner).vrijednost);
+				tezinskaSredinaRekombinacija(((RealnaVarijablaFenotipJedinka) partner).vrijednost);
 				break;
 			case ALFA_INTERVAL_REKOMBINACIJA :
-				alfaIntervalRekombinacija(((FenotipJedinka) partner).vrijednost);
+				alfaIntervalRekombinacija(((RealnaVarijablaFenotipJedinka) partner).vrijednost);
 				break;
 			default:
 				throw new IllegalArgumentException("Rekombinator " + rekombinator + " nije valjan za realnu jedinku");
@@ -99,7 +99,7 @@ public class FenotipJedinka extends Jedinka<RealniKrajolik> {
 		//Provjera Double.isNan ide iz razloga sto se kod tezinkse zna dogodit da pogodi za rekombinaciju obje najgore jedinke pa kao rezultat dobijem NaN
 		if (
 			Double.isNaN(vrijednost) ||
-			!populacija.vratiKrajolik().jeValjanGenom(new Double[] { vrijednost })
+			!populacija.vratiKrajolik().jeValjanaVrijednost(new Double[] { vrijednost })
 		) { vrijednost = staro; }
 		faktorDobrote = racunajFaktorDobrote(vrijednost);
 	}
@@ -120,7 +120,7 @@ public class FenotipJedinka extends Jedinka<RealniKrajolik> {
 	}
 
 	private void tezinskaSredinaRekombinacija(double partner) {
-		double odmak = populacija.vratiNajgoru().racunajFaktorDobrote();
+		double odmak = populacija.vratiLokalnoNajgore().racunajFaktorDobrote();
 		double prvaTezina = racunajFaktorDobrote() - odmak;
 		double drugaTezina = racunajFaktorDobrote(partner) - odmak;
 		vrijednost = (vrijednost * prvaTezina + partner * drugaTezina) / (prvaTezina + drugaTezina);

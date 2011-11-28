@@ -30,7 +30,7 @@ public class GenotipPreklapajucaPopulacija extends PreklapajucaPopulacija<Realni
 	public void inicijaliziraj() {
 		int limit = jedinke.size();
 		for (int i = 0; i < limit; i++) {
-			GenotipJedinka jedinka = new GenotipJedinka(this, brojBitova);
+			RealnaVarijablaGenotipJedinka jedinka = new RealnaVarijablaGenotipJedinka(this, brojBitova);
 			jedinka.inicijaliziraj();
 			jedinke.set(i, jedinka);
 		}

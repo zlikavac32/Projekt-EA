@@ -1,13 +1,25 @@
 package ea.aco;
 
 public abstract class Mrav implements Comparable<Mrav> {
+
 	
 	/**
-	 * Vraca < 0 ako je trenutno rjesenje bolje od prosljedenog mrava, > 0 ako je losije ili 0 ako su isti
+	 * Racuna faktor dobrote za trenutnu jedinku.
+	 * 
+	 * @return Faktor dobrote
 	 */
-	@Override
-	public abstract int compareTo(Mrav o);
+	public abstract double racunajFaktorDobrote();
 	
 	public abstract Mrav kopiraj();
+
+	@Override
+	public int compareTo(Mrav strani) {
+		if (strani == null) { return -1; }
+		double mojFaktorDobrote = racunajFaktorDobrote();
+		double straniFaktorDobrote = strani.racunajFaktorDobrote();
+		if (mojFaktorDobrote > straniFaktorDobrote) { return -1; }
+		else if (mojFaktorDobrote < straniFaktorDobrote) { return 1; }
+		return 0;
+	}
 	
 }

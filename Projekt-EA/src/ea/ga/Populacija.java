@@ -35,42 +35,45 @@ public abstract class Populacija<T extends Krajolik<?>> {
 
 	protected RandomGenerator generator;
 
+	protected Jedinka<T> najbolje;
+	
 	public Populacija(int velicina) {
 		jedinke = new ArrayList<Jedinka<T>>(velicina);
 		for (int i = 0; i < velicina; i++) { jedinke.add(null); }
 	}
 
-	public Jedinka<T> vratiNajbolju() {
+	public Jedinka<T> vratiLokalnoNajbolje() {
 		if (jedinke.size() == 0) { return null; }
-		Jedinka<T> najbolja = jedinke.get(0);
-		double najboljiFaktorDobrote = najbolja.racunajFaktorDobrote();
+		Jedinka<T> najbolje = jedinke.get(0);
 		int limit = jedinke.size();
 		for (int i = 1; i < limit; i++) {
-			double moguciNajboljiFaktorDobrote = jedinke.get(i).racunajFaktorDobrote();
-			if (moguciNajboljiFaktorDobrote > najboljiFaktorDobrote) {
-				najbolja = jedinke.get(i);
-				najboljiFaktorDobrote = moguciNajboljiFaktorDobrote;
+			if (jedinke.get(i).compareTo(najbolje) < 0) {
+				najbolje = jedinke.get(i);
 			}
 		}
 		
-		return najbolja.kopiraj();
+		return najbolje.kopiraj();
 	}
 
-	public Jedinka<T> vratiNajgoru() {
+	public Jedinka<T> vratiLokalnoNajgore() {
 		if (jedinke.size() == 0) { return null; }
-		Jedinka<T> najgora = jedinke.get(0);
-		double najgoriFaktorDobrote = najgora.racunajFaktorDobrote();
+		Jedinka<T> najgore = jedinke.get(0);
 		int limit = jedinke.size();
 		for (int i = 1; i < limit; i++) {
-			double moguciNajgoriFaktorDobrote = jedinke.get(i).racunajFaktorDobrote();
-			if (moguciNajgoriFaktorDobrote < najgoriFaktorDobrote) {
-				najgora = jedinke.get(i);
-				najgoriFaktorDobrote = moguciNajgoriFaktorDobrote;
+			if (jedinke.get(i).compareTo(najgore) > 0) {
+				najgore = jedinke.get(i);
 			}
 		}
 		
-		return najgora.kopiraj();
+		return najgore.kopiraj();
 	}
+	
+	protected void obnoviGlobalnoNajbolje() {
+		Jedinka<T> moguceNajbolje = vratiLokalnoNajbolje();
+		if (najbolje == null || moguceNajbolje.compareTo(najbolje) < 0) { najbolje = moguceNajbolje; }
+	}
+	
+	public Jedinka<T> vratiGlobalnoNajbolje() { return najbolje.kopiraj(); }
 	
 	public void koristiMutaciju(int mutator) {
 		koristiMutaciju = true;

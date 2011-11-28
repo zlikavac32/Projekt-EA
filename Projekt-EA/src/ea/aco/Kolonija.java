@@ -16,30 +16,30 @@ public abstract class Kolonija {
 	
 	public abstract void obaviIsparavnje();
 	
-	public Mrav vratiNajgore() {
+	public Mrav vratiLokalnoNajgore() {
 		if (mravi == null || mravi.length < 1) { return null; }
-		Mrav najgori = mravi[0];
+		Mrav najgore = mravi[0];
 		for (int i = 1; i < mravi.length; i++) {
-			if (mravi[i].compareTo(najgori) > 0) { najgori = mravi[i]; }
+			if (mravi[i].compareTo(najgore) > 0) { najgore = mravi[i]; }
 		}
-		return najgori.kopiraj();
+		return najgore.kopiraj();
 	}
 
-	public Mrav vratiNajbolje() {
+	public Mrav vratiLokalnoNajbolje() {
 		if (mravi == null || mravi.length < 1) { return null; }
-		Mrav najbolji = mravi[0];
+		Mrav najbolje = mravi[0];
 		for (int i = 1; i < mravi.length; i++) {
-			if (mravi[i].compareTo(najbolji) < 0) { najbolji = mravi[i]; }
+			if (mravi[i].compareTo(najbolje) < 0) { najbolje = mravi[i]; }
 		}
-		return najbolji.kopiraj();
+		return najbolje.kopiraj();
 	}
 	
 	protected void obnoviGlobalnoNajbolje() {
-		Mrav moguceNajbolje = vratiNajbolje();
+		Mrav moguceNajbolje = vratiLokalnoNajbolje();
 		if (najbolje == null || moguceNajbolje.compareTo(najbolje) < 0) { najbolje = moguceNajbolje; }
 	}
 	
-	public Mrav vratiGlobalnoNajbolje() { return najbolje; }
+	public Mrav vratiGlobalnoNajbolje() { return najbolje.kopiraj(); }
 
 	public abstract void evoluiraj(int brojMravaAzurira);
 

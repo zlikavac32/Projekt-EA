@@ -18,18 +18,18 @@ public class FunkcijaKrajolik extends RealniKrajolik {
 	private String[] varijable;
 	
 	@Override
-	public double racunajFaktorDobrote(Double[] vrijednostJedinke) {
-		for (int i = 0; i < vrijednostJedinke.length; i++) {
-			funkcija.setVariable(varijable[i], vrijednostJedinke[i]);
+	public double racunajFaktorDobrote(Double[] vrijednost) {
+		for (int i = 0; i < vrijednost.length; i++) {
+			funkcija.setVariable(varijable[i], vrijednost[i]);
 		}
-		double vrijednost = funkcija.calculate();
-		return invertiran ? -vrijednost : vrijednost;
+		double tempVrijednost = funkcija.calculate();
+		return invertiran ? -tempVrijednost : tempVrijednost;
 	}
 
 	@Override
-	public boolean jeValjanGenom(Double[] vrijednostGenoma) {
-		for (int i = 0; i < vrijednostGenoma.length; i++) {
-			if (vrijednostGenoma[i] > gornjaGranica[i] || vrijednostGenoma[i] < donjaGranica[i]) { return false; }
+	public boolean jeValjanaVrijednost(Double[] vrijednost) {
+		for (int i = 0; i < vrijednost.length; i++) {
+			if (vrijednost[i] > gornjaGranica[i] || vrijednost[i] < donjaGranica[i]) { return false; }
 		}
 		return true;
 	}

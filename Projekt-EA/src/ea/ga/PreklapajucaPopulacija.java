@@ -40,6 +40,7 @@ public abstract class PreklapajucaPopulacija<T extends Krajolik<?>> extends Popu
 		Collections.sort(privremeno);
 		limit = jedinke.size();
 		for (int i = 0; i < limit; i++) { jedinke.set(i, privremeno.get(i)); }
+		obnoviGlobalnoNajbolje();
 	}
 
 }

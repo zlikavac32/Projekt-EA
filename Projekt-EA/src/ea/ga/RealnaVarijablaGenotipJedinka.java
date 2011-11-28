@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import ea.util.RealniKrajolik;
 
-public class GenotipJedinka extends Jedinka<RealniKrajolik> {
+public class RealnaVarijablaGenotipJedinka extends Jedinka<RealniKrajolik> {
 	
 
 	/**
@@ -28,7 +28,7 @@ public class GenotipJedinka extends Jedinka<RealniKrajolik> {
 	
 	protected double faktorDobrote;
 	
-	public GenotipJedinka(Populacija<RealniKrajolik> populacija, int brojBitova) {
+	public RealnaVarijablaGenotipJedinka(Populacija<RealniKrajolik> populacija, int brojBitova) {
 		super(populacija); 
 		if (brojBitova < 1 || brojBitova > 63) { 
 			throw new IllegalArgumentException("Broj bitova mora biti u rasponu [0,63]");
@@ -45,8 +45,8 @@ public class GenotipJedinka extends Jedinka<RealniKrajolik> {
 	public double racunajFaktorDobrote() { return faktorDobrote; }
 
 	@Override
-	public GenotipJedinka kopiraj() {
-		GenotipJedinka novaJedinka = new GenotipJedinka(populacija, brojBitova);
+	public RealnaVarijablaGenotipJedinka kopiraj() {
+		RealnaVarijablaGenotipJedinka novaJedinka = new RealnaVarijablaGenotipJedinka(populacija, brojBitova);
 		if (bitovi != null) {
 			novaJedinka.bitovi = Arrays.copyOf(bitovi, bitovi.length);
 		}
@@ -115,10 +115,10 @@ public class GenotipJedinka extends Jedinka<RealniKrajolik> {
 	public void rekombiniraj(int rekombinator, Jedinka<RealniKrajolik> partner) { 
 		switch (rekombinator) {
 			case JEDAN_CVOR_REKOMBINACIJA :
-				jedanCvorRekombinacija(((GenotipJedinka) partner).bitovi);
+				jedanCvorRekombinacija(((RealnaVarijablaGenotipJedinka) partner).bitovi);
 				break;
 			case DVA_CVORA_REKOMBINACIJA :
-				dvaCvoraRekombinacija(((GenotipJedinka) partner).bitovi);
+				dvaCvoraRekombinacija(((RealnaVarijablaGenotipJedinka) partner).bitovi);
 				break;
 			default:
 				throw new IllegalArgumentException("Rekombinator " + rekombinator + " nije valjan za binarnu jedinku");

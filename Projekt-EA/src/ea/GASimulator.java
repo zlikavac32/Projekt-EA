@@ -9,14 +9,14 @@ import de.congrace.exp4j.Calculable;
 
 import ea.ga.FenotipNepreklapajucaPopulacija;
 import ea.ga.FenotipPreklapajucaPopulacija;
-import ea.ga.GenotipJedinka;
+import ea.ga.RealnaVarijablaGenotipJedinka;
 import ea.ga.DvoTurnirskiSelektor;
 import ea.ga.GenotipNepreklapajucaPopulacija;
 import ea.ga.GenotipPreklapajucaPopulacija;
 import ea.ga.Populacija;
 import ea.ga.Jedinka;
 import ea.ga.ProporcionalniSelektor;
-import ea.ga.FenotipJedinka;
+import ea.ga.RealnaVarijablaFenotipJedinka;
 import ea.ga.Selektor;
 import ea.ga.SkracivanjeSelektor;
 import ea.ga.UniformniSelektor;
@@ -36,21 +36,21 @@ public class GASimulator extends Simulator<List<Jedinka<RealniKrajolik>>> {
 	
 	public static final int MINIMUM = 1;
 	
-	public static final int DELTA_MUTACIJA = FenotipJedinka.DELTA_MUTACIJA;
+	public static final int DELTA_MUTACIJA = RealnaVarijablaFenotipJedinka.DELTA_MUTACIJA;
 	
-	public static final int GAUSS_MUTACIJA = FenotipJedinka.GAUSS_MUTACIJA;
+	public static final int GAUSS_MUTACIJA = RealnaVarijablaFenotipJedinka.GAUSS_MUTACIJA;
 	
-	public static final int OKRET_BITA_MUTACIJA = GenotipJedinka.OKRET_BITA_MUTACIJA;
+	public static final int OKRET_BITA_MUTACIJA = RealnaVarijablaGenotipJedinka.OKRET_BITA_MUTACIJA;
 	
-	public static final int JEDAN_CVOR_REKOMBINACIJA = GenotipJedinka.JEDAN_CVOR_REKOMBINACIJA;
+	public static final int JEDAN_CVOR_REKOMBINACIJA = RealnaVarijablaGenotipJedinka.JEDAN_CVOR_REKOMBINACIJA;
 	
-	public static final int DVA_CVORA_REKOMBINACIJA = GenotipJedinka.DVA_CVORA_REKOMBINACIJA;
+	public static final int DVA_CVORA_REKOMBINACIJA = RealnaVarijablaGenotipJedinka.DVA_CVORA_REKOMBINACIJA;
 	
-	public static final int ARITMETICKA_SREDINA_REKOMBINACIJA = FenotipJedinka.ARITMETICKA_SREDINA_REKOMBINACIJA;
+	public static final int ARITMETICKA_SREDINA_REKOMBINACIJA = RealnaVarijablaFenotipJedinka.ARITMETICKA_SREDINA_REKOMBINACIJA;
 	
-	public static final int TEZINSKA_SREDINA_REKOMBINACIJA = FenotipJedinka.TEZINSKA_SREDINA_REKOMBINACIJA;
+	public static final int TEZINSKA_SREDINA_REKOMBINACIJA = RealnaVarijablaFenotipJedinka.TEZINSKA_SREDINA_REKOMBINACIJA;
 	
-	public static final int ALFTA_INTERVAL_REKOMBINACIJA = FenotipJedinka.ALFA_INTERVAL_REKOMBINACIJA;
+	public static final int ALFTA_INTERVAL_REKOMBINACIJA = RealnaVarijablaFenotipJedinka.ALFA_INTERVAL_REKOMBINACIJA;
 	
 	public static final int FENTOTIP = 0;
 	
@@ -242,10 +242,7 @@ public class GASimulator extends Simulator<List<Jedinka<RealniKrajolik>>> {
 			if (Globalno.vratiBrzinu() > 0) { Thread.sleep(Globalno.vratiBrzinu()); }
 			populacija.evoluiraj();
 			publish(populacija.vratiJedinke());
-			Jedinka<RealniKrajolik> mogucaNajboljaJedinka = populacija.vratiNajbolju();
-			if (najboljaJedinka == null || najboljaJedinka.racunajFaktorDobrote() < mogucaNajboljaJedinka.racunajFaktorDobrote()) {
-				najboljaJedinka = mogucaNajboljaJedinka.kopiraj();
-			}
+			najboljaJedinka = populacija.vratiGlobalnoNajbolje();
 		}
 		
 		ispisiRjesenje();

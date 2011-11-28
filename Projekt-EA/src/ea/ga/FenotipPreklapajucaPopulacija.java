@@ -27,7 +27,7 @@ public class FenotipPreklapajucaPopulacija extends PreklapajucaPopulacija<Realni
 	public void inicijaliziraj() {
 		int limit = jedinke.size();
 		for (int i = 0; i < limit; i++) {
-			FenotipJedinka jedinka = new FenotipJedinka(this);
+			RealnaVarijablaFenotipJedinka jedinka = new RealnaVarijablaFenotipJedinka(this);
 			jedinka.inicijaliziraj();
 			jedinke.set(i, jedinka);
 		}
