@@ -11,5 +11,7 @@ package ea.util;
 public interface KriterijKraja<T> {
 	
 	public boolean jeKraj(T skup);
+	
+	public void resetiraj();
 
 }

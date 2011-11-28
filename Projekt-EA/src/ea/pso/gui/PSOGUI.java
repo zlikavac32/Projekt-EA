@@ -21,6 +21,7 @@ import org.jfree.chart.ChartPanel;
 import de.congrace.exp4j.UnknownFunctionException;
 import de.congrace.exp4j.UnparsableExpressionException;
 
+import ea.PSOSimulator;
 import ea.gui.DijeljenaPloca;
 import ea.gui.GUI;
 
@@ -93,7 +94,10 @@ public class PSOGUI extends GUI {
 	protected void pokreniSimulaciju(JButton gumb) 
 		throws UnknownFunctionException, UnparsableExpressionException {
 		
+		PSOSimulator simulator = new PSOSimulator();
 		
+		super.simulator = simulator;
+		simulator.execute();
 		
 		gumb.setText(ZAUSTAVI);
 				

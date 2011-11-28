@@ -3,6 +3,7 @@
  */
 package ea.util;
 
+
 /**
  * @author Zlikavac32
  *
@@ -34,6 +35,11 @@ public class XKorakaNemaPromjeneVrijednosti<T extends Comparable<T>> implements 
 		}
 				
 		return brojac == brojKoraka;
+	}
+	
+	public void resetiraj() { 
+		trenutni = null;
+		brojac = 0; 
 	}
 
 }

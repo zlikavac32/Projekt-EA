@@ -3,17 +3,17 @@
  */
 package ea;
 
-//import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JApplet;
-//import javax.swing.JButton;
-//import javax.swing.SwingUtilities;
+import javax.swing.JButton;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-//import ea.ga.gui.GAGUI;
-//import ea.gui.GUI;
+import ea.gui.GUI;
+import ea.pso.gui.PSOGUI;
 
 /**
  * Ulaz u nasu aplikaciju.
@@ -50,24 +50,23 @@ public class RojCesticaAlgoritam extends JApplet {
 			//Ignoriraj
 		}
 		
-//		JButton gumb = new JButton("Pokreni");
-//		gumb.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				SwingUtilities.invokeLater(new Runnable() {
-//					
-//					@Override
-//					public void run() {
-//						PSOGUI gui = new PSOGUI("Roj cestica algoritam");
-//						gui.inicijaliziraj();
-//						gui.setVisible(true);
-//					}
-//				});
-//			}
-//		});
-//		add(gumb);
-		new PSOSimulator().run();
+		JButton gumb = new JButton("Pokreni");
+		gumb.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					
+					@Override
+					public void run() {
+						GUI gui = new PSOGUI("Roj cestica algoritam");
+						gui.inicijaliziraj();
+						gui.setVisible(true);
+					}
+				});
+			}
+		});
+		add(gumb);
 	}
 
 }

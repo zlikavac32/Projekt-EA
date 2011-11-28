@@ -11,7 +11,7 @@ import de.congrace.exp4j.UnparsableExpressionException;
 
 import ea.pso.Cestica;
 import ea.pso.DinamickaOgranicavajucaInercijaBrzinaKalkulator;
-import ea.pso.GlobalnoSusjedstvo;
+import ea.pso.LokalnoSusjedstvo;
 import ea.pso.RealnaVarijablaCestica;
 import ea.pso.Roj;
 import ea.pso.StandradniRealnaVarijablaRoj;
@@ -81,7 +81,7 @@ public class PSOSimulator extends Simulator<RealnaVarijablaCestica[]> {
 			
 			@Override
 			public Susjedstvo<Double[]> stvoriSusjedstvo() {
-				return new GlobalnoSusjedstvo<Double[]>();
+				return new LokalnoSusjedstvo<Double[]>(1);
 			}
 			
 		}, new DinamickaOgranicavajucaInercijaBrzinaKalkulator(2.05, 2.05, new double[] {

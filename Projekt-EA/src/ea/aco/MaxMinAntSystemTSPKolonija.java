@@ -24,18 +24,24 @@ public class MaxMinAntSystemTSPKolonija extends AntSystemTSPKolonija {
 
 	protected XKorakaNemaPromjeneVrijednosti<Mrav> trebaResetirat;
 	
+	protected double a;
+	
 	public MaxMinAntSystemTSPKolonija(
 		List<Par<String, Par<Double, Double>>> gradovi, int brojMrava, double konstantaIsparavanja, 
-		RandomGenerator generator, double alfa, int brojGeneracija
+		RandomGenerator generator, double alfa, int brojGeneracija, double a
 	) {
 		super(gradovi, brojMrava, konstantaIsparavanja, generator, alfa, 0);
 		trebaResetirat = new XKorakaNemaPromjeneVrijednosti<Mrav>(brojGeneracija);
+		this.a = a;
 	}
 	
 	@Override
 	public void evoluiraj(int brojMravaAzurira) {
 		evoluirajSpecificno(1);
-		if (trebaResetirat.jeKraj(najbolje)) { resetirajTragove(); }
+		if (trebaResetirat.jeKraj(najbolje)) { 
+			resetirajTragove(); 
+			trebaResetirat.resetiraj();
+		}
 	}
 	
 	@Override
@@ -47,7 +53,7 @@ public class MaxMinAntSystemTSPKolonija extends AntSystemTSPKolonija {
 	public void inicijaliziraj() {
 		super.inicijaliziraj();
 		tauMax = 1 / (konstantaIsparavanja * pohlepnaUdaljenost);
-		tauMin = tauMax / 5;
+		tauMin = tauMax / a;
 		resetirajTragove();
 	}
 	
@@ -77,7 +83,7 @@ public class MaxMinAntSystemTSPKolonija extends AntSystemTSPKolonija {
 			tragovi[pocetak][kraj] = tragovi[kraj][pocetak] += delta;
 			//Mislim da ovako ide taj tauMin
 			if (tragovi[pocetak][kraj] < tauMin) { tragovi[pocetak][kraj] = tragovi[kraj][pocetak] = tauMin; }
-			//else if (tragovi[pocetak][kraj] > tauMin) { tragovi[pocetak][kraj] = tragovi[pocetak][kraj] = tauMax; }
+			else if (tragovi[pocetak][kraj] > tauMin) { tragovi[pocetak][kraj] = tragovi[pocetak][kraj] = tauMax; }
 			pocetak = kraj;
 		}
 	}
@@ -88,7 +94,7 @@ public class MaxMinAntSystemTSPKolonija extends AntSystemTSPKolonija {
 		super.obnoviGlobalnoNajbolje();
 		if (najbolje.compareTo(najboljiMrav) < 0) {
 			tauMax = 1 / (konstantaIsparavanja * ((TSPMrav) najbolje).duljinaPuta);
-			tauMin = tauMax / 5;
+			tauMin = tauMax / a;
 			najboljeDelta = 1 / ((TSPMrav) najbolje).duljinaPuta;
 		}
 	}

@@ -48,6 +48,8 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 	private int brojKoraka;
 
 	private TSPMrav najbolje = null;
+
+	private double a;
 	
 	public ACOSimulator() { 
 		randomGenerator = new RandomGenerator();
@@ -95,6 +97,10 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 		}
 		this.algoritam = algoritam;
 	}
+	
+	public void koristecKonstantuA(double a) {
+		this.a = a;
+	}
 
 	@Override
 	protected Void doInBackground() 
@@ -120,7 +126,7 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 		} else if (algoritam == SIMPLE_ACO_ALGORITAM) {
 			kolonija = new SimpleACATSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa);
 		} else {
-			kolonija = new MaxMinAntSystemTSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa, brojKoraka);
+			kolonija = new MaxMinAntSystemTSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa, brojKoraka, a);
 		}
 		
 		kolonija.inicijaliziraj();

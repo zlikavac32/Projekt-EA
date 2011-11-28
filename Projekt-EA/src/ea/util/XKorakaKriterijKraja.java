@@ -23,4 +23,9 @@ public class XKorakaKriterijKraja<T> implements KriterijKraja<T> {
 	
 	public synchronized int vratiBrojProteklihGeneracija() { return brojac - 1; }
 
+	@Override
+	public void resetiraj() {
+		brojac = 0;
+	}
+
 }
