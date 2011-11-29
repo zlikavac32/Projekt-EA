@@ -365,10 +365,11 @@ public class GAGUI extends GUI {
 			zapisiUZapisnik("Sjeme mora biti cijeli broj");
 			return ;
 		} 
+		
 		try {
 			simulator.unutarGranica(
-				Integer.parseInt(donjaGranica.vratiVrijednost()),
-				Integer.parseInt(gornjaGranica.vratiVrijednost())
+				Double.parseDouble(donjaGranica.vratiVrijednost()),
+				Double.parseDouble(gornjaGranica.vratiVrijednost())
 			);
 		} catch (NumberFormatException e) { 
 			zapisiUZapisnik("Granice moraju biti realan broj");
@@ -388,6 +389,7 @@ public class GAGUI extends GUI {
 		simulator.koristeciReprezentaciju(
 			genotip ? GASimulator.GENOTIP : GASimulator.FENTOTIP
 		);
+		
 		if (genotip) {
 			try {
 				simulator.koristeciBrojBitova(Integer.parseInt(brojBitova.vratiVrijednost()));

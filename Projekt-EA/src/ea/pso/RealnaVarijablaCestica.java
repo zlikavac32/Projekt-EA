@@ -3,6 +3,7 @@
  */
 package ea.pso;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 import ea.util.RandomGenerator;
@@ -21,6 +22,10 @@ public class RealnaVarijablaCestica extends Cestica<Double[]> {
 	protected double faktorDobrote;
 	
 	protected double najboljiFaktorDobrote;
+	
+	protected Double[] staro;
+	
+	protected DecimalFormat format = new DecimalFormat("0.000000");
 	
 	public RealnaVarijablaCestica(
 		int brojVarijabli, RealniKrajolik krajolik, Susjedstvo<Double[]> susjedstvo, 
@@ -61,8 +66,10 @@ public class RealnaVarijablaCestica extends Cestica<Double[]> {
 	public void inicijaliziraj(RandomGenerator generator) {
 		vrijednost = new Double[brojVarijabli];
 		brzina = new double[brojVarijabli];
+		double[] donjaGranica = brzinaKalkulator.vratiDonjuGranicu();
+		double[] gornjaGranica = brzinaKalkulator.vratiGornjuGranicu();
 		for (int i = 0; i < brojVarijabli; i++) {
-			brzina[i] = 0;
+			brzina[i] = generator.vratiDouble() * (gornjaGranica[i] - donjaGranica[i]) + donjaGranica[i];
 			vrijednost[i] = generator.vratiDouble() * (krajolik.vratiGornjuGranicu()[i] - krajolik.vratiDonjuGranicu()[i])
 				+ krajolik.vratiDonjuGranicu()[i];
 		}
@@ -73,6 +80,7 @@ public class RealnaVarijablaCestica extends Cestica<Double[]> {
 	@Override
 	public void evoluiraj(RandomGenerator generator) {
 		brzina = brzinaKalkulator.izracunajBrzinu(this, generator);
+		staro = vrijednost;
 		Double[] novaVrijednost = new Double[vrijednost.length];
 		for (int i = 0; i < brojVarijabli; i++) {
 			novaVrijednost[i] = vrijednost[i] + brzina[i];
@@ -99,6 +107,24 @@ public class RealnaVarijablaCestica extends Cestica<Double[]> {
 	@Override
 	public Double[] vratiNajboljuVrijednost() {
 		return Arrays.copyOf(najboljaVrijednost, najboljaVrijednost.length);
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder graditelj = new StringBuilder("Cestica na lokaciji (");
+		graditelj.append(format.format(vrijednost[0]));
+		graditelj.append(", ");
+		graditelj.append(format.format(vrijednost[1]));
+		graditelj.append(") sa funkcijskom vrijednoscu ");
+		double[] tempVrijednost = new double[vrijednost.length];
+		for (int i = 0; i < vrijednost.length; i++) { tempVrijednost[i] = vrijednost[i]; }
+		graditelj.append(format.format(krajolik.racunajVrijednost(tempVrijednost)));
+		return graditelj.toString();
+	}
+
+	@Override
+	public Double[] vratiStaruVrijednost() {
+		return Arrays.copyOf(staro, staro.length);
 	}
 
 }

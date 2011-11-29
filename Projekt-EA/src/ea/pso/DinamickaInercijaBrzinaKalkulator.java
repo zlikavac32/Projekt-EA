@@ -63,4 +63,14 @@ public class DinamickaInercijaBrzinaKalkulator implements BrzinaKalkulator<Doubl
 		inercija *= faktorSmanjenjaInercije;
 	}
 
+	@Override
+	public double[] vratiDonjuGranicu() {
+		return donjaGranica;
+	}
+
+	@Override
+	public double[] vratiGornjuGranicu() {
+		return gornjaGranica;
+	}
+
 }
