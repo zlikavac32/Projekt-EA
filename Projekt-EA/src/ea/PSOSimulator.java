@@ -240,13 +240,13 @@ public class PSOSimulator extends Simulator<Cestica<Double[]>[]> {
 	private BrzinaKalkulator<Double[]> vratiGeneratorBrzine() {
 		switch (brzinaKalkulator) {
 			case STANDARDNI_BRZINA_KALKULATOR :
-				return new StandardniBrzinaKalkulator(c1, c2, donjaGranicaBrzine, donjaGranicaBrzine);
+				return new StandardniBrzinaKalkulator(c1, c2, donjaGranicaBrzine, gornjaGranicaBrzine);
 			case INERCIJA_BRZINA_KALKULATOR :
-				return new KonstantnaInercijaBrzinaKalkulator(c1, c2, donjaGranicaBrzine, donjaGranicaBrzine, inercija);
+				return new KonstantnaInercijaBrzinaKalkulator(c1, c2, donjaGranicaBrzine, gornjaGranicaBrzine, inercija);
 			case DINAMICKA_INERCIJA_BRZINA_KALKUALTOR :
-				return new DinamickaInercijaBrzinaKalkulator(c1, c2, donjaGranicaBrzine, donjaGranicaBrzine, inercija, faktorSmanjenjaInercije);
+				return new DinamickaInercijaBrzinaKalkulator(c1, c2, donjaGranicaBrzine, gornjaGranicaBrzine, inercija, faktorSmanjenjaInercije);
 			case DINAMICKA_OGRANICAVAJUCA_INERCIJA_KALKUALTOR :
-				return new DinamickaOgranicavajucaInercijaBrzinaKalkulator(c1, c2, donjaGranicaBrzine, donjaGranicaBrzine, graniceInercije[0], graniceInercije[1], brojKorakaInercije);
+				return new DinamickaOgranicavajucaInercijaBrzinaKalkulator(c1, c2, donjaGranicaBrzine, gornjaGranicaBrzine, graniceInercije[0], graniceInercije[1], brojKorakaInercije);
 			case OGRANICAVAJUCA_BRZINA_KALKULATOR :
 				return new OgranicavajucaBrzinaKalkulator(c1, c2, donjaGranicaBrzine, gornjaGranicaBrzine);
 		}

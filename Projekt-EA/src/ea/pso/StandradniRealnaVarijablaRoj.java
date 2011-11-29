@@ -51,6 +51,7 @@ public class StandradniRealnaVarijablaRoj extends Roj<Double[]> {
 			cestice[i].evoluiraj(generator);
 		}
 		obnoviSusjedstvo();
+		obnoviGlobalnoNajbolje();
 		brzinaKalkulator.zavrsiKrug();
 	}
 

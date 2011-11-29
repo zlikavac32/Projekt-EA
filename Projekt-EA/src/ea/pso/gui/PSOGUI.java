@@ -348,7 +348,7 @@ public class PSOGUI extends GUI {
 		xDo = new TekstualnaVrijednost("X Do", "10");
 		yOd = new TekstualnaVrijednost("Y Od", "-10");
 		yDo = new TekstualnaVrijednost("Y Do", "10");
-		brojTocaka  = new TekstualnaVrijednost("Broj tocaka", "100");
+		brojTocaka  = new TekstualnaVrijednost("Broj tocaka", "50");
 		sjeme = new TekstualnaVrijednost("Sjeme", "123456");
 		brojCestica = new TekstualnaVrijednost("Broj cestica", "15");
 		brzinaKalkualtor = new RadioGumbi("Brzina kalkulator", new String[] {

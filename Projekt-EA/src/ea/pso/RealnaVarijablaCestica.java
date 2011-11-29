@@ -59,6 +59,9 @@ public class RealnaVarijablaCestica extends Cestica<Double[]> {
 		);
 		kopija.brzina = Arrays.copyOf(brzina, brzina.length);
 		kopija.vrijednost = Arrays.copyOf(vrijednost, vrijednost.length);
+		kopija.najboljiFaktorDobrote = najboljiFaktorDobrote;
+		kopija.faktorDobrote = faktorDobrote;
+		kopija.staro = staro == null ? null : Arrays.copyOf(staro, staro.length);
 		return kopija;
 	}
 
@@ -93,7 +96,7 @@ public class RealnaVarijablaCestica extends Cestica<Double[]> {
 	}
 
 	protected void obnoviNajboljuVrijednost() {
-		if (najboljaVrijednost == null || racunajFaktorDobrote() > najboljiFaktorDobrote) {
+		if (najboljaVrijednost == null || faktorDobrote > najboljiFaktorDobrote) {
 			najboljaVrijednost = Arrays.copyOf(vrijednost, vrijednost.length);
 			najboljiFaktorDobrote = faktorDobrote;
 		}
