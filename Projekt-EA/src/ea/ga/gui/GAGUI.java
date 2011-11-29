@@ -160,8 +160,10 @@ public class GAGUI extends GUI {
 			double gore = krajolik.vratiGornjuGranicu()[0];
 			double korak = (gore - dolje) / brojElemenata;
 			for (int i = 0; i <= brojElemenata; i++) {
+//				System.out.println("Izracunao sam (" + dolje + ", " + krajolik.racunajVrijednost(new double[] { dolje }) + ")");
 				podatci.add(dolje, krajolik.racunajVrijednost(new double[] { dolje }));
-				//System.out.println("(" + dolje + ", " + krajolik.racunajVrijednost(new double[] { dolje }) + ")");
+				
+//				System.out.println("Spremio sam (" + podatci.getX(podatci.getItemCount() - 1) + ", " + podatci.getY(podatci.getItemCount() - 1) + ")");
 				dolje += korak;			
 			}
 			return null;
