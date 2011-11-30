@@ -348,9 +348,9 @@ public class PSOGUI extends GUI {
 		xDo = new TekstualnaVrijednost("X Do", "10");
 		yOd = new TekstualnaVrijednost("Y Od", "-10");
 		yDo = new TekstualnaVrijednost("Y Do", "10");
-		brojTocaka  = new TekstualnaVrijednost("Broj tocaka", "50");
+		brojTocaka  = new TekstualnaVrijednost("Broj točaka", "50");
 		sjeme = new TekstualnaVrijednost("Sjeme", "123456");
-		brojCestica = new TekstualnaVrijednost("Broj cestica", "15");
+		brojCestica = new TekstualnaVrijednost("Broj čestica", "15");
 		brzinaKalkualtor = new RadioGumbi("Brzina kalkulator", new String[] {
 			STANDARDNI_BRZINA_KALKULATOR, INERCIJA_BRZINA_KALKULATOR, DINAMICKA_INERCIJA_BRZINA_KALKUALTOR,
 			DINAMICKA_OGRANICAVAJUCA_INERCIJA_KALKUALTOR, OGRANICAVAJUCA_BRZINA_KALKULATOR
@@ -379,7 +379,7 @@ public class PSOGUI extends GUI {
 		minInercija.setEnabled(false);
 		brojKorakaInercija = new TekstualnaVrijednost("Broj koraka inercija", "150");
 		brojKorakaInercija.setEnabled(false);
-		brojOkolnihJedinki = new TekstualnaVrijednost("Broj okolnih jedinki", "5");
+		brojOkolnihJedinki = new TekstualnaVrijednost("Broj okolnih čestica", "5");
 		brojOkolnihJedinki.setEnabled(false);
 		trazi = new RadioGumbi("Traži", new Object[] {
 			MINIMUM, MAKSIMUM	

@@ -15,11 +15,11 @@ class PSOGUIKonstante {
 	
 	static final String INERCIJA_BRZINA_KALKULATOR = "Konstantna inercija";
 	
-	static final String DINAMICKA_INERCIJA_BRZINA_KALKUALTOR = "Dinamicka inercija";
+	static final String DINAMICKA_INERCIJA_BRZINA_KALKUALTOR = "Dinamička inercija";
 	
-	static final String DINAMICKA_OGRANICAVAJUCA_INERCIJA_KALKUALTOR = "Dinamicka ogranicavajuca inercija";
+	static final String DINAMICKA_OGRANICAVAJUCA_INERCIJA_KALKUALTOR = "Dinamička ograničavajuća inercija";
 	
-	static final String OGRANICAVAJUCA_BRZINA_KALKULATOR = "Ogranicavajuca brzina";
+	static final String OGRANICAVAJUCA_BRZINA_KALKULATOR = "Ograničavajuća brzina";
 
 	static final String GLOBALNO_SUSJEDSTVO = "Globalno susjedstvo";
 	
