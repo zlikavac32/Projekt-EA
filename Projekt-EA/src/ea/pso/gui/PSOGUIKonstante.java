@@ -11,7 +11,7 @@ class PSOGUIKonstante {
 	
 	static final String FUNKCIJA = "x^2 + y^2";
 	
-	static final String STANDARDNI_BRZINA_KALKULATOR = "Standradni";
+	static final String STANDARDNI_BRZINA_KALKULATOR = "Standardni";
 	
 	static final String INERCIJA_BRZINA_KALKULATOR = "Konstantna inercija";
 	
