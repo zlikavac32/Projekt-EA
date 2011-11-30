@@ -7,10 +7,10 @@ import java.util.List;
 
 import ea.aco.AntSystemTSPKolonija;
 import ea.aco.MaxMinAntSystemTSPKolonija;
-import ea.aco.Par;
 import ea.aco.SimpleACOTSPKolonija;
 import ea.aco.TSPKolonija;
 import ea.aco.gui.ACOGUI;
+import ea.util.Par;
 import ea.util.RandomGenerator;
 import ea.util.XKorakaKriterijKraja;
 import ea.aco.TSPMrav;

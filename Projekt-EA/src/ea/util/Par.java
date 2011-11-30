@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ea.aco;
+package ea.util;
 
 /**
  * @author Zlikavac32
