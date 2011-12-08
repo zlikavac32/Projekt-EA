@@ -55,4 +55,14 @@ public class StandardniBrzinaKalkulator implements BrzinaKalkulator<Double[]> {
 		//Nista
 	}
 
+	@Override
+	public double[] vratiDonjuGranicu() {
+		return donjaGranica;
+	}
+
+	@Override
+	public double[] vratiGornjuGranicu() {
+		return gornjaGranica;
+	}
+
 }

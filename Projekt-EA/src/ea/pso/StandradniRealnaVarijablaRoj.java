@@ -32,10 +32,13 @@ public class StandradniRealnaVarijablaRoj extends Roj<Double[]> {
 			cestice[i] = new RealnaVarijablaCestica(brojVarijabli, (RealniKrajolik) krajolik, susjedstvoGraditelj.stvoriSusjedstvo(), brzinaKalkulator);
 			cestice[i].inicijaliziraj(generator);
 		}
+		obnoviSusjedstvo();
+	}
+
+	private void obnoviSusjedstvo() {
 		for (int i = 0; i < cestice.length; i++) {
 			Susjedstvo<Double[]> susjedstvo = cestice[i].vratiSusjedstvo();
 			susjedstvo.stvori(i, cestice);
-			susjedstvo.azuriraj();
 		}
 	}
 
@@ -47,9 +50,8 @@ public class StandradniRealnaVarijablaRoj extends Roj<Double[]> {
 		for (int i = 0; i < cestice.length; i++) {
 			cestice[i].evoluiraj(generator);
 		}
-		for (int i = 0; i < cestice.length; i++) {
-			cestice[i].vratiSusjedstvo().azuriraj();
-		}
+		obnoviSusjedstvo();
+		obnoviGlobalnoNajbolje();
 		brzinaKalkulator.zavrsiKrug();
 	}
 

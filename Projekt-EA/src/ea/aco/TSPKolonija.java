@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import ea.util.Par;
 import ea.util.RandomGenerator;
 
 public abstract class TSPKolonija extends Kolonija {

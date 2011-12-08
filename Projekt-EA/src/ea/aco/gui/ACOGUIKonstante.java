@@ -21,7 +21,7 @@ class ACOGUIKonstante {
 	
 	static final String ALGORITAM = "Algoritam";
 	
-	static final String SIMPLE_ACO = "Simple ACA";
+	static final String SIMPLE_ACO = "Simple ACO";
 	
 	static final String ANT_SYSTEM = "Ant System";
 	

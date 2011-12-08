@@ -47,6 +47,8 @@ public abstract class Cestica<T> implements Comparable<Cestica<T>> {
 	
 	public abstract T vratiVrijednost();
 	
+	public abstract T vratiStaruVrijednost();
+	
 	public abstract T vratiNajboljuVrijednost();
 	
 	/**
@@ -73,5 +75,5 @@ public abstract class Cestica<T> implements Comparable<Cestica<T>> {
 	public abstract Cestica<T> kopiraj();
 	
 	public abstract void evoluiraj(RandomGenerator generator);
-	
+		
 }

@@ -15,19 +15,25 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.GrayPaintScale;
 import org.jfree.chart.renderer.xy.VectorRenderer;
 import org.jfree.chart.renderer.xy.XYBlockRenderer;
 import org.jfree.chart.renderer.xy.XYShapeRenderer;
 import org.jfree.data.xy.DefaultXYZDataset;
+import org.jfree.data.xy.VectorSeries;
 import org.jfree.data.xy.VectorSeriesCollection;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
+import de.congrace.exp4j.ExpressionBuilder;
 import de.congrace.exp4j.UnknownFunctionException;
 import de.congrace.exp4j.UnparsableExpressionException;
 
@@ -36,6 +42,7 @@ import ea.gui.DijeljenaPloca;
 import ea.gui.GUI;
 import ea.gui.RadioGumbi;
 import ea.gui.TekstualnaVrijednost;
+import ea.pso.Cestica;
 import ea.util.RealniKrajolik;
 
 import static ea.pso.gui.PSOGUIKonstante.*;
@@ -45,7 +52,6 @@ import static ea.pso.gui.PSOGUIKonstante.*;
  *
  */
 public class PSOGUI extends GUI {
-
 
 	/**
 	 * 
@@ -98,7 +104,7 @@ public class PSOGUI extends GUI {
 
 	private TekstualnaVrijednost brojTocaka;
 
-	private Ploca brojTocakaPloca = new Ploca();
+	private RadioGumbi trazi;
 
 	
 	//Ploce
@@ -147,51 +153,129 @@ public class PSOGUI extends GUI {
 
 	private Ploca brojOkolnihJedinkiPloca = new Ploca();
 
+	private Ploca brojTocakaPloca = new Ploca();
+
+	private Ploca traziPloca = new Ploca();
+	
+	
+
 	private DefaultXYZDataset kolekcija;
 
 	private JFreeChart graf;
 
 	private XYPlot nacrt;
+
+	private XYBlockRenderer funkcijaRenderer;
 	
 
 	
-	private class NacrtajFunkciju implements Runnable {
+	private class NacrtajFunkciju extends SwingWorker<Void, Void> {
 		
 		RealniKrajolik krajolik;
+		
+		double[][] podatci;
+
+		double min = Double.MAX_VALUE;
+		
+		double max = Double.MIN_NORMAL;
+
+		private double doljeX;
+
+		private double doljeY;
+
+		private double goreX;
+
+		private double goreY;
 		
 		NacrtajFunkciju(RealniKrajolik krajolik) {
 			this.krajolik = krajolik;
 		}
 
 		@Override
-		public void run() {
+		public Void doInBackground()
+			throws Exception {
 
 			int brojElemenata = Integer.parseInt(brojTocaka.vratiVrijednost());
 			if (brojElemenata < 1) { throw new IllegalArgumentException("Broj tocaka mora biti veci od 0"); }
-			double[][] podatci = new double[3][(brojElemenata + 1) * (brojElemenata + 1)];
-			double doljeX = krajolik.vratiDonjuGranicu()[0];
-			double goreX = krajolik.vratiGornjuGranicu()[0];
-			double doljeY = krajolik.vratiDonjuGranicu()[1];
-			double goreY = krajolik.vratiGornjuGranicu()[1];
+			podatci = new double[3][(brojElemenata + 1) * (brojElemenata + 1)];
+			doljeX = krajolik.vratiDonjuGranicu()[0];
+			goreX = krajolik.vratiGornjuGranicu()[0];
+			doljeY = krajolik.vratiDonjuGranicu()[1];
+			goreY = krajolik.vratiGornjuGranicu()[1];
 			double korakX = (goreX - doljeX) / brojElemenata;
+			double korakY = (goreY - doljeY) / brojElemenata;
 			double xPomak = doljeX;
 			int indeksElementa = 0;
 			for (int i = 0; i <= brojElemenata; i++) {
-				double korakY = (goreY - doljeY) / brojElemenata;
 				double yPomak = doljeY;
 				for (int j = 0; j <= brojElemenata; j++) {
-					podatci[0][indeksElementa] = xPomak;
-					podatci[1][indeksElementa] = yPomak;
-					podatci[2][indeksElementa++] = krajolik.racunajVrijednost(new double[] {
+					double vrijednost = krajolik.racunajVrijednost(new double[] {
 						xPomak, yPomak
 					});
+					podatci[0][indeksElementa] = xPomak;
+					podatci[1][indeksElementa] = yPomak;
+					podatci[2][indeksElementa++] = vrijednost;
+					if (vrijednost < min) { min = vrijednost; }
+					if (vrijednost > max) { max = vrijednost; }
 					yPomak += korakY;
 				}
 				xPomak += korakX;
 			}
 			
-			kolekcija.addSeries("Funkcija", podatci);
+			return null;
 		}
+		
+		@Override
+		protected void done() {
+			kolekcija.addSeries("", podatci);			
+			funkcijaRenderer.setPaintScale(new GrayPaintScale(min, max));
+		}
+	}
+
+
+	/**
+	 * @author Zlikavac32
+	 *
+	 */
+	private class NacrtajCestice extends SwingWorker<Void, Void> {
+
+		Cestica<Double[]>[] cestice;
+		
+		private XYSeries podatci;
+
+		private VectorSeries vektor;
+		
+		NacrtajCestice(Cestica<Double[]>[] cestice) {
+			this.cestice = cestice;
+		}
+		
+		/**
+		 * @see javax.swing.SwingWorker#doInBackground()
+		 */
+		@Override
+		protected Void doInBackground() throws Exception {
+			podatci = new XYSeries("Podatci");
+			vektor = new VectorSeries("Vektori");
+			for (int i = 0; i < cestice.length; i++) {
+				Double[] temp = cestice[i].vratiVrijednost();
+				Double[] staro = cestice[i].vratiStaruVrijednost();
+				podatci.add(temp[0], temp[1]);
+				if (staro != null) {
+					vektor.add(staro[0], staro[1], temp[0] - staro[0], temp[1] - staro[1]);
+				}
+			}
+			return null;
+		}
+
+		@Override
+		protected void done() {
+			XYSeriesCollection kolekcijaJedinki = new XYSeriesCollection(podatci);
+			nacrt.setDataset(1, kolekcijaJedinki);
+			VectorSeriesCollection vektori = (VectorSeriesCollection) nacrt.getDataset(2);
+			vektori.removeAllSeries();
+			vektori.addSeries(vektor);
+		}
+		
 	}
 		
 	public PSOGUI(String title) { super(title); }
@@ -207,18 +291,18 @@ public class PSOGUI extends GUI {
 		inicijalizirajElementeKontrola();
 		
 		DijeljenaPloca[] elementi = new DijeljenaPloca[] {
-			funkcija, sjeme, xOd, xDo, yDo, yOd, brojTocaka, brojCestica, 
-			brzinaKalkualtor, c1, c2, 
-			inercija, faktorSmanjeInercije, maksInercija, minInercija, brojKorakaInercija, 
+			funkcija, sjeme, xOd, xDo, yOd, yDo, brojTocaka, brojCestica, 
+			trazi, brzinaKalkualtor, c1, c2, 
+			inercija, faktorSmanjeInercije, minInercija, maksInercija, brojKorakaInercija, 
 			susjedstvo, brojOkolnihJedinki,
 			donjaGranicaBrzinaX, gornjaGranicaBrzinaX, donjaGranicaBrzinaY, gornjaGranicaBrzinaY, 
 			brojGeneracija
 		};
 		
 		Ploca[] ploce = new Ploca[] {
-			funkcijaPloca, sjemePloca, xOdPloca, xDoPloca, yDoPloca, yOdPloca, brojTocakaPloca, brojCesticaPloca, 
-			brzinaKalkualtorPloca, c1Ploca, c2Ploca, 
-			inercijaPloca, faktorSmanjeInercijePloca, maksInercijaPloca, minInercijaPloca, brojKorakaInercijaPloca,
+			funkcijaPloca, sjemePloca, xOdPloca, xDoPloca, yOdPloca, yDoPloca, brojTocakaPloca, brojCesticaPloca, 
+			traziPloca, brzinaKalkualtorPloca, c1Ploca, c2Ploca, 
+			inercijaPloca, faktorSmanjeInercijePloca, minInercijaPloca, maksInercijaPloca, brojKorakaInercijaPloca,
 			susjedstvoPloca, brojOkolnihJedinkiPloca,
 			donjaGranicaBrzinaXPloca, gornjaGranicaBrzinaXPloca, donjaGranicaBrzinaYPloca, gornjaGranicaBrzinaYPloca, 
 			brojGeneracijaPloca
@@ -264,9 +348,9 @@ public class PSOGUI extends GUI {
 		xDo = new TekstualnaVrijednost("X Do", "10");
 		yOd = new TekstualnaVrijednost("Y Od", "-10");
 		yDo = new TekstualnaVrijednost("Y Do", "10");
-		brojTocaka  = new TekstualnaVrijednost("Broj tocaka", "1000");
+		brojTocaka  = new TekstualnaVrijednost("Broj točaka", "50");
 		sjeme = new TekstualnaVrijednost("Sjeme", "123456");
-		brojCestica = new TekstualnaVrijednost("Broj cestica", "15");
+		brojCestica = new TekstualnaVrijednost("Broj čestica", "15");
 		brzinaKalkualtor = new RadioGumbi("Brzina kalkulator", new String[] {
 			STANDARDNI_BRZINA_KALKULATOR, INERCIJA_BRZINA_KALKULATOR, DINAMICKA_INERCIJA_BRZINA_KALKUALTOR,
 			DINAMICKA_OGRANICAVAJUCA_INERCIJA_KALKUALTOR, OGRANICAVAJUCA_BRZINA_KALKULATOR
@@ -295,21 +379,35 @@ public class PSOGUI extends GUI {
 		minInercija.setEnabled(false);
 		brojKorakaInercija = new TekstualnaVrijednost("Broj koraka inercija", "150");
 		brojKorakaInercija.setEnabled(false);
-		brojOkolnihJedinki = new TekstualnaVrijednost("Broj okolnih jedinki", "5");
+		brojOkolnihJedinki = new TekstualnaVrijednost("Broj okolnih čestica", "5");
 		brojOkolnihJedinki.setEnabled(false);
+		trazi = new RadioGumbi("Traži", new Object[] {
+			MINIMUM, MAKSIMUM	
+		}, 0);
 		
 	}
 
 	protected ChartPanel stvoriGraf() {
 		kolekcija = new DefaultXYZDataset();
 		graf = ChartFactory.createXYLineChart(FUNKCIJA, "", "", kolekcija, PlotOrientation.VERTICAL, true, false, false);
+		graf.removeLegend();
+		
 		nacrt = graf.getXYPlot();
-		nacrt.setRenderer(0, new XYBlockRenderer());
+		nacrt.getDomainAxis().setLowerMargin(0);
+		nacrt.getDomainAxis().setUpperMargin(0);
+		nacrt.getRangeAxis().setLowerMargin(0);
+		nacrt.getRangeAxis().setUpperMargin(0);
+		
+		funkcijaRenderer = new XYBlockRenderer();
+		
+		nacrt.setRenderer(0, funkcijaRenderer);
 		
 		nacrt.setRenderer(1, new XYShapeRenderer());
 		
 		nacrt.setDataset(2, new VectorSeriesCollection());
 		nacrt.setRenderer(2, new VectorRenderer());
+		
+		nacrt.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
 		
 		ChartPanel grafPloca = new ChartPanel(graf);
 		
@@ -321,16 +419,169 @@ public class PSOGUI extends GUI {
 		
 		PSOSimulator simulator = new PSOSimulator();
 		
+		super.simulator = simulator;
+		
 		simulator.postaviGUI(this);
 		
-		super.simulator = simulator;
+		try {
+			simulator.koristeciSjeme(Long.parseLong(sjeme.vratiVrijednost()));
+		} catch (NumberFormatException e) { 
+			zapisiUZapisnik("Sjeme mora biti cijeli broj");
+			return ;
+		} 
+		
+		simulator.traziEkstrem(
+			trazi.vratiOdabrani().getActionCommand().equals(MINIMUM) ? PSOSimulator.MINIMUM
+				: PSOSimulator.MAKSIMUM
+		);
+		
+		try {
+			simulator.unutarGranica(
+				new double[] {
+					Double.parseDouble(xOd.vratiVrijednost()),
+					Double.parseDouble(yOd.vratiVrijednost())
+				},new double[] {
+					Double.parseDouble(xDo.vratiVrijednost()),
+					Double.parseDouble(yDo.vratiVrijednost())
+				}
+			);
+		} catch (NumberFormatException e) { 
+			zapisiUZapisnik("Granice moraju biti brojevi");
+			return ;
+		}
+		
+		try {
+			simulator.saBrojemCestica(Integer.parseInt(brojCestica.vratiVrijednost()));
+		} catch (NumberFormatException e) { 
+			zapisiUZapisnik("Broj cestica mora biti cijeli broj");
+			return ;
+		}
+		
+		String brzinaKalkulatorVrijednost = brzinaKalkualtor.vratiOdabrani().getActionCommand();
+		int brzinaKalkulatorOpcija;
+		
+		if (brzinaKalkulatorVrijednost.equals(STANDARDNI_BRZINA_KALKULATOR)) {
+			brzinaKalkulatorOpcija = PSOSimulator.STANDARDNI_BRZINA_KALKULATOR;
+		} else if (brzinaKalkulatorVrijednost.equals(INERCIJA_BRZINA_KALKULATOR)) { 
+			brzinaKalkulatorOpcija = PSOSimulator.INERCIJA_BRZINA_KALKULATOR;
+		} else if (brzinaKalkulatorVrijednost.equals(DINAMICKA_INERCIJA_BRZINA_KALKUALTOR)) { 
+			brzinaKalkulatorOpcija = PSOSimulator.DINAMICKA_INERCIJA_BRZINA_KALKUALTOR;
+		} else if (brzinaKalkulatorVrijednost.equals(DINAMICKA_OGRANICAVAJUCA_INERCIJA_KALKUALTOR)) { 
+			brzinaKalkulatorOpcija = PSOSimulator.DINAMICKA_OGRANICAVAJUCA_INERCIJA_KALKUALTOR;
+		} else {
+			brzinaKalkulatorOpcija = PSOSimulator.OGRANICAVAJUCA_BRZINA_KALKULATOR;
+		}
+		
+		if (brzinaKalkulatorOpcija == PSOSimulator.INERCIJA_BRZINA_KALKULATOR || brzinaKalkulatorOpcija == PSOSimulator.DINAMICKA_INERCIJA_BRZINA_KALKUALTOR) {
+
+			try {
+				simulator.koristeciInerciju(Double.parseDouble(inercija.vratiVrijednost()));
+			} catch (NumberFormatException e) { 
+				zapisiUZapisnik("Inercija mora biti broj");
+				return ;
+			}
+			
+			if (brzinaKalkulatorOpcija == PSOSimulator.DINAMICKA_INERCIJA_BRZINA_KALKUALTOR) {
+
+				try {
+					simulator.koristeciFaktorSmanjenjaInercije(Double.parseDouble(faktorSmanjeInercije.vratiVrijednost()));
+				} catch (NumberFormatException e) { 
+					zapisiUZapisnik("Faktor smanjenja inercije mora biti broj");
+					return ;
+				}
+			}
+		} else if (brzinaKalkulatorOpcija == PSOSimulator.DINAMICKA_OGRANICAVAJUCA_INERCIJA_KALKUALTOR) {
+
+			try {
+				simulator.koristeciGraniceInercije(new double[] {
+					Double.parseDouble(minInercija.vratiVrijednost()),
+					Double.parseDouble(maksInercija.vratiVrijednost())
+				});
+			} catch (NumberFormatException e) { 
+				zapisiUZapisnik("Minimum i maksimum inercije moraju biti brojevi");
+				return ;
+			}
+			
+			try {
+				simulator.koristeciBrojKorakaInercije(Integer.parseInt(brojKorakaInercija.vratiVrijednost()));
+			} catch (NumberFormatException e) { 
+				zapisiUZapisnik("Broj koraka inercije mora biti cijeli broj");
+				return ;
+			}
+		}
+		
+		simulator.koristeciKalkulatorBrzine(brzinaKalkulatorOpcija);
+		
+		try {
+			simulator.koristeciC1IC2(
+				Double.parseDouble(c1.vratiVrijednost()),
+				Double.parseDouble(c2.vratiVrijednost())
+			);
+		} catch (NumberFormatException e) { 
+			zapisiUZapisnik("Konstante c1 i c2 biti brojevi");
+			return ;
+		}
+		
+		String susjedstvoVrijednost = susjedstvo.vratiOdabrani().getActionCommand();
+		
+		int susjedstvoOpcija;
+		
+		if (susjedstvoVrijednost.equals(GLOBALNO_SUSJEDSTVO)) {
+			susjedstvoOpcija = PSOSimulator.GLOBALNO_SUSJEDSTVO;
+		} else {
+			susjedstvoOpcija = PSOSimulator.LOKALNO_SUSJEDSTVO;
+
+			
+			try {
+				simulator.koristeciBrojOkolnihCestica(Integer.parseInt(brojOkolnihJedinki.vratiVrijednost()));
+			} catch (NumberFormatException e) { 
+				zapisiUZapisnik("Broj okolnih jedinki mora biti cijeli broj");
+				return ;
+			}
+			
+		}
+			
+		simulator.koristeciSusjedstvo(susjedstvoOpcija);
+		
+		try {
+			simulator.uzGraniceBrzine(
+				new double[] {
+					Double.parseDouble(donjaGranicaBrzinaX.vratiVrijednost()),
+					Double.parseDouble(donjaGranicaBrzinaY.vratiVrijednost())
+				},new double[] {
+					Double.parseDouble(gornjaGranicaBrzinaX.vratiVrijednost()),
+					Double.parseDouble(gornjaGranicaBrzinaY.vratiVrijednost())
+				}
+			);
+		} catch (NumberFormatException e) { 
+			zapisiUZapisnik("Granice brzina moraju biti brojevi");
+			return ;
+		}
+		
+		String funkcijaString = funkcija.vratiVrijednost().toLowerCase();
+		graf.setTitle(funkcijaString);
+		
+		simulator.koristeciFunkciju(new ExpressionBuilder(funkcijaString).withVariableNames("x", "y").build());
+		
+		try {
+			simulator.uzBrojGeneracija(Integer.parseInt(brojGeneracija.vratiVrijednost()));
+		} catch (NumberFormatException e) { 
+			zapisiUZapisnik("Broj generacija mora biti cijeli broj");
+			return ;
+		}
+		
+		simulator.addPropertyChangeListener(new ZaustaviSimulaciju(gumb));
 		simulator.execute();
 		
 		gumb.setText(ZAUSTAVI);
 				
 	}
 
-	public void nacrtajFunkciju(RealniKrajolik krajolik) {
-		SwingUtilities.invokeLater(new NacrtajFunkciju(krajolik));
+	public void iscrtajFunkciju(RealniKrajolik krajolik) {
+		new NacrtajFunkciju(krajolik).execute();
+	}
+
+	public void iscrtajCestice(Cestica<Double[]>[] cestice) {
+		new NacrtajCestice(cestice).execute();
 	}
 }

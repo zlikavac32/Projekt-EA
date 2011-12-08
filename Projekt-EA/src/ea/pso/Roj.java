@@ -58,7 +58,7 @@ public abstract class Roj<T> {
 		if (cestice == null || cestice.length < 1) { return null; }
 		Cestica<T> najbolje = cestice[0];
 		for (int i = 1; i < cestice.length; i++) {
-			if (cestice[i].compareTo(najbolje) > 0) { najbolje = cestice[i]; }
+			if (cestice[i].compareTo(najbolje) < 0) { najbolje = cestice[i]; }
 		}
 		return najbolje.kopiraj();
 	}

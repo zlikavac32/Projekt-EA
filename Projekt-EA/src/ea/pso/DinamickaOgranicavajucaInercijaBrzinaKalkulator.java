@@ -29,7 +29,7 @@ public class DinamickaOgranicavajucaInercijaBrzinaKalkulator implements BrzinaKa
 
 	private double maksInercija;
 
-	public DinamickaOgranicavajucaInercijaBrzinaKalkulator(double c1, double c2, double[] donjaGranica, double gornjaGranica[], double maksInercija, double minInercija, int brojKoraka) {
+	public DinamickaOgranicavajucaInercijaBrzinaKalkulator(double c1, double c2, double[] donjaGranica, double gornjaGranica[], double minInercija, double maksInercija, int brojKoraka) {
 		this.c1 = c1;
 		this.c2 = c2;
 		this.donjaGranica = donjaGranica;
@@ -44,7 +44,7 @@ public class DinamickaOgranicavajucaInercijaBrzinaKalkulator implements BrzinaKa
 	}
 	
 	private void azurirajFaktorInercije() {
-		inercija = (trenutniKorak <= brojKoraka) ? (trenutniKorak / brojKoraka * (maksInercija - minInercija) + minInercija) : minInercija;
+		inercija = (trenutniKorak <= brojKoraka) ? (trenutniKorak / brojKoraka * (minInercija - maksInercija) + maksInercija) : minInercija;
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class DinamickaOgranicavajucaInercijaBrzinaKalkulator implements BrzinaKa
 			brzina[i] = inercija * staraBrzina[i] + c1 * generator.vratiDouble() * (
 				osobnoNajbolje[i] - trenutno[i]
 			) +  c2 * generator.vratiDouble() * (
-					globalnoNajbolje[i] - trenutno[i]
+				globalnoNajbolje[i] - trenutno[i]
 			);
 			if (brzina[i] < donjaGranica[i]) { brzina[i] = donjaGranica[i]; }
 			else if (brzina[i] > gornjaGranica[i]) { brzina[i] = gornjaGranica[i]; }
@@ -75,6 +75,16 @@ public class DinamickaOgranicavajucaInercijaBrzinaKalkulator implements BrzinaKa
 	public void zavrsiKrug() {
 		trenutniKorak++;
 		azurirajFaktorInercije();
+	}
+
+	@Override
+	public double[] vratiDonjuGranicu() {
+		return donjaGranica;
+	}
+
+	@Override
+	public double[] vratiGornjuGranicu() {
+		return gornjaGranica;
 	}
 
 }
