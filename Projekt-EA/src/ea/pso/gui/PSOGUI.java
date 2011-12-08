@@ -561,7 +561,10 @@ public class PSOGUI extends GUI {
 		String funkcijaString = funkcija.vratiVrijednost().toLowerCase();
 		graf.setTitle(funkcijaString);
 		
-		simulator.koristeciFunkciju(new ExpressionBuilder(funkcijaString).withVariableNames("x", "y").build());
+		simulator.koristeciFunkciju(
+			new ExpressionBuilder(funkcijaString).withVariableNames("x", "y")
+			.withVariable("pi", Math.PI).withVariable("e", Math.E).build()
+		);
 		
 		try {
 			simulator.uzBrojGeneracija(Integer.parseInt(brojGeneracija.vratiVrijednost()));
