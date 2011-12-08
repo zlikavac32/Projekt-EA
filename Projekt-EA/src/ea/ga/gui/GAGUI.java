@@ -481,7 +481,10 @@ public class GAGUI extends GUI {
 		String funkcijaString = funkcija.vratiVrijednost().toLowerCase();
 		graf.setTitle(funkcijaString);
 		
-		simulator.koristeciFunkciju(new ExpressionBuilder(funkcijaString).withVariableNames("x").build());
+		simulator.koristeciFunkciju(
+			new ExpressionBuilder(funkcijaString).withVariableNames("x")
+			.withVariable("pi", Math.PI).withVariable("e", Math.E).build()
+		);
 		
 		try {
 			simulator.uzBrojGeneracija(Integer.parseInt(brojGeneracija.vratiVrijednost()));
