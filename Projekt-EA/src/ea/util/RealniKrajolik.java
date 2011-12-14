@@ -7,7 +7,7 @@ package ea.util;
  * @author Zlikavac32
  *
  */
-public abstract class RealniKrajolik implements Krajolik<Double[]> {
+public abstract class RealniKrajolik implements Krajolik<double[]> {
 
 	protected double gornjaGranica[];
 	

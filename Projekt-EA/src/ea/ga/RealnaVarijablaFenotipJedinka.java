@@ -47,7 +47,7 @@ public class RealnaVarijablaFenotipJedinka extends Jedinka<RealniKrajolik> {
 			default:
 				throw new IllegalArgumentException("Mutator " + mutator + " nije valjan za realnu jedinku");
 		}
-		if (!populacija.vratiKrajolik().jeValjanaVrijednost(new Double[] { vrijednost })) { vrijednost = staro; }
+		if (!populacija.vratiKrajolik().jeValjanaVrijednost(new double[] { vrijednost })) { vrijednost = staro; }
 		faktorDobrote = racunajFaktorDobrote(vrijednost);
 	}
 
@@ -75,7 +75,7 @@ public class RealnaVarijablaFenotipJedinka extends Jedinka<RealniKrajolik> {
 	}
 
 	protected double racunajFaktorDobrote(double vrijednost) { 
-		return populacija.vratiKrajolik().racunajFaktorDobrote(new Double[] { vrijednost });
+		return populacija.vratiKrajolik().racunajFaktorDobrote(new double[] { vrijednost });
 	}
 
 	public double racunajFaktorDobrote() { return faktorDobrote; }
@@ -99,7 +99,7 @@ public class RealnaVarijablaFenotipJedinka extends Jedinka<RealniKrajolik> {
 		//Provjera Double.isNan ide iz razloga sto se kod tezinkse zna dogodit da pogodi za rekombinaciju obje najgore jedinke pa kao rezultat dobijem NaN
 		if (
 			Double.isNaN(vrijednost) ||
-			!populacija.vratiKrajolik().jeValjanaVrijednost(new Double[] { vrijednost })
+			!populacija.vratiKrajolik().jeValjanaVrijednost(new double[] { vrijednost })
 		) { vrijednost = staro; }
 		faktorDobrote = racunajFaktorDobrote(vrijednost);
 	}

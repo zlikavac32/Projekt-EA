@@ -42,7 +42,7 @@ public class RealnaVarijablaGenotipJedinka extends Jedinka<RealniKrajolik> {
 	
 
 	protected double racunajFaktorDobrote(double vrijednost) { 
-		return populacija.vratiKrajolik().racunajFaktorDobrote(new Double[] { vrijednost });
+		return populacija.vratiKrajolik().racunajFaktorDobrote(new double[] { vrijednost });
 	}
 	
 	@Override

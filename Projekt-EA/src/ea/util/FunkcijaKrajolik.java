@@ -18,7 +18,7 @@ public class FunkcijaKrajolik extends RealniKrajolik {
 	private String[] varijable;
 	
 	@Override
-	public double racunajFaktorDobrote(Double[] vrijednost) {
+	public double racunajFaktorDobrote(double[] vrijednost) {
 		double[] novo = new double[vrijednost.length];
 		for (int i = 0; i < vrijednost.length; i++) { novo[i] = vrijednost[i]; }
 		double tempVrijednost = racunajVrijednost(novo);
@@ -26,7 +26,7 @@ public class FunkcijaKrajolik extends RealniKrajolik {
 	}
 
 	@Override
-	public boolean jeValjanaVrijednost(Double[] vrijednost) {
+	public boolean jeValjanaVrijednost(double[] vrijednost) {
 		for (int i = 0; i < vrijednost.length; i++) {
 			if (vrijednost[i] > gornjaGranica[i] || vrijednost[i] < donjaGranica[i]) { return false; }
 		}

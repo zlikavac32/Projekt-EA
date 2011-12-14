@@ -30,11 +30,11 @@ import ea.pso.gui.PSOGUI;
  * @author Zlikavac32
  *
  */
-public class PSOSimulator extends Simulator<Cestica<Double[]>[]> {
+public class PSOSimulator extends Simulator<Cestica<double[]>[]> {
 
 //	private Cestica<Double[]> najbolje = null;
 	
-	public static final int MAKSIMUM = 0;
+	public static final int MAKSIMUM = 1;
 	
 	public static final int MINIMUM = 0;
 
@@ -78,7 +78,7 @@ public class PSOSimulator extends Simulator<Cestica<Double[]>[]> {
 
 	private int brzinaKalkulator;
 
-	private Cestica<Double[]> najbolje;
+	private Cestica<double[]> najbolje;
 
 	private double c1;
 
@@ -200,7 +200,7 @@ public class PSOSimulator extends Simulator<Cestica<Double[]>[]> {
 		
 		((PSOGUI) gui).iscrtajFunkciju(krajolik);
 		
-		Roj<Double[]> roj = new StandradniRealnaVarijablaRoj(brojCestica, randomGenerator, 2, krajolik, vratiSusjedstvoGraditelj(), vratiGeneratorBrzine());
+		Roj<double[]> roj = new StandradniRealnaVarijablaRoj(brojCestica, randomGenerator, 2, krajolik, vratiSusjedstvoGraditelj(), vratiGeneratorBrzine());
 		
 		roj.inicijaliziraj();
 		
@@ -214,30 +214,30 @@ public class PSOSimulator extends Simulator<Cestica<Double[]>[]> {
 		ispisiRjesenje();
 	}
 	
-	private SusjedstvoGraditelj<Double[]> vratiSusjedstvoGraditelj() {
+	private SusjedstvoGraditelj<double[]> vratiSusjedstvoGraditelj() {
 		switch (susjedstvo) {
 			case GLOBALNO_SUSJEDSTVO :
-				return new SusjedstvoGraditelj<Double[]>() {
+				return new SusjedstvoGraditelj<double[]>() {
 
 					@Override
-					public Susjedstvo<Double[]> stvoriSusjedstvo() {
-						return new GlobalnoSusjedstvo<Double[]>();
+					public Susjedstvo<double[]> stvoriSusjedstvo() {
+						return new GlobalnoSusjedstvo<double[]>();
 					}
 					
 				};
 			case LOKALNO_SUSJEDSTVO :
-				return new SusjedstvoGraditelj<Double[]>() {
+				return new SusjedstvoGraditelj<double[]>() {
 
 					@Override
-					public Susjedstvo<Double[]> stvoriSusjedstvo() {
-						return new LokalnoSusjedstvo<Double[]>(brojOkolnihCestica);
+					public Susjedstvo<double[]> stvoriSusjedstvo() {
+						return new LokalnoSusjedstvo<double[]>(brojOkolnihCestica);
 					}
 					
 				};
 		}
 		return null;
 	}
-	private BrzinaKalkulator<Double[]> vratiGeneratorBrzine() {
+	private BrzinaKalkulator<double[]> vratiGeneratorBrzine() {
 		switch (brzinaKalkulator) {
 			case STANDARDNI_BRZINA_KALKULATOR :
 				return new StandardniBrzinaKalkulator(c1, c2, donjaGranicaBrzine, gornjaGranicaBrzine);
@@ -253,8 +253,8 @@ public class PSOSimulator extends Simulator<Cestica<Double[]>[]> {
 		return null;
 	}
 	@Override
-    protected void process(List<Cestica<Double[]>[]> populacije) {
-		Cestica<Double[]>[] zadnja = populacije.get(populacije.size() - 1);
+    protected void process(List<Cestica<double[]>[]> populacije) {
+		Cestica<double[]>[] zadnja = populacije.get(populacije.size() - 1);
 		((PSOGUI) gui).iscrtajCestice(zadnja);
         setProgress((int) ((((XKorakaKriterijKraja<?>) kriterijKraja).vratiBrojProteklihGeneracija() / (double) brojGeneracija ) * 100));
     }

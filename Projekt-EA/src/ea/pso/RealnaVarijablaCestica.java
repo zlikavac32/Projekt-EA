@@ -13,7 +13,7 @@ import ea.util.RealniKrajolik;
  * @author Zlikavac32
  *
  */
-public class RealnaVarijablaCestica extends Cestica<Double[]> {
+public class RealnaVarijablaCestica extends Cestica<double[]> {
 
 	protected int brojVarijabli;
 	
@@ -23,13 +23,13 @@ public class RealnaVarijablaCestica extends Cestica<Double[]> {
 	
 	protected double najboljiFaktorDobrote;
 	
-	protected Double[] staro;
+	protected double[] staro;
 	
-	protected DecimalFormat format = new DecimalFormat("0.000000");
+	protected static DecimalFormat format = new DecimalFormat("0.000000");
 	
 	public RealnaVarijablaCestica(
-		int brojVarijabli, RealniKrajolik krajolik, Susjedstvo<Double[]> susjedstvo, 
-		BrzinaKalkulator<Double[]> brzinaKalkulator
+		int brojVarijabli, RealniKrajolik krajolik, Susjedstvo<double[]> susjedstvo, 
+		BrzinaKalkulator<double[]> brzinaKalkulator
 	) { 
 		super(krajolik, susjedstvo, brzinaKalkulator); 
 		this.krajolik = krajolik;
@@ -40,7 +40,7 @@ public class RealnaVarijablaCestica extends Cestica<Double[]> {
 	 * @see ea.pso.Cestica#jeValjanaVrijednost(java.lang.Object)
 	 */
 	@Override
-	public boolean jeValjanaVrijednost(Double[] vrijednost) { return krajolik.jeValjanaVrijednost(vrijednost); }
+	public boolean jeValjanaVrijednost(double[] vrijednost) { return krajolik.jeValjanaVrijednost(vrijednost); }
 
 	/**
 	 * @see ea.pso.Cestica#racunajFaktorDobrote()
@@ -67,7 +67,7 @@ public class RealnaVarijablaCestica extends Cestica<Double[]> {
 
 	@Override
 	public void inicijaliziraj(RandomGenerator generator) {
-		vrijednost = new Double[brojVarijabli];
+		vrijednost = new double[brojVarijabli];
 		brzina = new double[brojVarijabli];
 		double[] donjaGranica = brzinaKalkulator.vratiDonjuGranicu();
 		double[] gornjaGranica = brzinaKalkulator.vratiGornjuGranicu();
@@ -84,7 +84,7 @@ public class RealnaVarijablaCestica extends Cestica<Double[]> {
 	public void evoluiraj(RandomGenerator generator) {
 		brzina = brzinaKalkulator.izracunajBrzinu(this, generator);
 		staro = vrijednost;
-		Double[] novaVrijednost = new Double[vrijednost.length];
+		double[] novaVrijednost = new double[vrijednost.length];
 		for (int i = 0; i < brojVarijabli; i++) {
 			novaVrijednost[i] = vrijednost[i] + brzina[i];
 		}
@@ -103,12 +103,12 @@ public class RealnaVarijablaCestica extends Cestica<Double[]> {
 	}
 
 	@Override
-	public Double[] vratiVrijednost() {
+	public double[] vratiVrijednost() {
 		return Arrays.copyOf(vrijednost, vrijednost.length);
 	}
 
 	@Override
-	public Double[] vratiNajboljuVrijednost() {
+	public double[] vratiNajboljuVrijednost() {
 		return Arrays.copyOf(najboljaVrijednost, najboljaVrijednost.length);
 	}
 	
@@ -126,7 +126,7 @@ public class RealnaVarijablaCestica extends Cestica<Double[]> {
 	}
 
 	@Override
-	public Double[] vratiStaruVrijednost() {
+	public double[] vratiStaruVrijednost() {
 		return Arrays.copyOf(staro, staro.length);
 	}
 

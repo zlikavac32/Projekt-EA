@@ -9,7 +9,7 @@ import ea.util.RandomGenerator;
  * @author Zlikavac32
  *
  */
-public class KonstantnaInercijaBrzinaKalkulator implements BrzinaKalkulator<Double[]> {
+public class KonstantnaInercijaBrzinaKalkulator implements BrzinaKalkulator<double[]> {
 
 	private double c1;
 	
@@ -31,15 +31,15 @@ public class KonstantnaInercijaBrzinaKalkulator implements BrzinaKalkulator<Doub
 	}
 	
 	@Override
-	public double[] izracunajBrzinu(Cestica<Double[]> cestica,
+	public double[] izracunajBrzinu(Cestica<double[]> cestica,
 			RandomGenerator generator) {
 		
 		double[] staraBrzina = cestica.vratiBrzinu();
 		
 		double[] brzina = new double[staraBrzina.length];
-		Double[] trenutno = cestica.vratiVrijednost();
-		Double[] osobnoNajbolje = cestica.vratiNajboljuVrijednost();
-		Double[] globalnoNajbolje = cestica.vratiSusjedstvo().vratiNajbolju().vratiVrijednost();
+		double[] trenutno = cestica.vratiVrijednost();
+		double[] osobnoNajbolje = cestica.vratiNajboljuVrijednost();
+		double[] globalnoNajbolje = cestica.vratiSusjedstvo().vratiNajbolju().vratiVrijednost();
 		
 		for (int i = 0; i < brzina.length; i++) {
 			brzina[i] = inercija * staraBrzina[i] + c1 * generator.vratiDouble() * (

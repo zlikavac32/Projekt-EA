@@ -10,13 +10,13 @@ import ea.util.RealniKrajolik;
  * @author Zlikavac32
  *
  */
-public class StandradniRealnaVarijablaRoj extends Roj<Double[]> {
+public class StandradniRealnaVarijablaRoj extends Roj<double[]> {
 
 	private int brojVarijabli;
 
 	public StandradniRealnaVarijablaRoj(
-		int brojCestica, RandomGenerator generator, int brojVarijabli, RealniKrajolik krajolik, SusjedstvoGraditelj<Double[]> susjedstvoGraditelj,
-		BrzinaKalkulator<Double[]> brzinaKalkulator 
+		int brojCestica, RandomGenerator generator, int brojVarijabli, RealniKrajolik krajolik, SusjedstvoGraditelj<double[]> susjedstvoGraditelj,
+		BrzinaKalkulator<double[]> brzinaKalkulator 
 	) {
 		super(brojCestica, generator, krajolik, susjedstvoGraditelj, brzinaKalkulator);
 		this.brojVarijabli = brojVarijabli;
@@ -37,7 +37,7 @@ public class StandradniRealnaVarijablaRoj extends Roj<Double[]> {
 
 	private void obnoviSusjedstvo() {
 		for (int i = 0; i < cestice.length; i++) {
-			Susjedstvo<Double[]> susjedstvo = cestice[i].vratiSusjedstvo();
+			Susjedstvo<double[]> susjedstvo = cestice[i].vratiSusjedstvo();
 			susjedstvo.stvori(i, cestice);
 		}
 	}

@@ -239,13 +239,13 @@ public class PSOGUI extends GUI {
 	 */
 	private class NacrtajCestice extends SwingWorker<Void, Void> {
 
-		Cestica<Double[]>[] cestice;
+		Cestica<double[]>[] cestice;
 		
 		private XYSeries podatci;
 
 		private VectorSeries vektor;
 		
-		NacrtajCestice(Cestica<Double[]>[] cestice) {
+		NacrtajCestice(Cestica<double[]>[] cestice) {
 			this.cestice = cestice;
 		}
 		
@@ -257,8 +257,8 @@ public class PSOGUI extends GUI {
 			podatci = new XYSeries("Podatci");
 			vektor = new VectorSeries("Vektori");
 			for (int i = 0; i < cestice.length; i++) {
-				Double[] temp = cestice[i].vratiVrijednost();
-				Double[] staro = cestice[i].vratiStaruVrijednost();
+				double[] temp = cestice[i].vratiVrijednost();
+				double[] staro = cestice[i].vratiStaruVrijednost();
 				podatci.add(temp[0], temp[1]);
 				if (staro != null) {
 					vektor.add(staro[0], staro[1], temp[0] - staro[0], temp[1] - staro[1]);
@@ -584,7 +584,7 @@ public class PSOGUI extends GUI {
 		new NacrtajFunkciju(krajolik).execute();
 	}
 
-	public void iscrtajCestice(Cestica<Double[]>[] cestice) {
+	public void iscrtajCestice(Cestica<double[]>[] cestice) {
 		new NacrtajCestice(cestice).execute();
 	}
 }
