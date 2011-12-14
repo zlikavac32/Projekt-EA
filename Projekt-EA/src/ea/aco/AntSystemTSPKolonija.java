@@ -132,8 +132,8 @@ public class AntSystemTSPKolonija extends TSPKolonija {
 	protected void evoluirajSpecificno(int brojMravaAzurira) {
 		azurirajTragoviCache();
 		obaviSetnje();
-		obnoviGlobalnoNajbolje();
 		obaviIsparavnje();
+		obnoviGlobalnoNajbolje();
 		azurirajTragove(brojMravaAzurira);	
 		
 	}

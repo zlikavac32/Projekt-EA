@@ -83,7 +83,7 @@ public abstract class TSPKolonija extends Kolonija {
 	@Override
 	public void obaviIsparavnje() {
 		for (int i = 0; i < tragovi.length; i++) {
-			for (int j = 0; j < tragovi.length; j++) {
+			for (int j = i; j < tragovi.length; j++) {
 				tragovi[i][j] = tragovi[j][i] *= konstantaIsparavanja;
 			}
 		}

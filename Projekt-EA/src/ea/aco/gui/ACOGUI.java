@@ -70,9 +70,9 @@ public class ACOGUI extends GUI {
 
 	private TekstualnaVrijednost brojMravaAzurira;
 	
-	private TekstualnaVrijednost brojKoraka;
+	//private TekstualnaVrijednost brojKoraka;
 	
-	private TekstualnaVrijednost a;
+	//private TekstualnaVrijednost a;
 	
 	
 	private Ploca gradoviPloca = new Ploca();
@@ -93,9 +93,9 @@ public class ACOGUI extends GUI {
 
 	private Ploca betaPloca = new Ploca();
 	
-	private Ploca brojKorakaPloca = new Ploca();
+	//private Ploca brojKorakaPloca = new Ploca();
 	
-	private Ploca aPloca = new Ploca();
+	//private Ploca aPloca = new Ploca();
 	
 	/**
 	 * 
@@ -185,13 +185,13 @@ public class ACOGUI extends GUI {
 		DijeljenaPloca[] elementi = new DijeljenaPloca[] {
 			gradovi, sjeme, brojMrava, 
 			algoritam, konstantaIsparavanja, 
-			alfa, beta, a, brojMravaAzurira, brojKoraka, brojGeneracija
+			alfa, beta, /* a ,*/ brojMravaAzurira, /* brojKoraka ,*/ brojGeneracija
 		};
 		
 		Ploca[] ploce = new Ploca[] {
 			gradoviPloca, sjemePloca, brojMravaPloca, 
 			algoritamPloca, konstantaIsparavanjaPloca, 
-			alfaPloca, betaPloca, aPloca, brojMravaAzuriraPloca, brojKorakaPloca, brojGeneracijaPloca
+			alfaPloca, betaPloca, /* aPloca ,*/ brojMravaAzuriraPloca, /* brojKorakaPloca ,*/ brojGeneracijaPloca
 		};
 		
 		for (int i = 0; i < elementi.length; i++) {
@@ -220,9 +220,9 @@ public class ACOGUI extends GUI {
 				flag = algoritam.vratiOdabrani().getActionCommand().equals(SIMPLE_ACO);
 				brojMravaAzurira.setEnabled(flag);
 				
-				flag = algoritam.vratiOdabrani().getActionCommand().equals(MAX_MIN_ANT_SYSTEM);
-				brojKoraka.setEnabled(flag);
-				a.setEnabled(flag);
+				//flag = algoritam.vratiOdabrani().getActionCommand().equals(MAX_MIN_ANT_SYSTEM);
+				//brojKoraka.setEnabled(flag);
+				//a.setEnabled(flag);
 			}
 		};
 		
@@ -231,9 +231,9 @@ public class ACOGUI extends GUI {
 		brojGeneracija = new TekstualnaVrijednost(BROJ_GENERACIJA, "2000");
 		sjeme = new TekstualnaVrijednost(SJEME, "123456");
 		algoritam = new RadioGumbi(ALGORITAM, new String[] {
-			SIMPLE_ACO, ANT_SYSTEM, MAX_MIN_ANT_SYSTEM
+			SIMPLE_ACO, ANT_SYSTEM//, MAX_MIN_ANT_SYSTEM
 		}, 0, new ActionListener[] { 
-			sakrijOtkrij, sakrijOtkrij, sakrijOtkrij
+			sakrijOtkrij, sakrijOtkrij//, sakrijOtkrij
 		});
 		konstantaIsparavanja = new TekstualnaVrijednost(KONSTANTA_ISPARAVANJA, "0.5");
 		alfa = new TekstualnaVrijednost(ALFA, "1");
@@ -293,10 +293,10 @@ public class ACOGUI extends GUI {
 			+ "51 1340 725\n"
 			+ "52 1740 245\n",
 		10);
-		brojKoraka = new TekstualnaVrijednost(BROJ_KORAKA, "20");
-		brojKoraka.setEnabled(false);
-		a = new TekstualnaVrijednost("A", "5");
-		a.setEnabled(false);
+		//brojKoraka = new TekstualnaVrijednost(BROJ_KORAKA, "20");
+		//brojKoraka.setEnabled(false);
+		//a = new TekstualnaVrijednost("A", "5");
+		//a.setEnabled(false);
 	}
 
 	protected ChartPanel stvoriGraf() {
@@ -417,7 +417,7 @@ public class ACOGUI extends GUI {
 				zapisiUZapisnik("Beta mora biti broj");
 				return ;
 			} 
-			if (odabraniAlgoritam == ACOSimulator.MAX_MIN_ANT_SYSTEM_ALGORITM) {
+			/*if (odabraniAlgoritam == ACOSimulator.MAX_MIN_ANT_SYSTEM_ALGORITM) {
 				try {
 					simulator.koristecKonstantuA(Double.parseDouble(a.vratiVrijednost()));
 				} catch (NumberFormatException e) { 
@@ -430,7 +430,7 @@ public class ACOGUI extends GUI {
 					zapisiUZapisnik("Broj koraka mora biti cijeli broj");
 					return ;
 				} 
-			}
+			}*/
 		}
 		
 		try {

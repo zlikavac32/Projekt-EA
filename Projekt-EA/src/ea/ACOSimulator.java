@@ -6,7 +6,7 @@ package ea;
 import java.util.List;
 
 import ea.aco.AntSystemTSPKolonija;
-import ea.aco.MaxMinAntSystemTSPKolonija;
+//import ea.aco.MaxMinAntSystemTSPKolonija;
 import ea.aco.SimpleACOTSPKolonija;
 import ea.aco.TSPKolonija;
 import ea.aco.gui.ACOGUI;
@@ -45,11 +45,11 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 
 	private int brojMravaAzurira;
 
-	private int brojKoraka;
+	//private int brojKoraka;
 
 	private TSPMrav najbolje = null;
 
-	private double a;
+	//private double a;
 	
 	public ACOSimulator() { 
 		randomGenerator = new RandomGenerator();
@@ -98,9 +98,9 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 		this.algoritam = algoritam;
 	}
 	
-	public void koristecKonstantuA(double a) {
-		this.a = a;
-	}
+	//public void koristecKonstantuA(double a) {
+	//	this.a = a;
+	//}
 
 	@Override
 	protected Void doInBackground() 
@@ -125,9 +125,9 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 			kolonija = new AntSystemTSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa, beta);
 		} else if (algoritam == SIMPLE_ACO_ALGORITAM) {
 			kolonija = new SimpleACOTSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa);
-		} else {
-			kolonija = new MaxMinAntSystemTSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa, brojKoraka, a);
-		}
+		}// else {
+		//	kolonija = new MaxMinAntSystemTSPKolonija(gradoviLista, brojMrava, konstantaIsparavanja, randomGenerator, alfa, brojKoraka, a);
+		//}
 		
 		kolonija.inicijaliziraj();
 		((ACOGUI) gui).iscrtajGradove(kolonija.vratiGradove());
@@ -149,9 +149,9 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
         setProgress((int) ((((XKorakaKriterijKraja<TSPKolonija>) kriterijKraja).vratiBrojProteklihGeneracija() / (double) brojGeneracija) * 100));
     }
 
-	public void uzBrojKoraka(int brojKoraka) {
-		this.brojKoraka = brojKoraka;
-	}
+	//public void uzBrojKoraka(int brojKoraka) {
+	//	this.brojKoraka = brojKoraka;
+	//}
 
 	@Override
 	public void ispisiRjesenje() {
