@@ -2,6 +2,7 @@ package ea.ga;
 
 import java.util.Arrays;
 
+import ea.util.BinarniDekoder;
 import ea.util.RealniKrajolik;
 
 public class RealnaVarijablaGenotipJedinka extends Jedinka<RealniKrajolik> {
@@ -28,12 +29,15 @@ public class RealnaVarijablaGenotipJedinka extends Jedinka<RealniKrajolik> {
 	
 	protected double faktorDobrote;
 	
+	protected BinarniDekoder dekoder;
+	
 	public RealnaVarijablaGenotipJedinka(Populacija<RealniKrajolik> populacija, int brojBitova) {
 		super(populacija); 
 		if (brojBitova < 1 || brojBitova > 63) { 
 			throw new IllegalArgumentException("Broj bitova mora biti u rasponu [0,63]");
 		}
 		this.brojBitova = brojBitova; 
+		dekoder = new BinarniDekoder(brojBitova, populacija.vratiKrajolik());
 	}
 	
 
@@ -101,14 +105,7 @@ public class RealnaVarijablaGenotipJedinka extends Jedinka<RealniKrajolik> {
  	}
 	
 	protected double dekodiraj(byte[] bitovi) {
-		double vrijednost = 0.;
-		long potencija = 1;
-		for (int i = 0; i < bitovi.length; i++) {
-			if (bitovi[i] == 1) { vrijednost += potencija; }
-			potencija <<= 1;
-		}
-		return vrijednost / ((1L << brojBitova) - 1) * (populacija.vratiKrajolik().vratiGornjuGranicu()[0] - populacija.vratiKrajolik().vratiDonjuGranicu()[0]) 
-			+ populacija.vratiKrajolik().vratiDonjuGranicu()[0];
+		return dekoder.dekodiraj(bitovi)[0];
 	}
 
 	@Override
