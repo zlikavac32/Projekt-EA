@@ -7,6 +7,9 @@ public class BinarniDekoder {
 	private RealniKrajolik krajolik;
 
 	public BinarniDekoder(int brojBitovaPoVarijabli, RealniKrajolik krajolik) {
+		if (brojBitovaPoVarijabli < 1 || brojBitovaPoVarijabli > 63) {
+			throw new IllegalArgumentException("Broj bitova po varijabli mora biti u rasponu [1, 63]");
+		}
 		this.brojBitovaPoVarijabli = brojBitovaPoVarijabli;
 		this.krajolik = krajolik;
 	}

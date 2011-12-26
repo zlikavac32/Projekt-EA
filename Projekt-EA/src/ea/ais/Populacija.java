@@ -1,5 +1,6 @@
 package ea.ais;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -68,5 +69,9 @@ public abstract class Populacija<R, E, T extends Krajolik<E>> {
 	}
 	
 	public abstract void evoluiraj();
+
+	public List<AntiTijelo<R, E, T>> vratiKopijuPopulacije() {
+		return new ArrayList<AntiTijelo<R,E,T>>(antiTijela);
+	}
 	
 }

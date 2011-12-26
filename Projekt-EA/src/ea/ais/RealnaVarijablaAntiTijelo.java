@@ -57,6 +57,8 @@ public class RealnaVarijablaAntiTijelo extends AntiTijelo<byte[], double[], Real
 		vrati.dekoder = dekoder;
 		vrati.bitovi = Arrays.copyOf(bitovi, bitovi.length);
 		vrati.vrijednost = vratiVrijednost();
+		vrati.starost = starost;
+		vrati.pocetnaStarost = pocetnaStarost;
 		
 		return vrati;
 	}
@@ -73,8 +75,9 @@ public class RealnaVarijablaAntiTijelo extends AntiTijelo<byte[], double[], Real
 
 	@Override
 	public void mutiraj(Mutator<byte[]> mutator) {
+		if (mutator == null) { return; }
 		byte[] mutirano = mutator.mutiraj(this);
-		if (mutirano.length != bitovi.length || !krajolik.jeValjanaVrijednost(dekodiraj(mutirano))) {
+		if (mutirano.length != bitovi.length) {
 			return ;
 		}
 		bitovi = mutirano;

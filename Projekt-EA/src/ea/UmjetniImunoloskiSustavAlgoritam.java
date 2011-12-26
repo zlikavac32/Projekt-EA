@@ -12,8 +12,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import ea.ais.gui.AISGUI;
 import ea.gui.GUI;
-import ea.pso.gui.PSOGUI;
 
 /**
  * Ulaz u nasu aplikaciju.
@@ -21,7 +21,7 @@ import ea.pso.gui.PSOGUI;
  * @author Marijan Šuflaj <msufflaj32@gmail.com>
  *
  */
-public class RojCesticaAlgoritam extends JApplet {
+public class UmjetniImunoloskiSustavAlgoritam extends JApplet {
 
 	/**
 	 * 
@@ -59,7 +59,7 @@ public class RojCesticaAlgoritam extends JApplet {
 					
 					@Override
 					public void run() {
-						GUI gui = new PSOGUI("Roj čestica algoritam");
+						GUI gui = new AISGUI("Umjetni imunuloški sustav");
 						gui.inicijaliziraj();
 						gui.setVisible(true);
 					}

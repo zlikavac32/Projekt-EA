@@ -7,6 +7,10 @@ public abstract class AntiTijelo<R, E, T extends Krajolik<E>> implements Compara
 
 	protected T krajolik;
 	
+	protected int starost;
+	
+	protected int pocetnaStarost;
+	
 	public AntiTijelo(T krajolik) {
 		this.krajolik = krajolik;
 	}
@@ -32,5 +36,20 @@ public abstract class AntiTijelo<R, E, T extends Krajolik<E>> implements Compara
 		else if (mojFaktorDobrote < straniFaktorDobrote) { return 1; }
 		return 0;
 	}
-
+	
+	public void stari() { starost--; }
+	
+	public boolean jeMrtav() {
+		return starost <= 0;
+	}
+	
+	public void postaviStarost(int starost) {
+		this.starost = starost;
+		pocetnaStarost = starost;
+	}
+	
+	public void resetirajStarost() {
+		postaviStarost(pocetnaStarost);
+	}
+	
 }

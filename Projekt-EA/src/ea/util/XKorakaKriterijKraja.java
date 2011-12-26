@@ -21,7 +21,7 @@ public class XKorakaKriterijKraja<T> implements KriterijKraja<T> {
 
 	public synchronized boolean jeKraj(T populacija) { return (brojac++) == brojKoraka; }
 	
-	public synchronized int vratiBrojProteklihGeneracija() { return brojac - 1; }
+	public synchronized int vratiBrojProteklihGeneracija() { return brojac == 0 ? 0 : brojac - 1; }
 
 	@Override
 	public void resetiraj() {
