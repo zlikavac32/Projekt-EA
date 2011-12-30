@@ -9,7 +9,7 @@ public class UniformniMutator extends Mutator<double[][]> {
 	}
 
 	@Override
-	public void mutiraj(double[][] odrediste) {
+	public void mutiraj(double[][] odrediste, double[][] donor) {
 		
 		for (int i = 0; i < odrediste.length; i++) {
 			for (int j = 0; j < odrediste[i].length && generator.vratiDouble() < vjerojatnostMutacije; j++) {

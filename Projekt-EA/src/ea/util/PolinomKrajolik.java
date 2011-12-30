@@ -5,6 +5,18 @@ public class PolinomKrajolik implements Krajolik<double[][]> {
 	private double[] vrijednostiUTockama;
 	
 	private double[][] vrijednostiVarijabli;
+
+	protected double gornjaGranica[];
+	
+	protected double donjaGranica[];
+	
+	public double[] vratiGornjuGranicu() { return gornjaGranica; }
+	
+	public double[] vratiDonjuGranicu() { return donjaGranica; }
+	
+	public void postaviGornjuGranicu(double[] gornjaGranica) { this.gornjaGranica = gornjaGranica; }
+	
+	public void postaviDonjuGranicu(double[] donjaGranica) { this.donjaGranica = donjaGranica; }
 	
 	public PolinomKrajolik(double[][] referentniKoeficijenti, double[][] vrijednostiVarijabli) {
 		vrijednostiUTockama = new double[vrijednostiVarijabli.length];

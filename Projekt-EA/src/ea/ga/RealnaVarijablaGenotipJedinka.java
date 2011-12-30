@@ -160,6 +160,6 @@ public class RealnaVarijablaGenotipJedinka extends Jedinka<RealniKrajolik> {
 	public Double vratiVrijednost() { return dekodiraj(bitovi); }
 	
 	@Override
-	public double racunajVrijednost() { return racunajFaktorDobrote(); }
+	public double racunajVrijednost() { return populacija.vratiKrajolik().racunajVrijednost(new double[] { dekodiraj(bitovi) }); }
 	
 }

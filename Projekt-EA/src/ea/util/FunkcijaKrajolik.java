@@ -16,7 +16,7 @@ public class FunkcijaKrajolik extends RealniKrajolik {
 	private Calculable funkcija;
 	
 	private String[] varijable;
-	
+
 	@Override
 	public double racunajFaktorDobrote(double[] vrijednost) {
 		double[] novo = new double[vrijednost.length];

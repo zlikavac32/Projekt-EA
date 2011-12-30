@@ -16,10 +16,19 @@ public abstract class Populacija<T, E extends Krajolik<T>> {
 	protected int brojVektora;
 	
 	protected RandomGenerator generator;
+
+	protected Mutator<T> mutator;
+
+	protected Selektor<T, E> selektor;
 	
-	public Populacija(int brojVektora, RandomGenerator generator) {
+	public Populacija(
+		int brojVektora, RandomGenerator generator,
+		Mutator<T> mutator, Selektor<T, E> selektor
+	) {
 		this.brojVektora = brojVektora;
 		this.generator = generator;
+		this.mutator = mutator;
+		this.selektor = selektor;
 	}
 
 	public void inicijaliziraj(Inicijalizator<T, E> inicijalizator) {

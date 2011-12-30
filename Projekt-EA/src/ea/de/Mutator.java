@@ -4,8 +4,6 @@ import ea.util.RandomGenerator;
 
 public abstract class Mutator<T> {
 
-	protected T donor;
-	
 	protected double vjerojatnostMutacije;
 	
 	protected RandomGenerator generator;
@@ -15,10 +13,6 @@ public abstract class Mutator<T> {
 		this.generator = generator;
 	}
 	
-	public void postaviDonora(T donor) {
-		this.donor = donor;
-	}
-	
-	public abstract void mutiraj(T odrediste);
+	public abstract void mutiraj(T odrediste, T donor);
 	
 }
