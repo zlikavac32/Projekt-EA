@@ -35,13 +35,13 @@ import de.congrace.exp4j.ExpressionBuilder;
 import de.congrace.exp4j.UnknownFunctionException;
 import de.congrace.exp4j.UnparsableExpressionException;
 
-import ea.AISSimulator;
-import ea.PSOSimulator;
 import ea.ais.AntiTijelo;
 import ea.gui.DijeljenaPloca;
 import ea.gui.GUI;
 import ea.gui.RadioGumbi;
 import ea.gui.TekstualnaVrijednost;
+import ea.simulatori.AISSimulator;
+import ea.simulatori.PSOSimulator;
 import ea.util.RealniKrajolik;
 
 import static ea.ais.gui.AISGUIKonstante.*;

@@ -1,12 +1,13 @@
 /**
  * 
  */
-package ea;
+package ea.simulatori;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.congrace.exp4j.Calculable;
+import ea.Globalno;
 import ea.ais.AntiTijelo;
 import ea.ais.CLONALGPopulacija;
 import ea.ais.DistribuiraniBitMutator;

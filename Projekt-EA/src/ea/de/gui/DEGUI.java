@@ -31,12 +31,12 @@ import de.congrace.exp4j.ExpressionBuilder;
 import de.congrace.exp4j.UnknownFunctionException;
 import de.congrace.exp4j.UnparsableExpressionException;
 
-import ea.DESimulator;
 import ea.de.Vektor;
 import ea.gui.DijeljenaPloca;
 import ea.gui.GUI;
 import ea.gui.RadioGumbi;
 import ea.gui.TekstualnaVrijednost;
+import ea.simulatori.DESimulator;
 import ea.util.PolinomKrajolik;
 import ea.util.RealniKrajolik;
 

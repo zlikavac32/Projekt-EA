@@ -34,13 +34,13 @@ import org.jfree.data.xy.XYSeriesCollection;
 import de.congrace.exp4j.UnknownFunctionException;
 import de.congrace.exp4j.UnparsableExpressionException;
 
-import ea.ACOSimulator;
 import ea.aco.Grad;
 import ea.gui.DijeljenaPloca;
 import ea.gui.GUI;
 import ea.gui.RadioGumbi;
 import ea.gui.TekstPodrucje;
 import ea.gui.TekstualnaVrijednost;
+import ea.simulatori.ACOSimulator;
 import ea.util.Par;
 
 import static ea.aco.gui.ACOGUIKonstante.*;

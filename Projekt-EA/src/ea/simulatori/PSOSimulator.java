@@ -1,11 +1,12 @@
 /**
  * 
  */
-package ea;
+package ea.simulatori;
 
 import java.util.List;
 
 import de.congrace.exp4j.Calculable;
+import ea.Globalno;
 import ea.pso.BrzinaKalkulator;
 import ea.pso.Cestica;
 import ea.pso.DinamickaInercijaBrzinaKalkulator;

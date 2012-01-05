@@ -1,12 +1,13 @@
 /**
  * 
  */
-package ea;
+package ea.simulatori;
 
 import java.util.List;
 
 import de.congrace.exp4j.Calculable;
 
+import ea.Globalno;
 import ea.ga.FenotipNepreklapajucaPopulacija;
 import ea.ga.FenotipPreklapajucaPopulacija;
 import ea.ga.RealnaVarijablaGenotipJedinka;

@@ -1,13 +1,14 @@
 /**
  * 
  */
-package ea;
+package ea.simulatori;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.congrace.exp4j.Calculable;
 
+import ea.Globalno;
 import ea.de.BinomniMutator;
 import ea.de.DEPopulacija;
 import ea.de.EksponencijalniMutator;

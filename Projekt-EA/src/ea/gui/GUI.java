@@ -34,7 +34,7 @@ import de.congrace.exp4j.UnparsableExpressionException;
 
 
 import ea.Globalno;
-import ea.Simulator;
+import ea.simulatori.Simulator;
 
 import static ea.gui.GUIKonstante.*;
 

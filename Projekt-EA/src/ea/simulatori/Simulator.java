@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ea;
+package ea.simulatori;
 
 import javax.swing.SwingWorker;
 

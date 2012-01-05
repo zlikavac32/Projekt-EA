@@ -1,10 +1,11 @@
 /**
  * 
  */
-package ea;
+package ea.simulatori;
 
 import java.util.List;
 
+import ea.Globalno;
 import ea.aco.AntSystemTSPKolonija;
 //import ea.aco.MaxMinAntSystemTSPKolonija;
 import ea.aco.SimpleACOTSPKolonija;
