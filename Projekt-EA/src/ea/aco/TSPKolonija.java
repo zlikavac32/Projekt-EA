@@ -54,9 +54,11 @@ public abstract class TSPKolonija extends Kolonija {
 			udaljenosti[i][i] = 0;
 			tragovi[i][i] = 0;
 			for (int j = i + 1; j < udaljenosti.length; j++) {
-				udaljenosti[j][i] = udaljenosti[i][j] = gradovi[i].udaljenostDo(gradovi[j]);
+				udaljenosti[i][j] = gradovi[i].udaljenostDo(gradovi[j]);
+				udaljenosti[j][i] = udaljenosti[i][j];
 				//System.out.println("Udaljenost od " + gradovi[i] + " do " + gradovi[j] + " je " + udaljenosti[i][j]);
-				tragovi[i][j] = tragovi[j][i] = pocetniTrag;
+				tragovi[j][i] = pocetniTrag;
+				tragovi[i][j] = tragovi[j][i];
 			}
 		}
 		for (int i = 0; i < mravi.length; i++) { mravi[i] = new TSPMrav(udaljenosti, gradovi); }
@@ -75,7 +77,8 @@ public abstract class TSPKolonija extends Kolonija {
 		for (int i = 0; i < udaljenosti.length; i++) {
 			tragoviCache[i][i] = 0;
 			for (int j = i + 1; j < udaljenosti.length; j++) {
-				tragoviCache[i][j] = tragoviCache[j][i] = Math.pow(tragovi[i][j], alfa);
+				tragoviCache[j][i] = Math.pow(tragovi[i][j], alfa);
+				tragoviCache[i][j] = tragoviCache[j][i];
 			}
 		}
 	}
@@ -84,7 +87,8 @@ public abstract class TSPKolonija extends Kolonija {
 	public void obaviIsparavnje() {
 		for (int i = 0; i < tragovi.length; i++) {
 			for (int j = i; j < tragovi.length; j++) {
-				tragovi[i][j] = tragovi[j][i] *= konstantaIsparavanja;
+				tragovi[j][i] *= konstantaIsparavanja;
+				tragovi[i][j] = tragovi[j][i];
 			}
 		}
 //		System.out.println("-----------------------------------");
@@ -112,7 +116,8 @@ public abstract class TSPKolonija extends Kolonija {
 			double delta = 1 / nazivnik;
 			while (putanja.hasNext()) {
 				Integer kraj = putanja.next();
-				tragovi[pocetak][kraj] = tragovi[kraj][pocetak] += delta;
+				tragovi[kraj][pocetak] += delta;
+				tragovi[pocetak][kraj] = tragovi[kraj][pocetak];
 				pocetak = kraj;
 			}
 		}

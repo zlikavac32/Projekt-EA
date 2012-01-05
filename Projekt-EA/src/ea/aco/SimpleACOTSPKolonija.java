@@ -36,7 +36,8 @@ public class SimpleACOTSPKolonija extends TSPKolonija {
 			//TODO: Osmisli nacin da se koristi KoloSrece razred
 			for (int j = i; j < dohvatljivi.length; j++) { 
 				int sljedeci = dohvatljivi[j];
-				suma += vjerojatnostiOdabira[sljedeci] = tragoviCache[prethodni][sljedeci];
+				vjerojatnostiOdabira[sljedeci] = tragoviCache[prethodni][sljedeci];
+				suma += vjerojatnostiOdabira[sljedeci];
 			}
 			for (int j = i; j < dohvatljivi.length; j++) { 
 				int sljedeci = dohvatljivi[j];

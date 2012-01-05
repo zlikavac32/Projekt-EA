@@ -44,8 +44,10 @@ public class AntSystemTSPKolonija extends TSPKolonija {
 		for (int i = 0; i < udaljenosti.length; i++) {
 			udaljenosti[i][i] = 0;
 			for (int j = i + 1; j < udaljenosti.length; j++) {
-				heuristika[i][j] = heuristika[j][i] = Math.pow(1 / udaljenosti[i][j], beta);
-				tragovi[i][j] = tragovi[j][i] = pocetniTrag;
+				heuristika[j][i] = Math.pow(1 / udaljenosti[i][j], beta);
+				heuristika[i][j] = heuristika[j][i];
+				tragovi[j][i] = pocetniTrag;
+				tragovi[i][j] = tragovi[j][i];
 			}
 		}
 		
@@ -89,7 +91,8 @@ public class AntSystemTSPKolonija extends TSPKolonija {
 			//TODO: Osmisli nacin da se koristi KoloSrece razred
 			for (int j = i; j < dohvatljivi.length; j++) { 
 				int sljedeci = dohvatljivi[j];
-				suma += vjerojatnostiOdabira[sljedeci] = tragoviCache[prethodni][sljedeci];
+				vjerojatnostiOdabira[sljedeci] = tragoviCache[prethodni][sljedeci];
+				suma += vjerojatnostiOdabira[sljedeci];
 			}
 			for (int j = i; j < dohvatljivi.length; j++) { 
 				int sljedeci = dohvatljivi[j];
@@ -115,7 +118,8 @@ public class AntSystemTSPKolonija extends TSPKolonija {
 		for (int i = 0; i < udaljenosti.length; i++) {
 			tragoviCache[i][i] = 0;
 			for (int j = i + 1; j < udaljenosti.length; j++) {
-				tragoviCache[i][j] = tragoviCache[j][i] = Math.pow(tragovi[i][j], alfa) * heuristika[i][j];
+				tragoviCache[j][i] = Math.pow(tragovi[i][j], alfa) * heuristika[i][j];
+				tragoviCache[i][j] = tragoviCache[j][i];
 			}
 		}
 		
