@@ -51,7 +51,7 @@ public class GAGUI extends GUI {
 
 	private RadioGumbi trazi;
 
-	private static TekstualnaVrijednost brojTocaka;
+	private TekstualnaVrijednost brojTocaka;
 	
 	private TekstualnaVrijednost gornjaGranica;
 

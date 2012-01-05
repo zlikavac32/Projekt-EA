@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 public class DEPopulacija<T, E extends Krajolik<T>> extends Populacija<T, E> {
 
+	private Vektor<T, E> lokalnoNajbolje;
+
 	public DEPopulacija(
 		int brojVektora, RandomGenerator generator,
 		Mutator<T> mutator, Selektor<T, E> selektor
@@ -32,7 +34,17 @@ public class DEPopulacija<T, E extends Krajolik<T>> extends Populacija<T, E> {
 		
 		vektori = novi;
 				
+		azurirajLokalnoNajbolje();
 		azurirajGlobalnoNajbolje();
+	}
+	
+	protected void azurirajLokalnoNajbolje() {
+		lokalnoNajbolje = super.vratiLokalnoNajbolje();
+	}
+	
+	@Override
+	public Vektor<T, E> vratiLokalnoNajbolje() {
+		return lokalnoNajbolje.kopiraj();
 	}
 
 }
