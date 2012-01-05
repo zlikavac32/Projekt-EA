@@ -18,12 +18,15 @@ public class PolinomKrajolik implements Krajolik<double[][]> {
 	
 	public void postaviDonjuGranicu(double[] donjaGranica) { this.donjaGranica = donjaGranica; }
 	
+	public FunkcijaKrajolik funkcijaKrajolik;
+	
 	public PolinomKrajolik(FunkcijaKrajolik funkcija, double[][] vrijednostiVarijabli) {
 		vrijednostiUTockama = new double[vrijednostiVarijabli.length];
 		for (int i = 0; i < vrijednostiUTockama.length; i++) {
 			vrijednostiUTockama[i] = funkcija.racunajVrijednost(vrijednostiVarijabli[i]);
 		}
 		this.vrijednostiVarijabli = vrijednostiVarijabli;
+		funkcijaKrajolik = funkcija;
 	}
 	
 	public PolinomKrajolik(double[][] referentniKoeficijenti, double[][] vrijednostiVarijabli) {
@@ -32,6 +35,10 @@ public class PolinomKrajolik implements Krajolik<double[][]> {
 			vrijednostiUTockama[i] = racunajVrijednost(vrijednostiVarijabli[i], referentniKoeficijenti);
 		}
 		this.vrijednostiVarijabli = vrijednostiVarijabli;
+	}
+	
+	public FunkcijaKrajolik vratiKrajolikFunkcije() {
+		return funkcijaKrajolik;
 	}
 	
 	@Override
@@ -50,7 +57,7 @@ public class PolinomKrajolik implements Krajolik<double[][]> {
 		return true;
 	}
 	
-	protected double racunajVrijednost(double[] varijabla, double[][] koeficijenti) {
+	public double racunajVrijednost(double[] varijabla, double[][] koeficijenti) {
 		double vrati = 0;
 		
 		for (int i = 0; i < varijabla.length; i++) {

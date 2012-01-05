@@ -33,10 +33,12 @@ public class NajboljiSelektor<T extends Krajolik<double[][]>> implements Selekto
 		kraj--;
 		
 		double[][] tempVektor = populacija.vratiPopulaciju().get(0).vratiVrijednost();
+
+		int tempKraj = brojParova * 2;
 		
-		int[] indeksi = new int[brojParova];
+		int[] indeksi = new int[tempKraj];
 		
-		for (int i = 0; i < brojParova; i++) {
+		for (int i = 0; i < tempKraj; i++) {
 			int r = generator.vratiInt(kraj);
 			indeksi[i] = listaIndeksa[r];
 			int temp = listaIndeksa[kraj - 1];
@@ -47,9 +49,7 @@ public class NajboljiSelektor<T extends Krajolik<double[][]>> implements Selekto
 		
 		double[][] donor = new double[tempVektor.length][tempVektor[0].length];
 		
-		kraj = brojParova / 2;
-		
-		for (int k = 0; k < kraj; k++) {
+		for (int k = 0; k < brojParova; k++) {
 			double[][] prvi = populacija.vratiPopulaciju().get(indeksi[2 * k]).vratiVrijednost();
 			double[][] drugi = populacija.vratiPopulaciju().get(indeksi[2 * k + 1]).vratiVrijednost();
 			

@@ -132,7 +132,7 @@ public class ACOSimulator extends Simulator<Par<TSPMrav, TSPMrav>> {
 		kolonija.inicijaliziraj();
 		((ACOGUI) gui).iscrtajGradove(kolonija.vratiGradove());
 		kriterijKraja = new XKorakaKriterijKraja<TSPKolonija>(brojGeneracija);
-		while (!kriterijKraja.jeKraj(kolonija)) {
+		while (!kriterijKraja.jeKraj(kolonija) && !Globalno.jeZaustavljen()) {
 			if (Globalno.vratiBrzinu() > 0) { Thread.sleep(Globalno.vratiBrzinu()); }
 			kolonija.evoluiraj(brojMravaAzurira);
 			TSPMrav moguceNajbolje = (TSPMrav) kolonija.vratiLokalnoNajbolje();

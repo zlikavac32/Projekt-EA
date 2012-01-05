@@ -3,12 +3,24 @@
  */
 package ea;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.congrace.exp4j.Calculable;
 
+import ea.de.BinomniMutator;
+import ea.de.DEPopulacija;
+import ea.de.EksponencijalniMutator;
+import ea.de.Inicijalizator;
+import ea.de.KoeficijentiVektor;
+import ea.de.Mutator;
+import ea.de.NajboljiSelektor;
 import ea.de.Populacija;
+import ea.de.RandomSelektor;
+import ea.de.Selektor;
+import ea.de.UniformniMutator;
 import ea.de.Vektor;
+import ea.de.gui.DEGUI;
 import ea.util.FunkcijaKrajolik;
 import ea.util.PolinomKrajolik;
 import ea.util.RandomGenerator;
@@ -18,19 +30,19 @@ import ea.util.XKorakaKriterijKraja;
  * @author Zlikavac32
  *
  */
-public class DESimulator extends Simulator<List<Vektor<double[][], PolinomKrajolik>>> {
+public class DESimulator extends Simulator<Vektor<double[][], PolinomKrajolik>> {
 	
-	private static final int NAJBOLJI_SELEKTOR = 0;
+	public static final int NAJBOLJI_SELEKTOR = 0;
 
-	private static final int RANDOM_SELEKTOR = 0;
+	public static final int RANDOM_SELEKTOR = 1;
 
-	private static final int UNOFIRMNA_MUTACIJA = 0;
+	public static final int UNOFIRMNA_MUTACIJA = 0;
 
-	private static final int BINOMNA_MUTACIAJ = 0;
+	public static final int BINOMNA_MUTACIJA = 1;
 
-	private static final int EKSPONENCIJALNA_MUTACIJA = 0;
+	public static final int EKSPONENCIJALNA_MUTACIJA = 2;
 
-	private int velicinaPopulacije;
+	private int brojVektora;
 	
 	private int mutacija;
 	
@@ -40,17 +52,29 @@ public class DESimulator extends Simulator<List<Vektor<double[][], PolinomKrajol
 	
 	private XKorakaKriterijKraja<Populacija<?, ?>> kriterijKraja;
 	
-	private int brojJedinki;
-
 	private int brojGeneracija;
-
-	private int populacijaVrsta;
 
 	protected FunkcijaKrajolik krajolik;
 
 	protected Populacija<double[][], PolinomKrajolik> populacija;
+
+	private double tau;
+
+	private int brojParova;
+
+	private double donjaGranicaKoeficijenata;
+
+	private int redPolinoma;
+
+	private int brojUzoraka;
+
+	private double gornjaGranicaKoeficijenata;
 	
-	protected Vektor<double[][], PolinomKrajolik> najboljaJedinka;
+	private PolinomKrajolik polinomKrajolik;
+
+	private double faktorTezine;
+
+	private Vektor<double[][], PolinomKrajolik> najboljaJedinka;
 
 	public DESimulator() { 
 		krajolik = new FunkcijaKrajolik();
@@ -71,11 +95,11 @@ public class DESimulator extends Simulator<List<Vektor<double[][], PolinomKrajol
 	}
 	
 	public void saVelicinomPopulacije(int velicina) { 
-		velicinaPopulacije = velicina;
+		brojVektora = velicina;
 	}
 	
 	public void koristeciMutaciju(int mutacija) { 
-		if (mutacija != UNOFIRMNA_MUTACIJA && mutacija != BINOMNA_MUTACIAJ && mutacija != EKSPONENCIJALNA_MUTACIJA) {
+		if (mutacija != UNOFIRMNA_MUTACIJA && mutacija != BINOMNA_MUTACIJA && mutacija != EKSPONENCIJALNA_MUTACIJA) {
 			throw new IllegalArgumentException(
 				"Podrzane mutacije su UNOFIRMNA_MUTACIJA, BINOMNA_MUTACIAJ i EKSPONENCIJALNA_MUTACIJA"
 			);
@@ -102,6 +126,47 @@ public class DESimulator extends Simulator<List<Vektor<double[][], PolinomKrajol
 		kriterijKraja = new XKorakaKriterijKraja<Populacija<?, ?>>(brojGeneracija); 
 	}
 
+	public void uzTau(double tau) {
+		if (tau < 0) {
+			throw new IllegalArgumentException("Tau mora biti veci ili jedan 0");
+		}
+		this.tau = tau;
+	}
+
+	public void saBrojemParova(int brojParova) {
+		this.brojParova = brojParova;
+	}
+
+	public void koristeciDonjuGranicuKoeficijenata(double donjaGranicaKoeficijenata) {
+		this.donjaGranicaKoeficijenata = donjaGranicaKoeficijenata;
+	}
+
+	public void uzRedPolinoma(int redPolinoma) {
+		if (redPolinoma < 0) {
+			throw new IllegalArgumentException("Red polinoma mora biti broj veci ili jedank 0");
+		}
+		this.redPolinoma = redPolinoma;
+	}
+
+	public void saBrojemUzoraka(int brojUzoraka) {
+		if (brojUzoraka < 1) {
+			throw new IllegalArgumentException("Broj uzoraka mora biti broj veci od 0");
+		}
+		this.brojUzoraka = brojUzoraka;
+	}
+
+	public void koristeciGornjuGranicuKoeficijenata(double gornjaGranicaKoeficijenata) {
+		this.gornjaGranicaKoeficijenata = gornjaGranicaKoeficijenata;
+	}
+
+	public void uzFaktorTezine(double faktorTezine) {
+		if (faktorTezine < 0 || faktorTezine > 2) {
+			throw new IllegalArgumentException("Faktor tezine mora biti u rasponu [0, 2]");
+		}
+		this.faktorTezine = faktorTezine;
+	}
+	
+
 	@Override
 	protected Void doInBackground() 
 		throws Exception {
@@ -119,20 +184,101 @@ public class DESimulator extends Simulator<List<Vektor<double[][], PolinomKrajol
 	@SuppressWarnings("unchecked")
 	private void simuliraj()
 		throws InterruptedException {
-		//TODO: Provjeri velicinu
+				
+		Selektor<double[][], PolinomKrajolik> selektor = stvoriSelektor();
+		Mutator<double[][]> mutator = stvoriMutator();
+		
+		double[][] tocke = stvoriVrijednostiVarijabli();
+		
+		polinomKrajolik = new PolinomKrajolik(krajolik, tocke);
+		polinomKrajolik.postaviDonjuGranicu(new double[] { donjaGranicaKoeficijenata });
+		polinomKrajolik.postaviGornjuGranicu(new double[] { gornjaGranicaKoeficijenata });
+		
+		Populacija<double[][], PolinomKrajolik> populacija = 
+			new DEPopulacija<double[][], PolinomKrajolik>(brojVektora, randomGenerator, mutator, selektor);
+		
+		populacija.inicijaliziraj(new Inicijalizator<double[][], PolinomKrajolik>() {
+			
+			@Override
+			public List<Vektor<double[][], PolinomKrajolik>> inicijaliziraj(
+				int velicina, RandomGenerator generator
+			) {
+				List<Vektor<double[][], PolinomKrajolik>> vrati = 
+					new ArrayList<Vektor<double[][],PolinomKrajolik>>(velicina);
+				
+				for (int i = 0; i < velicina; i++) {
+					KoeficijentiVektor vektor = new KoeficijentiVektor(1, redPolinoma, polinomKrajolik);
+					vektor.inicijaliziraj(generator);
+					vrati.add(vektor);
+				}
+				
+				return vrati;
+			}
+		});
+		
+		((DEGUI) gui).nacrtajFunkciju(krajolik);
+		//((DEGUI) gui).iscrtajTocke(tocke, krajolik);
+		
+		while (!kriterijKraja.jeKraj(populacija) && !Globalno.jeZaustavljen()) {
+			if (Globalno.vratiBrzinu() > 0) { Thread.sleep(Globalno.vratiBrzinu()); }
+			populacija.evoluiraj();
+			publish(populacija.vratiLokalnoNajbolje());
+			najboljaJedinka = populacija.vratiGlobalnoNajbolje();
+		}
+		
+		ispisiRjesenje();
+		
 	}
-	
+
 	@Override
 	protected void process(
-			List<List<Vektor<double[][], PolinomKrajolik>>> vektori) {
-		// TODO Auto-generated method stub
-		super.process(vektori);
+			List<Vektor<double[][], PolinomKrajolik>> vektori
+	) {
+		((DEGUI) gui).iscrtajAproksimaciju(vektori.get(vektori.size() - 1));
+		setProgress((int) ((((XKorakaKriterijKraja<?>) kriterijKraja).vratiBrojProteklihGeneracija() / (double) brojGeneracija ) * 100));
+    }
+	
+	private Mutator<double[][]> stvoriMutator() {
+		switch (mutacija) {
+			case BINOMNA_MUTACIJA :
+				return new BinomniMutator(vjerojatnostMutacije, randomGenerator);
+			case EKSPONENCIJALNA_MUTACIJA :
+				return new EksponencijalniMutator(vjerojatnostMutacije, randomGenerator, tau);
+			case UNOFIRMNA_MUTACIJA :
+				return new UniformniMutator(vjerojatnostMutacije, randomGenerator);
+		}
+		return null;
+	}
+
+	private Selektor<double[][], PolinomKrajolik> stvoriSelektor() {
+		switch (selektor) {
+			case NAJBOLJI_SELEKTOR :
+				return new NajboljiSelektor<PolinomKrajolik>(faktorTezine, brojParova);
+			case RANDOM_SELEKTOR :
+				return new RandomSelektor<PolinomKrajolik>(faktorTezine	, brojParova);
+		}
+		return null;
+	}
+
+	private double[][] stvoriVrijednostiVarijabli() {
+		double[][] vrijednost = new double[brojUzoraka + 1][1];
+		
+		double dolje = krajolik.vratiDonjuGranicu()[0];
+		double gore = krajolik.vratiGornjuGranicu()[0];
+		
+		double odmak = (gore - dolje) / brojUzoraka;
+		
+		for (int i = 0; i <= brojUzoraka; i++) {
+			vrijednost[i][0] = dolje;
+			dolje += odmak;
+		}
+		
+		return vrijednost;
 	}
 
 	@Override
 	public void ispisiRjesenje() {
-		// TODO Auto-generated method stub
-		
+		gui.zapisiUZapisnik("Najbolje rjesenje: " + najboljaJedinka);
 	}
-	
+
 }

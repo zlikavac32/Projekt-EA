@@ -29,5 +29,9 @@ public abstract class Vektor<T, E extends Krajolik<T>> implements Comparable<Vek
 	}
 	
 	public abstract Vektor<T, E> kopiraj();
+	
+	public E vratiKrajolik() {
+		return krajolik;
+	}
 
 }

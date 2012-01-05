@@ -175,11 +175,11 @@ public class AISSimulator extends Simulator<List<AntiTijelo<byte[], double[], Re
 		});
 		publish(populacija.vratiKopijuPopulacije());
 		
-		while (!kriterijKraja.jeKraj(null)) {
+		while (!kriterijKraja.jeKraj(null) && !Globalno.jeZaustavljen()) {
 			if (Globalno.vratiBrzinu() > 0) { Thread.sleep(Globalno.vratiBrzinu()); }
 			populacija.evoluiraj();
-			najbolje = populacija.vratiGlobalnoNajbolje();
 			publish(populacija.vratiKopijuPopulacije());
+			najbolje = populacija.vratiGlobalnoNajbolje();
 		}
 		ispisiRjesenje();
 	}

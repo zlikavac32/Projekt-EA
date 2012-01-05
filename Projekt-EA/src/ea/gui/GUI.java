@@ -136,7 +136,10 @@ public abstract class GUI extends JFrame {
 				if (gumb.getText().equals(POKRENI)) { 
 					zapisnikPodrucje.setText("");
 					mjeracNapretka.setValue(0);
-					try { pokreniSimulaciju(gumb); } 
+					try { 
+						Globalno.postaviZaustavljeno(false);
+						pokreniSimulaciju(gumb); 
+					} 
 					catch (Throwable e) { 
 						zapisiUZapisnikGresku(e.getMessage()); 
 						e.printStackTrace();
@@ -210,7 +213,8 @@ public abstract class GUI extends JFrame {
 		throws UnknownFunctionException, UnparsableExpressionException;
 
 	protected void zaustaviSimulaciju(JButton gumb) {
-		simulator.ispisiRjesenje();
+		//simulator.ispisiRjesenje();
+		Globalno.postaviZaustavljeno(true);
 		simulator.cancel(true);
 		gumb.setText(POKRENI);
 	}

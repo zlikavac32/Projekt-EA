@@ -43,6 +43,13 @@ public class DEPopulacija<T, E extends Krajolik<T>> extends Populacija<T, E> {
 	}
 	
 	@Override
+	public void inicijaliziraj(Inicijalizator<T, E> inicijalizator) {
+		vektori = inicijalizator.inicijaliziraj(brojVektora, generator);
+		azurirajLokalnoNajbolje();
+		azurirajGlobalnoNajbolje();
+	}
+	
+	@Override
 	public Vektor<T, E> vratiLokalnoNajbolje() {
 		return lokalnoNajbolje.kopiraj();
 	}

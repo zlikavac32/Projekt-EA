@@ -9,7 +9,6 @@ import static ea.de.gui.DEGUIKonstante.*;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -23,6 +22,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
 import org.jfree.chart.renderer.xy.XYShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -31,12 +31,13 @@ import de.congrace.exp4j.ExpressionBuilder;
 import de.congrace.exp4j.UnknownFunctionException;
 import de.congrace.exp4j.UnparsableExpressionException;
 
-import ea.GASimulator;
-import ea.ga.Jedinka;
+import ea.DESimulator;
+import ea.de.Vektor;
 import ea.gui.DijeljenaPloca;
 import ea.gui.GUI;
 import ea.gui.RadioGumbi;
 import ea.gui.TekstualnaVrijednost;
+import ea.util.PolinomKrajolik;
 import ea.util.RealniKrajolik;
 
 /**
@@ -77,6 +78,8 @@ public class DEGUI extends GUI {
 	
 	private TekstualnaVrijednost tau;
 	
+	private TekstualnaVrijednost faktorTezine;
+	
 
 	//Ploce
 
@@ -111,7 +114,11 @@ public class DEGUI extends GUI {
 	private Ploca vjerojatnostMutacijePloca = new Ploca();
 	
 	private Ploca tauPloca = new Ploca();
+	
+	private Ploca faktorTezinePloca = new Ploca();
 
+	
+	private	int brojElemenata;
 	
 	protected XYSeriesCollection kolekcija;
 
@@ -126,7 +133,8 @@ public class DEGUI extends GUI {
 	
 	private class NacrtajFunkciju extends SwingWorker<Void, Void> {
 		
-		RealniKrajolik krajolik;
+		private RealniKrajolik krajolik;
+		
 		private XYSeries podatci;
 		
 		NacrtajFunkciju(RealniKrajolik krajolik) {
@@ -138,16 +146,11 @@ public class DEGUI extends GUI {
 			throws Exception {
 			podatci = new XYSeries("Funckija");
 
-			int brojElemenata = Integer.parseInt(brojTocaka.vratiVrijednost());
-			if (brojElemenata < 1) { throw new IllegalArgumentException("Broj tocaka mora biti veci od 0"); }
 			double dolje = krajolik.vratiDonjuGranicu()[0];
 			double gore = krajolik.vratiGornjuGranicu()[0];
 			double korak = (gore - dolje) / brojElemenata;
 			for (int i = 0; i <= brojElemenata; i++) {
-//				System.out.println("Izracunao sam (" + dolje + ", " + krajolik.racunajVrijednost(new double[] { dolje }) + ")");
 				podatci.add(dolje, krajolik.racunajVrijednost(new double[] { dolje }));
-				
-//				System.out.println("Spremio sam (" + podatci.getX(podatci.getItemCount() - 1) + ", " + podatci.getY(podatci.getItemCount() - 1) + ")");
 				dolje += korak;			
 			}
 			return null;
@@ -159,17 +162,51 @@ public class DEGUI extends GUI {
 			kolekcija.addSeries(podatci);
 		}
 	}
-	
-	private class NacrtajJedinke extends SwingWorker<Void, Void> {
-		
-		RealniKrajolik krajolik;
-		
-		List<Jedinka<RealniKrajolik>> jedinke;
 
+	
+	private class NacrtajFunkcijuAproksimacija extends SwingWorker<Void, Void> {
+		
 		private XYSeries podatci;
 		
-		NacrtajJedinke(List<Jedinka<RealniKrajolik>> jedinke, RealniKrajolik krajolik) {
-			this.jedinke = jedinke;
+		private Vektor<double[][], PolinomKrajolik> vektor;
+		
+		NacrtajFunkcijuAproksimacija(Vektor<double[][], PolinomKrajolik> vektor) {
+			this.vektor = vektor;
+		}
+
+		@Override
+		protected Void doInBackground() 
+			throws Exception {
+			podatci = new XYSeries("Aproksimacija");
+			PolinomKrajolik krajolik = vektor.vratiKrajolik();
+			double[][] koeficijenti = vektor.vratiVrijednost();
+			double dolje = krajolik.vratiKrajolikFunkcije().vratiDonjuGranicu()[0];
+			double gore = krajolik.vratiKrajolikFunkcije().vratiGornjuGranicu()[0];
+			double korak = (gore - dolje) / brojElemenata;
+			for (int i = 0; i <= brojElemenata; i++) {
+				podatci.add(dolje, krajolik.racunajVrijednost(new double[] { dolje }, koeficijenti));
+				dolje += korak;			
+			}
+			return null;
+		}
+		
+		@Override
+		protected void done() {
+			((XYSeriesCollection) nacrt.getDataset(2)).removeAllSeries();
+			((XYSeriesCollection) nacrt.getDataset(2)).addSeries(podatci);
+		}
+	}
+	
+	private class NacrtajTocke extends SwingWorker<Void, Void> {
+		
+		private double[][] tocke;
+		
+		private XYSeries podatci;
+
+		private RealniKrajolik krajolik;
+		
+		NacrtajTocke(double[][] tocke, RealniKrajolik krajolik) {
+			this.tocke = tocke;
 			this.krajolik = krajolik;
 		}
 
@@ -177,10 +214,8 @@ public class DEGUI extends GUI {
 		public Void doInBackground()
 			throws Exception {
 			podatci = new XYSeries("podatci");
-			int limit = jedinke.size();
-			for (int i = 0; i < limit; i++) {
-				double x = (Double) jedinke.get(i).vratiVrijednost();
-				podatci.add(x, krajolik.racunajVrijednost(new double[] { x }));
+			for (int i = 0; i < tocke.length; i++) {
+				podatci.add(tocke[i][0], krajolik.racunajVrijednost(tocke[i]));
 			}
 			return null;
 		}
@@ -195,7 +230,6 @@ public class DEGUI extends GUI {
 
 	public DEGUI(String title) {
 		super(title);
-		// TODO Auto-generated constructor stub
 	}
 	
 	
@@ -211,7 +245,7 @@ public class DEGUI extends GUI {
 		DijeljenaPloca[] elementi = new DijeljenaPloca[] {
 			funkcija, sjeme, donjaGranica, gornjaGranica, brojTocaka, brojUzoraka, gornjaGranicaKoeficijenta,
 			donjaGranicaKoeficijenta, redPolinoma,
-			velicinaPopulacije, mutator, vjerojatnostMutacije, tau, selektor, brojParova,
+			velicinaPopulacije, mutator, vjerojatnostMutacije, tau, selektor, brojParova, faktorTezine,
 			brojGeneracija
 		};
 		
@@ -220,7 +254,7 @@ public class DEGUI extends GUI {
 			brojUzorakaPloca, gornjaGranicaKoeficijentaPloca,
 			donjaGranicaKoeficijentaPloca, redPolinomaPloca,
 			velicinaPopulacijePloca, mutatorPloca, vjerojatnostMutacijePloca, tauPloca, selektorPloca, 
-			brojParovaPloca,
+			faktorTezinePloca, brojParovaPloca,
 			brojGeneracijaPloca
 		};
 		
@@ -249,10 +283,8 @@ public class DEGUI extends GUI {
 			}
 		};
 		
-		vjerojatnostMutacije = new TekstualnaVrijednost("Vjerojatnost mutacije", "0.05");
-		vjerojatnostMutacije.setEnabled(false);
-		brojGeneracija = new TekstualnaVrijednost("Broj generacija", "400");
-		velicinaPopulacije = new TekstualnaVrijednost("Broj vektora", "80");
+		brojGeneracija = new TekstualnaVrijednost("Broj generacija", "350");
+		velicinaPopulacije = new TekstualnaVrijednost("Broj vektora", "100");
 		brojTocaka = new TekstualnaVrijednost("Broj točaka", "1000");
 		gornjaGranica = new TekstualnaVrijednost("Do", "5");
 		donjaGranica = new TekstualnaVrijednost("Od", "-5");
@@ -270,19 +302,22 @@ public class DEGUI extends GUI {
 		});
 		selektor = new RadioGumbi("Selekcija", new Object[] {
 			NAJBOLJI_SELEKTOR, RANDOM_SELEKTOR
-		});
-		vjerojatnostMutacije = new TekstualnaVrijednost("Vjerojatnost mutacije", "0.9");
+		}, 0);
+		vjerojatnostMutacije = new TekstualnaVrijednost("Vjerojatnost mutacije", "0.95");
 		tau = new TekstualnaVrijednost("Tau", "0.1");
 		tau.setEnabled(false);
+		faktorTezine = new TekstualnaVrijednost("Faktor težine", "0.9");
 	}
 
 	protected ChartPanel stvoriGraf() {
-		XYSeries podatci = new XYSeries("");
+		XYSeries podatci = new XYSeries("Funkcija");
 		kolekcija = new XYSeriesCollection();
 		kolekcija.addSeries(podatci);
 		graf = ChartFactory.createXYLineChart(DEGUIKonstante.FUNKCIJA, "X", "Y", kolekcija, PlotOrientation.VERTICAL, false, false, false);
 		nacrt = graf.getXYPlot();
 		nacrt.setRenderer(1, new XYShapeRenderer());
+		nacrt.setRenderer(2, new StandardXYItemRenderer());
+		nacrt.setDataset(2, new XYSeriesCollection());
 		
 		ChartPanel grafPloca = new ChartPanel(graf);
 		
@@ -297,7 +332,10 @@ public class DEGUI extends GUI {
 		throws UnknownFunctionException, UnparsableExpressionException {
 		
 		
-		GASimulator simulator = new GASimulator();
+		DESimulator simulator = new DESimulator();
+		
+		brojElemenata = Integer.parseInt(brojTocaka.vratiVrijednost());
+		if (brojElemenata < 1) { throw new IllegalArgumentException("Broj tocaka mora biti veci od 0"); }
 		
 		try {
 			simulator.koristeciSjeme(Long.parseLong(sjeme.vratiVrijednost()));
@@ -320,9 +358,101 @@ public class DEGUI extends GUI {
 		try {
 			simulator.saVelicinomPopulacije(Integer.parseInt(velicinaPopulacije.vratiVrijednost()));
 		} catch (NumberFormatException e) { 
-			zapisiUZapisnik("Velicina populacije mora biti cijeli broj");
+			zapisiUZapisnik("Broj voektora mora biti cijeli broj");
 			return ;
 		}
+		
+		try {
+			simulator.saBrojemUzoraka(Integer.parseInt(brojUzoraka.vratiVrijednost()));
+		} catch (NumberFormatException e) {
+			zapisiUZapisnik("Broj uzoraka mora biti cijeli broj");
+			return ;
+		}
+		
+		try {
+			simulator.uzRedPolinoma(Integer.parseInt(redPolinoma.vratiVrijednost()));
+		} catch (NumberFormatException e) {
+			zapisiUZapisnik("Red polinoma mora biti cijeli broj");
+			return ;
+		}
+		
+		try {
+			simulator.koristeciGornjuGranicuKoeficijenata(
+				Double.parseDouble(gornjaGranicaKoeficijenta.vratiVrijednost())
+			);
+		} catch (NumberFormatException e) {
+			zapisiUZapisnik("Gornja granica koeficijenata mora biti broj");
+			return ;
+		}
+		
+		try {
+			simulator.koristeciDonjuGranicuKoeficijenata(
+				Double.parseDouble(donjaGranicaKoeficijenta.vratiVrijednost())
+			);
+		} catch (NumberFormatException e) {
+			zapisiUZapisnik("Donja granica koeficijenata mora biti broj");
+			return ;
+		}
+		
+		try {
+			simulator.saBrojemParova(Integer.parseInt(brojParova.vratiVrijednost()));
+		} catch (NumberFormatException e) {
+			zapisiUZapisnik("Broj parova mora biti cijeli broj");
+			return ;
+		}
+		
+		try {
+			simulator.uzVjerojatnostMutacije(
+				Double.parseDouble(vjerojatnostMutacije.vratiVrijednost())
+			);
+		} catch (NumberFormatException e) {
+			zapisiUZapisnik("Vjerojatnost mutacije mora biti broj");
+			return ;
+		}
+		
+		try {
+			simulator.uzFaktorTezine(
+				Double.parseDouble(faktorTezine.vratiVrijednost())
+			);
+		} catch (NumberFormatException e) {
+			zapisiUZapisnik("Faktor tezine mora biti broj");
+			return ;
+		}
+		
+		int mutator = -1;
+		String vrijednost = this.mutator.vratiOdabrani().getActionCommand();
+		
+		if (vrijednost.equals(UNIFORMNA_MUTACIJA)) {
+			mutator = DESimulator.UNOFIRMNA_MUTACIJA;
+		} else if (vrijednost.equals(BINOMNA_MUTACIJA)) {
+			mutator = DESimulator.BINOMNA_MUTACIJA;
+		} else if (vrijednost.equals(EKSPONENCIJALNA_MUTACIJA)) {
+			mutator = DESimulator.EKSPONENCIJALNA_MUTACIJA;
+		}
+		
+		simulator.koristeciMutaciju(mutator);
+		
+		if (mutator == DESimulator.EKSPONENCIJALNA_MUTACIJA) {
+			try {
+				simulator.uzTau(
+					Double.parseDouble(tau.vratiVrijednost())
+				);
+			} catch (NumberFormatException e) {
+				zapisiUZapisnik("Tau mora biti broj");
+				return ;
+			}
+		}
+		
+		int selektor = -1;
+		vrijednost = this.selektor.vratiOdabrani().getActionCommand();
+		
+		if (vrijednost.equals(NAJBOLJI_SELEKTOR)) {
+			selektor = DESimulator.NAJBOLJI_SELEKTOR;
+		} else if (vrijednost.equals(RANDOM_SELEKTOR)) {
+			selektor = DESimulator.RANDOM_SELEKTOR;
+		}
+		
+		simulator.koristeciSelektor(selektor);
 		
 		String funkcijaString = funkcija.vratiVrijednost().toLowerCase();
 		graf.setTitle(funkcijaString);
@@ -351,7 +481,11 @@ public class DEGUI extends GUI {
 				
 	}
 
-	public void iscrtajPopulaciju(List<Jedinka<RealniKrajolik>> jedinke, RealniKrajolik krajolik) {
-		new NacrtajJedinke(jedinke, krajolik).execute();
+	public void iscrtajTocke(double[][] tocke, RealniKrajolik krajolik) {
+		new NacrtajTocke(tocke, krajolik).execute();
+	}
+
+	public void iscrtajAproksimaciju(Vektor<double[][], PolinomKrajolik> vektor) {
+		new NacrtajFunkcijuAproksimacija(vektor).execute();
 	}
 }

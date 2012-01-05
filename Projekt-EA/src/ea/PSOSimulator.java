@@ -205,7 +205,7 @@ public class PSOSimulator extends Simulator<Cestica<double[]>[]> {
 		roj.inicijaliziraj();
 		
 		kriterijKraja = new XKorakaKriterijKraja<Roj<?>>(brojGeneracija);
-		while (!kriterijKraja.jeKraj(roj)) {
+		while (!kriterijKraja.jeKraj(roj) && !Globalno.jeZaustavljen()) {
 			if (Globalno.vratiBrzinu() > 0) { Thread.sleep(Globalno.vratiBrzinu()); }
 			roj.evoluiraj();
 			najbolje = roj.vratiGlobalnoNajbolje();

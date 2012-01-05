@@ -238,7 +238,7 @@ public class GASimulator extends Simulator<List<Jedinka<RealniKrajolik>>> {
 
         publish(populacija.vratiJedinke());
         
-		while (!kriterijKraja.jeKraj(populacija)) {
+		while (!kriterijKraja.jeKraj(populacija) && !Globalno.jeZaustavljen()) {
 			if (Globalno.vratiBrzinu() > 0) { Thread.sleep(Globalno.vratiBrzinu()); }
 			populacija.evoluiraj();
 			publish(populacija.vratiJedinke());
