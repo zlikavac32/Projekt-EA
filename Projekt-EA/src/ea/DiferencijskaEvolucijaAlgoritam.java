@@ -21,7 +21,7 @@ import ea.de.gui.DEGUI;
  * @author Marijan Šuflaj <msufflaj32@gmail.com>
  *
  */
-public class DiferencijskaEvolucija extends JApplet {
+public class DiferencijskaEvolucijaAlgoritam extends JApplet {
 
 	/**
 	 * 
