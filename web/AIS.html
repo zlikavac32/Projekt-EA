@@ -15,7 +15,7 @@
 		<script src="http://www.java.com/js/deployJava.js"></script>
 		<script> 
 			var attributes = { 
-				code : 'ea.UmjetniImunoloskiSustav', 
+				code : 'ea.UmjetniImunoloskiSustavAlgoritam', 
 				archive : "ea.jar,exp4j-0.2.9.jar,jcommon-1.0.16.jar,jfreechart-1.0.13.jar" ,
 				width : 140, 
 				height : 35
@@ -28,299 +28,178 @@
 			</p>
 			<h2>Pojašnjenje opcija</h2>
 			<dl>
-				<dt><strong>Funkcija</strong></dt>
+				<dt><b>Funkcija</b></dt>
 				<dd>
 					funkcija čiji se ekstrem traži. Neke česte funkcije su
 					<ul>
-						<li><strong>x^y</strong> - x sa eksponentom y gdje je y neki broj</li>
-						<li><strong>sin(x)</strong> - sinus od x</li>
-						<li><strong>cos(x)</strong> - kosinus od x</li>
-						<li><strong>exp(x)</strong> - baza e sa eksponentom x</li>
+						<li><b>x^y</b> - x sa eksponentom y gdje je y neki broj</li>
+						<li><b>sin(x)</b> - sinus od x</li>
+						<li><b>cos(x)</b> - kosinus od x</li>
+						<li><b>exp(x)</b> - baza e sa eksponentom x</li>
 					</ul>
 				</dd>
-				<dt><strong>Sjeme</strong></dt>
+				<dt><b>Sjeme</b></dt>
 				<dd>
 					Cijeli broj koji se koristi kao sjeme za generator nasumičnih brojeva
 				</dd>
-				<dt><strong>Od - Do</strong></dt>
+				<dt><b>Od - Do</b></dt>
 				<dd>
 					Granice domene funkcije. Određuje raspon koji se pretražuje i iscrtava
 				</dd>
-				<dt><strong>Broj točaka</strong></dt>
+				<dt><b>Broj točaka</b></dt>
 				<dd>
 					Broj koji kaže koliko će se točaka izračunati radi crtanja funkcije. Veći broj 
 					točaka, funkcija je bolje iscrtana
 				</dd>	
-				<dt><strong>Traži</strong></dt>
+				<dt><b>Traži</b></dt>
 				<dd>
 					Određuje tražimo li minimum ili maksimum funkcije
 				</dd>
-				<dt id="velicinaPopulacije"><strong>Broj čestica</strong></dt>
+				<dt id="velicinaPopulacije"><b>Broj antitijela</b></dt>
 				<dd>
-					Broj čestica koje pretražuju prostor
+					Broj antitijela koji pretražuju prostor
 				</dd>
-                <dt><strong>Brzina kalkulator</strong></dt>
-                <dd>
-                    Određuje na koji način se računa nova brzina čestice <i>i</i>. Nakon što je brzina izračunata, nova lokacija svake čestice
-                    se računa koristeći izraz &nbsp;
-                    <img src="./img/pozicija.gif" alt="Pozicija" title="Pozicija" /> &nbsp; gdje je 
-                    <img src="./img/ximinus1.gif" alt="Trenutna lokacija" title="Trenutna lokacija" />&nbsp; trenutna lokacija
-                    <ul>
-                        <li>
-                            <strong>Standardni</strong> - brzina za svaku komponentu rješenja se računa koristeći izraz &nbsp;
-                            <img src="./img/standardni.gif" alt="Formula" title="Formula" />&nbsp;
-                            gdje su
-                            <ul>
-                                <li>
-                                    <img src="./img/vi.gif" alt="Nova brzina" title="Nova brzina" />&nbsp; - nova brzina
-                                </li>
-                                <li>
-                                    <img src="./img/viminus1.gif" alt="Trenutna brzina" title="Trenutna brzina" />&nbsp; - trenutna brzina
-                                </li>
-                                <li>
-                                    <img src="./img/c1.gif" alt="Socijalni faktor" title="Socijalni faktor" />&nbsp; - 
-                                    <a href="#c1" title="Socijalni faktor">socijalni faktor</a>
-                                </li>
-                                <li>
-                                    <img src="./img/c2.gif" alt="Osobni faktor" title="Osobni faktor" />&nbsp; - 
-                                    <a href="#c2" title="Osobni faktor">osobni faktor</a>
-                                </li>
-                                <li>
-                                    <img src="./img/r1.gif" alt="Pseudoslucajni broj" title="Pseudoslucajni broj" />&nbsp; i
-                                    <img src="./img/r2.gif" alt="Pseudoslucajni broj" title="Pseudoslucajni broj" />&nbsp; - 
-                                    pseudoslučajni brojevi iz intervala [0, 1]
-                                </li>
-                                <li>
-                                    <img src="./img/ln.gif" alt="Socijalno najbolje" title="Socijalno najbolje" />&nbsp; - najbolje 
-                                    rješenje pronađeno do sada unutar susjedstva čestice
-                                </li>
-                                <li>
-                                    <img src="./img/on.gif" alt="Osobno najbolje" title="Osobno najbolje" />&nbsp; - najbolje 
-                                    rješenje pronađeno do sada od strane trenutne čestice
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <strong>Konstantna inercija</strong> - brzina za svaku komponentu rješenja se računa koristeći izraz &nbsp;
-                            <img src="./img/kInercija.gif" alt="Formula" title="Formula" />&nbsp;
-                            gdje su
-                            <ul>
-                                <li>
-                                    <img src="./img/omega.gif" alt="Konstanta inercije" title="Konstanta inercije" />&nbsp; 
-                                    - <a href="#konstantaInercije" title="Konstanta inercije">konstanta inercije</a>
-                                </li>
-                                <li>
-                                    <img src="./img/vi.gif" alt="Nova brzina" title="Nova brzina" />&nbsp; - nova brzina
-                                </li>
-                                <li>
-                                    <img src="./img/viminus1.gif" alt="Trenutna brzina" title="Trenutna brzina" />&nbsp; - trenutna brzina
-                                </li>
-                                <li>
-                                    <img src="./img/c1.gif" alt="Socijalni faktor" title="Socijalni faktor" />&nbsp; - 
-                                    <a href="#c1" title="Socijalni faktor">socijalni faktor</a>
-                                </li>
-                                <li>
-                                    <img src="./img/c2.gif" alt="Osobni faktor" title="Osobni faktor" />&nbsp; - 
-                                    <a href="#c2" title="Osobni faktor">osobni faktor</a>
-                                </li>
-                                <li>
-                                    <img src="./img/r1.gif" alt="Pseudoslucajni broj" title="Pseudoslucajni broj" />&nbsp; i
-                                    <img src="./img/r2.gif" alt="Pseudoslucajni broj" title="Pseudoslucajni broj" />&nbsp; - 
-                                    pseudoslučajni brojevi iz intervala [0, 1]
-                                </li>
-                                <li>
-                                    <img src="./img/ln.gif" alt="Socijalno najbolje" title="Socijalno najbolje" />&nbsp; - najbolje 
-                                    rješenje pronađeno do sada unutar susjedstva čestice
-                                </li>
-                                <li>
-                                    <img src="./img/on.gif" alt="Osobno najbolje" title="Osobno najbolje" />&nbsp; - najbolje 
-                                    rješenje pronađeno do sada od strane trenutne čestice
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <strong>Dinamička inercija</strong> - brzina za svaku komponentu rješenja se računa koristeći izraz &nbsp;
-                            <img src="./img/kInercija.gif" alt="Formula" title="Formula" />&nbsp;
-                            gdje su
-                            <ul>
-                                <li>
-                                    <img src="./img/omega.gif" alt="Konstanta inercije" title="Konstanta inercije" />&nbsp; 
-                                    - <a href="#konstantaInercije" title="Konstanta inercije">konstanta inercije</a>
-                                </li>
-                                <li>
-                                    <img src="./img/vi.gif" alt="Nova brzina" title="Nova brzina" />&nbsp; - nova brzina
-                                </li>
-                                <li>
-                                    <img src="./img/viminus1.gif" alt="Trenutna brzina" title="Trenutna brzina" />&nbsp; - trenutna brzina
-                                </li>
-                                <li>
-                                    <img src="./img/c1.gif" alt="Socijalni faktor" title="Socijalni faktor" />&nbsp; - 
-                                    <a href="#c1" title="Socijalni faktor">socijalni faktor</a>
-                                </li>
-                                <li>
-                                    <img src="./img/c2.gif" alt="Osobni faktor" title="Osobni faktor" />&nbsp; - 
-                                    <a href="#c2" title="Osobni faktor">osobni faktor</a>
-                                </li>
-                                <li>
-                                    <img src="./img/r1.gif" alt="Pseudoslucajni broj" title="Pseudoslucajni broj" />&nbsp; i
-                                    <img src="./img/r2.gif" alt="Pseudoslucajni broj" title="Pseudoslucajni broj" />&nbsp; - 
-                                    pseudoslučajni brojevi iz intervala [0, 1]
-                                </li>
-                                <li>
-                                    <img src="./img/ln.gif" alt="Socijalno najbolje" title="Socijalno najbolje" />&nbsp; - najbolje 
-                                    rješenje pronađeno do sada unutar susjedstva čestice
-                                </li>
-                                <li>
-                                    <img src="./img/on.gif" alt="Osobno najbolje" title="Osobno najbolje" />&nbsp; - najbolje 
-                                    rješenje pronađeno do sada od strane trenutne čestice
-                                </li>
-                            </ul>
-                            Pri tome se nakon svakog kruga faktor inercije ažurira koristeći izraz &nbsp; 
-                            <img src="./img/omegaFormula.gif" alt="Omega formula" title="Omega formula" />&nbsp; gdje je
-                            &nbsp; <img src="./img/alfa.gif" alt="Alfa" title="Alfa" /> &nbsp; 
-                            <a href="#faktorSmanjenjaInercije" title="Faktor smanjenja inercije">faktor smanjenja inercije</a>
-                        </li>
-                        <li>
-                            <strong>Dinamička ograničavajuća inercija</strong> - brzina za svaku komponentu rješenja se računa koristeći izraz &nbsp;
-                            <img src="./img/kInercija.gif" alt="Formula" title="Formula" />&nbsp;
-                            gdje su
-                            <ul>
-                                <li>
-                                    <img src="./img/omega.gif" alt="Konstanta inercije" title="Konstanta inercije" />&nbsp; 
-                                    - <a href="#konstantaInercije" title="Konstanta inercije">konstanta inercije</a>
-                                </li>
-                                <li>
-                                    <img src="./img/vi.gif" alt="Nova brzina" title="Nova brzina" />&nbsp; - nova brzina
-                                </li>
-                                <li>
-                                    <img src="./img/viminus1.gif" alt="Trenutna brzina" title="Trenutna brzina" />&nbsp; - trenutna brzina
-                                </li>
-                                <li>
-                                    <img src="./img/c1.gif" alt="Socijalni faktor" title="Socijalni faktor" />&nbsp; - 
-                                    <a href="#c1" title="Socijalni faktor">socijalni faktor</a>
-                                </li>
-                                <li>
-                                    <img src="./img/c2.gif" alt="Osobni faktor" title="Osobni faktor" />&nbsp; - 
-                                    <a href="#c2" title="Osobni faktor">osobni faktor</a>
-                                </li>
-                                <li>
-                                    <img src="./img/r1.gif" alt="Pseudoslucajni broj" title="Pseudoslucajni broj" />&nbsp; i
-                                    <img src="./img/r2.gif" alt="Pseudoslucajni broj" title="Pseudoslucajni broj" />&nbsp; - 
-                                    pseudoslučajni brojevi iz intervala [0, 1]
-                                </li>
-                                <li>
-                                    <img src="./img/ln.gif" alt="Socijalno najbolje" title="Socijalno najbolje" />&nbsp; - najbolje 
-                                    rješenje pronađeno do sada unutar susjedstva čestice
-                                </li>
-                                <li>
-                                    <img src="./img/on.gif" alt="Osobno najbolje" title="Osobno najbolje" />&nbsp; - najbolje 
-                                    rješenje pronađeno do sada od strane trenutne čestice
-                                </li>
-                            </ul>
-                            Pri tome se faktor inercije računa koristeći izraz &nbsp; 
-                            <img src="./img/dinOIner.gif" alt="Dinamička ograničavajuća inercija" title="Dinamička ograničavajuća inercija" />&nbsp;
-                            gdje su
-                            <ul>
-                                <li>
-                                    <img src="./img/omegaMin.gif" alt="Osobni faktor" title="Osobni faktor" />&nbsp; - 
-                                    <a href="#minInercija" title="Minimalna inercija">minimalna inercija</a>
-                                </li>
-                                <li>
-                                    <img src="./img/omegaMax.gif" alt="Omega maks" title="Omega min" />&nbsp; -
-                                    <a href="#maksInercija" title="Maksimalna inercija">maksimalna inercija</a>
-                                </li>
-                                <li>
-                                    <img src="./img/t.gif" alt="Trenutni korak" title="Trenutni korak" />&nbsp; - trenutni korak
-                                </li>
-                                <li>
-                                    <img src="./img/velikoT.gif" alt="Maksimalni korak" title="Maksimalni korak" />&nbsp; - 
-                                    <a href="#brojKorakaInercije" title="Broj koraka inercije">broj koraka inercije</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <strong>Ograničavajuća brzina</strong> - brzina za svaku komponentu rješenja se računa koristeći izraz &nbsp;
-                            <img src="./img/ogrBrzina.gif" alt="Formula" title="Formula" />&nbsp;
-                            gdje su
-                            <ul>
-                                <li>
-                                    <img src="./img/vi.gif" alt="Nova brzina" title="Nova brzina" />&nbsp; - nova brzina
-                                </li>
-                                <li>
-                                    <img src="./img/viminus1.gif" alt="Trenutna brzina" title="Trenutna brzina" />&nbsp; - trenutna brzina
-                                </li>
-                                <li>
-                                    <img src="./img/c1.gif" alt="Socijalni faktor" title="Socijalni faktor" />&nbsp; - 
-                                    <a href="#c1" title="Socijalni faktor">socijalni faktor</a>
-                                </li>
-                                <li>
-                                    <img src="./img/c2.gif" alt="Osobni faktor" title="Osobni faktor" />&nbsp; - 
-                                    <a href="#c2" title="Osobni faktor">osobni faktor</a>
-                                </li>
-                                <li>
-                                    <img src="./img/r1.gif" alt="Pseudoslucajni broj" title="Pseudoslucajni broj" />&nbsp; i
-                                    <img src="./img/r2.gif" alt="Pseudoslucajni broj" title="Pseudoslucajni broj" />&nbsp; - 
-                                    pseudoslučajni brojevi iz intervala [0, 1]
-                                </li>
-                                <li>
-                                    <img src="./img/ln.gif" alt="Socijalno najbolje" title="Socijalno najbolje" />&nbsp; - najbolje 
-                                    rješenje pronađeno do sada unutar susjedstva čestice
-                                </li>
-                                <li>
-                                    <img src="./img/on.gif" alt="Osobno najbolje" title="Osobno najbolje" />&nbsp; - najbolje 
-                                    rješenje pronađeno do sada od strane trenutne čestice
-                                </li>
-                                <li>
-                                    <img src="./img/K.gif" alt="Faktor smanjenja brzine" title="Faktor smanjenja brzine" />&nbsp; - 
-                                    faktor smanjenja brzine
-                                </li>
-                            </ul>
-                            Pri tome se faktor smanjenja brzine računa koristeći izraze &nbsp; 
-                            <img src="./img/velikoK.gif" alt="Faktor smanjenja brzine" title="Faktor smanjenja brzine" />
-                            &nbsp; i &nbsp; 
-                            <img src="./img/fi.gif" alt="Fi" title="Fi" />
-                            &nbsp;. Pri tome mora vrijediti &nbsp; 
-                            <img src="./img/fiVeceOd4.gif" alt="Fi nejednakost" title="Fi nejednakost" />
-                        </li>
-                    </ul>
-                </dd>
-                <dt id="c1"><strong>c1</strong></dt>
-                <dd>Konstanta koja određuje koliki je socijalni utjecaj</dd>
-                <dt id="c2"><strong>c2</strong></dt>
-                <dd>Konstanta koja određuje koliki je osobni utjecaj</dd>
-                <dt id="konstantaInercije"><strong>Inercija</strong></dt>
-                <dd>Konstanta koja kaže kojim faktorom skaliramo trenutnu brzinu. Mora biti u rasponu [0, 1]</dd>
-                <dt id="faktorSmanjenjaInercije"><strong>Faktor smanjenja inercije</strong></dt>
-                <dd>Konstanta koja kaže kojim faktorom skaliramo trenutnu inerciju. Mora biti u rasponu [0, 1]</dd>
-                <dt id="minInercija"><strong>Min inercija</strong></dt>
-                <dd>Minimalna inercija koja se koristi</dd>
-                <dt id="maksInercija"><strong>Faktor smanjenja inercije</strong></dt>
-                <dd>Maksimalna inercija koja se koristi</dd>
-                <dt id="brojKorakaInercije"><strong>Broj koraka inercije</strong></dt>
-                <dd>Određuje nakon koliko koraka simulacije inercija poprima vrijednost <a href="min">minimalne inercije</a></dd>
-                <dt id="susjedstvo"><strong>Susjedstvo</strong></dt>
-                <dd>
-                    Određuje kakvo je susjedsvo čestica
-                    <ul>
-                        <li>
-                            <strong>Globalno susjedstvo</strong> - čestica vidi sve preostale čestice
-                        </li>
-                        <li>
-                            <strong>Lokalno susjedstvo</strong> - čestica vidi sve preostale čestice koje su od nje udaljene
-                            za ne više od <a href="#brojOkolnih" title="Broj okolnih čestica">broja okolnih čestica</a>. 
-                            Koristi se topologija prstena
-                        </li>
-                    </ul>
-                </dd>
-                <dt id="brojOkolnih"><strong>Broj okolnih čestica</strong></dt>
-                <dd>Određuje na koliku udaljenost čestica može vidjeti svoje susjede</dd>
-                <dt><strong>Granica brzine</strong></dt>
-                <dd>Određuje granice unutar kojih se mora nalaziti brzina. Ako se ne nalazi, korigira se na najbližu zadanu vrijednost</dd>
-				<dt><strong>Broj generacija</strong></dt>
+				<dt id="brojBitova"><b>Broj bitova</b></dt>
+				<dd>
+					Određuje koliko bitova se koristi po varijabli za kodiranje vrijednosti
+				</dd>
+				<dt id="vrstaMutacije"><b>Vrsta mutacije</b></dt>
+				<dd>
+					Određuje koja se mutacija koristi za unošenje varijacija u populaciju
+					<ul>
+						<li><b>Nema</b> - ne koristi mutaciju</li>
+						<li>
+							<b>Jedan bit</b> - na proizvoljnom mjestu u rasponu [0, 2 * 
+							<a href="#brojBitova" title="Broj bitova">broj bitova</a>]
+							se invertira bit
+						</li>
+						<li>
+							<b>Jedan bit varijable</b> - na proizvoljnom mjestu u rasponu [0, 
+							<a href="#brojBitova" title="Broj bitova">broj bitova</a>]
+							se invertira bit za svaku pojedinu varijablu
+						</li>
+						<li"id="distribuiranaMutacija">
+							<b>Distribuirana</b> - invertira sve bitove kojima je vjerojatnost
+							invertiranja manja od vjerojatnosti dobivene izrazom 
+							<img src="img/distribuirana.gif" title="Distribuirana" /> gdje su 
+							<ul>
+								<li>
+									<img src="./img/ro.gif" alt="ro" /> - 
+									konstanta <a href="#ro" title="ro">ro</a>
+								</li>
+								<li>
+									<img src="./img/fMin.gif" alt="Najmanji faktor dobrote" /> - 
+									najmanji faktor dobrote u trenutnoj populaciji antitijela
+								</li>
+								<li>
+									<img src="./img/fTren.gif" alt="Trenutni faktor dobrote" /> - 
+									faktor dobrote antitijela koje mutira
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</dd>
+				<dt id="ro"><b>Ro</b></dt>
+				<dd>
+					Konstanta koja određuje kako brzo funkcija razdiobe teži u 0 kod
+					<a href="#distribuiranaMutacija" title="Distribuirana mutacija">
+						distribuirane mutacije
+					</a>. 
+					Veća vrijednost, manje bitova će biti invertirano.
+				</dd>
+				<dt><b>Algoritam</b></dt>
+				<dd>
+					Određuje koji se algoritam koristi.
+					<ul>
+						<li><a href="#SAIS" title="Simple AIS">Simple AIS</a></li>
+						<li><a href="#CLOPNGALG" title="CLONGALG">CLONALG</a></li>
+					</ul>
+				</dd>
+				<dt id="brojKlonova"><b>Broj klonova</b></dt>
+				<dd>
+					Određuje koliko klonova nastaje od pojedinog antitijela kod 
+					<a href="#SAIS" title="Simple AIS">Simple AIS</a> algoritma
+				</dd>
+				<dt id="beta"><b>Beta</b></dt>
+				<dd>
+					Najbolje antitijelo ima beta * 
+					<a href="#velicinaPopulacije" title="Broj antitijela">
+						broj antitijela
+					</a> dok se ta količina linearno spušta do beta kod 
+					<a href="#CLOPNGALG" title="CLONGALG">CLONALG</a> algoritma. 
+					(u formulama oznaka <img src="./img/beta.gif" alt="Beta" title="Beta" />)
+				</dd>
+				<dt id="brojNovih"><b>Broj novih</b></dt>
+				<dd>
+					Određuje koliko novih antitijela dolazi u populaciju kod
+					<a href="#CLOPNGALG" title="CLONGALG">CLONALG</a> algoritma
+				</dd>
+				<dt><b>Broj generacija</b></dt>
 				<dd>
 					Određuje nakon koliko generacija se prestaje sa evoluiranjem populacije čestica
 				</dd>
 			</dl>
+		</div>
+		<div>
+            <h2>Objašnjenja pojedinih algoritama</h2>
+            <dl id="SAIS">
+                <h3>Simple AIS</h3>
+                <dt><b>Pseudokod</b></dt>
+                <dd>
+				<pre>Inicijaliziraj
+Dok nije kraj
+	Dodaj sva antitijela u privremenu populaciju
+	Za svako antitijelo 
+		Za i = 1 do <a href="#brojKlonova" title="Broj klonova">broj klonova</a> 
+			Stvori klona
+			Mutiraj klona
+			Dodaj klona u privremenu populaciju
+	Sortiraj privremenu populaciju
+	Uzmi najboljih 
+	<a href="#velicinaPopulacije" title="Broj antitijela">antitijela</a> u novu populaciju
+				</pre>
+				<dd>
+			<dl>
+			<dl id="CLONALG">
+                <h3>CLONGALG</h3>
+                <dt><b>Pseudokod</b></dt>
+                <dd>
+				<pre>Inicijaliziraj
+Dok nije kraj
+	Dodaj sva antitijela u privremenu populaciju
+	Za svako antitijelo 
+		Za i = 1 do <a href="#cBrojKlonova" title="Broj klonova">broj klonova</a> 
+			Stvori klona
+			Mutiraj klona
+			Dodaj klona u privremenu populaciju
+	Dodaj <a href="#brojNovih" title="Broj novih">X</a> novih antitijela
+	Sortiraj privremenu populaciju
+	Uzmi najboljih 
+	<a href="#velicinaPopulacije" title="Broj antitijela">antitijela</a> u novu populaciju
+				</pre>
+				<dd>
+				<dt id="cBrojKlonova">Broj klonova<dt>
+				<dd>
+					Broj klonova se računa po formuli 
+					<img src="./img/betaPutaN.gif" alt="Formula" /> 
+					gdje su 
+					<ul>
+						<li>
+							<img src="./img/beta.gif" alt="Beta" /> - 
+							konstanta <a href="#beta" title="Beta">beta</a>
+						</li>
+						<li>
+							<img src="./img/N.gif" alt="N" /> - 
+							<a href="#velicinaPopulacije" title="Broj antitijela">broj antitijela</a>
+						</li>
+						<li>
+							<img src="./img/i.gif" alt="i" /> - 
+							trenutna pozicija antitijela u uzlazno sortiranoj populaciji 
+							po faktoru dobrote počevši od pozicije 1
+						</li>
+					</ul>
+				</dd>
+			<dl>
 		</div>
 		<hr>
 		<div>

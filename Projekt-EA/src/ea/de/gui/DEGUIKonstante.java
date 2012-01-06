@@ -10,8 +10,6 @@ package ea.de.gui;
 class DEGUIKonstante {
 	
 	public static final String BINOMNA_MUTACIJA = "Binomna";
-			
-	public static final String EKSPONENCIJALNA_MUTACIJA = "Eksponencijalna";
 	
 	public static final String UNIFORMNA_MUTACIJA = "Uniformna";
 	

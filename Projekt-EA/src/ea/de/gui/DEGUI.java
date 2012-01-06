@@ -7,8 +7,6 @@ import static ea.gui.GUIKonstante.*;
 import static ea.de.gui.DEGUIKonstante.*;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -76,8 +74,6 @@ public class DEGUI extends GUI {
 	
 	private TekstualnaVrijednost vjerojatnostMutacije;
 	
-	private TekstualnaVrijednost tau;
-	
 	private TekstualnaVrijednost faktorTezine;
 	
 
@@ -112,8 +108,6 @@ public class DEGUI extends GUI {
 	private Ploca selektorPloca = new Ploca();
 	
 	private Ploca vjerojatnostMutacijePloca = new Ploca();
-	
-	private Ploca tauPloca = new Ploca();
 	
 	private Ploca faktorTezinePloca = new Ploca();
 
@@ -245,7 +239,7 @@ public class DEGUI extends GUI {
 		DijeljenaPloca[] elementi = new DijeljenaPloca[] {
 			funkcija, sjeme, donjaGranica, gornjaGranica, brojTocaka, brojUzoraka, gornjaGranicaKoeficijenta,
 			donjaGranicaKoeficijenta, redPolinoma,
-			velicinaPopulacije, mutator, vjerojatnostMutacije, tau, selektor, brojParova, faktorTezine,
+			velicinaPopulacije, mutator, vjerojatnostMutacije, selektor, brojParova, faktorTezine,
 			brojGeneracija
 		};
 		
@@ -253,7 +247,7 @@ public class DEGUI extends GUI {
 			funkcijaPloca, sjemePloca, donjaGranicaPloca, gornjaGranicaPloca, brojTocakaPloca, 
 			brojUzorakaPloca, gornjaGranicaKoeficijentaPloca,
 			donjaGranicaKoeficijentaPloca, redPolinomaPloca,
-			velicinaPopulacijePloca, mutatorPloca, vjerojatnostMutacijePloca, tauPloca, selektorPloca, 
+			velicinaPopulacijePloca, mutatorPloca, vjerojatnostMutacijePloca, selektorPloca, 
 			faktorTezinePloca, brojParovaPloca,
 			brojGeneracijaPloca
 		};
@@ -269,20 +263,7 @@ public class DEGUI extends GUI {
 		return kontroleKontejner;
 	}
 	
-	protected void inicijalizirajElementeKontrola() {
-		
-		ActionListener sakrijOtkrij = new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				
-				boolean zastavica = mutator.vratiOdabrani().getActionCommand().equals(EKSPONENCIJALNA_MUTACIJA);
-				tau.setEnabled(zastavica);
-						
-			}
-		};
-		
+	protected void inicijalizirajElementeKontrola() {		
 		brojGeneracija = new TekstualnaVrijednost("Broj generacija", "350");
 		velicinaPopulacije = new TekstualnaVrijednost("Broj vektora", "100");
 		brojTocaka = new TekstualnaVrijednost("Broj točaka", "1000");
@@ -296,16 +277,12 @@ public class DEGUI extends GUI {
 		donjaGranicaKoeficijenta = new TekstualnaVrijednost("Donja granica koeficijenta", "-5");
 		brojParova = new TekstualnaVrijednost("Broj parova", "1");
 		mutator = new RadioGumbi("Vrsta mutacije", new Object[] {
-			BINOMNA_MUTACIJA, EKSPONENCIJALNA_MUTACIJA, UNIFORMNA_MUTACIJA
-		}, 0, new ActionListener[] {
-			sakrijOtkrij, sakrijOtkrij, sakrijOtkrij, sakrijOtkrij
-		});
+			BINOMNA_MUTACIJA, UNIFORMNA_MUTACIJA
+		}, 0);
 		selektor = new RadioGumbi("Selekcija", new Object[] {
 			NAJBOLJI_SELEKTOR, RANDOM_SELEKTOR
 		}, 0);
 		vjerojatnostMutacije = new TekstualnaVrijednost("Vjerojatnost mutacije", "0.95");
-		tau = new TekstualnaVrijednost("Tau", "0.1");
-		tau.setEnabled(false);
 		faktorTezine = new TekstualnaVrijednost("Faktor težine", "0.9");
 	}
 
@@ -426,22 +403,9 @@ public class DEGUI extends GUI {
 			mutator = DESimulator.UNOFIRMNA_MUTACIJA;
 		} else if (vrijednost.equals(BINOMNA_MUTACIJA)) {
 			mutator = DESimulator.BINOMNA_MUTACIJA;
-		} else if (vrijednost.equals(EKSPONENCIJALNA_MUTACIJA)) {
-			mutator = DESimulator.EKSPONENCIJALNA_MUTACIJA;
 		}
 		
 		simulator.koristeciMutaciju(mutator);
-		
-		if (mutator == DESimulator.EKSPONENCIJALNA_MUTACIJA) {
-			try {
-				simulator.uzTau(
-					Double.parseDouble(tau.vratiVrijednost())
-				);
-			} catch (NumberFormatException e) {
-				zapisiUZapisnik("Tau mora biti broj");
-				return ;
-			}
-		}
 		
 		int selektor = -1;
 		vrijednost = this.selektor.vratiOdabrani().getActionCommand();

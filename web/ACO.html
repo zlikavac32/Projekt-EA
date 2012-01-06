@@ -28,21 +28,21 @@
 			</p>
 			<h2>Pojašnjenje opcija</h2>
 			<dl>
-				<dt><strong>Gradovi</strong></dt>
+				<dt><b>Gradovi</b></dt>
 				<dd>
 					koordinate gradova u formatu 
                     <img src="./img/formatGradova.gif" title="Format gradova" alt="Format gradova" />. 
                     Za gradove unesene kao pocetne vrijednosti, optimalna putanja je oko 7542
 				</dd>
-				<dt><strong>Sjeme</strong></dt>
+				<dt><b>Sjeme</b></dt>
 				<dd>
 					Cijeli broj koji se koristi kao sjeme za generator nasumičnih brojeva
 				</dd>
-				<dt id="brojMrava"><strong>Broj mrava</strong></dt>
+				<dt id="brojMrava"><b>Broj mrava</b></dt>
 				<dd>
 					Određuje koliko se mrava seće
 				</dd>
-				<dt id="algoritam"><strong>Algoritam</strong></dt>
+				<dt id="algoritam"><b>Algoritam</b></dt>
 				<dd>
 					Određuje koji se algoritam koristi za simulaciju. Moguće je odabrati izmedu sljedećih algoritama
                     <ul>
@@ -50,24 +50,24 @@
                         <li><a href="#AS" title="Ant System">Ant System</a></li>
                     </ul>
 				</dd>
-				<dt id="konstantaIsparavnaja"><strong>Konstanta isparavanja</strong></dt>
+				<dt id="konstantaIsparavnaja"><b>Konstanta isparavanja</b></dt>
 				<dd>
 					konstanta isparavanja koja određuje kojim intenzitetom se obavlja isparavanje
                     (u formulama oznaka <img src="./img/ro.gif" alt="Konstanta isparavanja" title="Konstanta isparavanja" />)
 				</dd>
-				<dt id="alfa"><strong>Alfa</strong></dt>
+				<dt id="alfa"><b>Alfa</b></dt>
 				<dd>
 					konstanta alfa (u formulama oznaka <img src="./img/alfa.gif" alt="Alfa" title="Alfa" />)
 				</dd>
-				<dt id="beta"><strong>Beta</strong></dt>
+				<dt id="beta"><b>Beta</b></dt>
 				<dd>
 					konstanta beta (u formulama oznaka <img src="./img/beta.gif" alt="Beta" title="Beta" />)
 				</dd>
-				<dt id="brojMravaAzurira"><strong>Broj mrava azurira</strong></dt>
+				<dt id="brojMravaAzurira"><b>Broj mrava azurira</b></dt>
 				<dd>
 					Određuje koliko se mrava sa najboljim rješenjem korisit za ažuriranje feromonskih tragova
 				</dd>
-				<dt><strong>Broj šetnji</strong></dt>
+				<dt><b>Broj šetnji</b></dt>
 				<dd>
 					Određuje koliko šetnji će svaki mrav napraviti
 				</dd>
@@ -77,23 +77,24 @@
             <h2>Objašnjenja pojedinih algoritama</h2>
             <dl id="simpleACA">
                 <h3>Simple Ant Colony Algorithm</h3>
-                <dt><strong>Pseudokod</strong></dt>
+                <dt><b>Pseudokod</b></dt>
                 <dd>
                     <pre>
 Inicijaliziraj tragove
-Za svakog od <a href="#brojMrava" title="Broj mrava">X</a> mrava
-    Obavi šetnju
-Ažuriraj globalno najbolje rješenje
-Za <a href="#brojMravaAzurira" title="Broj mrava azrurira">Y</a> najboljih mrava
-    Ažuriraj tragove puteva kojima je prošao
-Ispari tragove
+Dok nije kraj
+	Za svakog od <a href="#brojMrava" title="Broj mrava">X</a> mrava
+		Obavi šetnju
+	Ažuriraj globalno najbolje rješenje
+	Za <a href="#brojMravaAzurira" title="Broj mrava azrurira">Y</a> najboljih mrava
+		Ažuriraj tragove puteva kojima je prošao
+	Ispari tragove
                     </pre>
                 </dd>
-                <dt><strong>Inicijaliziraj tragove</strong></dt>
+                <dt><b>Inicijaliziraj tragove</b></dt>
                 <dd>
                     Svakom putu se na pošetku postavlja količina feromona od 0.001 jedinica
                 </dd>
-                <dt><strong>Odabir puta</strong></dt>
+                <dt><b>Odabir puta</b></dt>
                 <dd>
                     Svaki mrav bira sljedeće odrediste iz skupa gradova koje još nije posjetio
                     (budic da radimo sa potpuno povezanim grafom, iz svakog grada se može docć u sve preostale)
@@ -130,7 +131,7 @@ Ispari tragove
                         </li>
                     </ul>
                 </dd>
-                <dt><strong>Ažuriranje tragova</strong></dt>
+                <dt><b>Ažuriranje tragova</b></dt>
                 <dd>
                     Svaki mrav ažurira tragove na putu kojim je prošao koristeći relacije 
                     <img 
@@ -157,7 +158,7 @@ Ispari tragove
                         </li>
                     </ul>
                 </dd>
-                <dt><strong>Isparavanje tragova</strong></dt>
+                <dt><b>Isparavanje tragova</b></dt>
                 <dd>
                     Svim putevima se tragovi ažuriraju koristeći relaciju
                     <img 
@@ -183,24 +184,25 @@ Ispari tragove
             </dl>
             <h3>Ant System</h3>
             <dl id="AS">
-                <dt><strong>Pseudokod</strong></dt>
+                <dt><b>Pseudokod</b></dt>
                 <dd>
                     <pre>
 Inicijaliziraj tragove
-Za svakog od <a href="#brojMrava" title="Broj mrava">X</a> mrava
-    Obavi šetnju
-Ažuriraj globalno najbolje rješenje
-Ispari tragove
-Za svakog od <a href="#brojMrava" title="Broj mrava">X</a> mrava
-    Ažuriraj tragove puteva kojima je prosao
+Dok nije kraj
+	Za svakog od <a href="#brojMrava" title="Broj mrava">X</a> mrava
+		Obavi šetnju
+	Ažuriraj globalno najbolje rješenje
+	Ispari tragove
+	Za svakog od <a href="#brojMrava" title="Broj mrava">X</a> mrava
+		Ažuriraj tragove puteva kojima je prosao
                     </pre>
                 </dd>
-                <dt><strong>Inicijaliziraj tragove</strong></dt>
+                <dt><b>Inicijaliziraj tragove</b></dt>
                 <dd>
                     Svakom putu se na pocetku postavlja količina feromona jednaka recipročnoj vrijednosti
                     duljini puta pronađenoj uz pomoc pohlepnog algoritma
                 </dd>
-                <dt><strong>Odabir puta</strong></dt>
+                <dt><b>Odabir puta</b></dt>
                 <dd>
                     Svaki mrav bira sljedeće odredište iz skupa gradova koje još nije posjetio
                     (budući da radimo sa potpuno povezanim grafom, iz svakog grada se moze doći u sve preostale)
@@ -250,7 +252,7 @@ Za svakog od <a href="#brojMrava" title="Broj mrava">X</a> mrava
                         </li>
                     </ul>
                 </dd>
-                <dt><strong>Ažuriranje tragova</strong></dt>
+                <dt><b>Ažuriranje tragova</b></dt>
                 <dd>
                     Svaki mrav ažurira tragove na putu kojim je prošao koristeći relacije 
                     <img 
@@ -277,7 +279,7 @@ Za svakog od <a href="#brojMrava" title="Broj mrava">X</a> mrava
                         </li>
                     </ul>
                 </dd>
-                <dt><strong>Isparavanje tragova</strong></dt>
+                <dt><b>Isparavanje tragova</b></dt>
                 <dd>
                     Svim putevima se tragovi ažuriraju koristeći relaciju
                     <img 

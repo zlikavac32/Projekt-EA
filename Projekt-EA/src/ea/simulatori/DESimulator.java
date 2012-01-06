@@ -11,7 +11,6 @@ import de.congrace.exp4j.Calculable;
 import ea.Globalno;
 import ea.de.BinomniMutator;
 import ea.de.DEPopulacija;
-import ea.de.EksponencijalniMutator;
 import ea.de.Inicijalizator;
 import ea.de.KoeficijentiVektor;
 import ea.de.Mutator;
@@ -41,8 +40,6 @@ public class DESimulator extends Simulator<Vektor<double[][], PolinomKrajolik>> 
 
 	public static final int BINOMNA_MUTACIJA = 1;
 
-	public static final int EKSPONENCIJALNA_MUTACIJA = 2;
-
 	private int brojVektora;
 	
 	private int mutacija;
@@ -58,8 +55,6 @@ public class DESimulator extends Simulator<Vektor<double[][], PolinomKrajolik>> 
 	protected FunkcijaKrajolik krajolik;
 
 	protected Populacija<double[][], PolinomKrajolik> populacija;
-
-	private double tau;
 
 	private int brojParova;
 
@@ -100,9 +95,9 @@ public class DESimulator extends Simulator<Vektor<double[][], PolinomKrajolik>> 
 	}
 	
 	public void koristeciMutaciju(int mutacija) { 
-		if (mutacija != UNOFIRMNA_MUTACIJA && mutacija != BINOMNA_MUTACIJA && mutacija != EKSPONENCIJALNA_MUTACIJA) {
+		if (mutacija != UNOFIRMNA_MUTACIJA && mutacija != BINOMNA_MUTACIJA) {
 			throw new IllegalArgumentException(
-				"Podrzane mutacije su UNOFIRMNA_MUTACIJA, BINOMNA_MUTACIAJ i EKSPONENCIJALNA_MUTACIJA"
+				"Podrzane mutacije su UNOFIRMNA_MUTACIJA i BINOMNA_MUTACIAJ"
 			);
 		}
 		this.mutacija = mutacija;
@@ -125,13 +120,6 @@ public class DESimulator extends Simulator<Vektor<double[][], PolinomKrajolik>> 
 	public void uzBrojGeneracija(int brojGeneracija) { 
 		this.brojGeneracija = brojGeneracija;
 		kriterijKraja = new XKorakaKriterijKraja<Populacija<?, ?>>(brojGeneracija); 
-	}
-
-	public void uzTau(double tau) {
-		if (tau < 0) {
-			throw new IllegalArgumentException("Tau mora biti veci ili jedan 0");
-		}
-		this.tau = tau;
 	}
 
 	public void saBrojemParova(int brojParova) {
@@ -243,8 +231,6 @@ public class DESimulator extends Simulator<Vektor<double[][], PolinomKrajolik>> 
 		switch (mutacija) {
 			case BINOMNA_MUTACIJA :
 				return new BinomniMutator(vjerojatnostMutacije, randomGenerator);
-			case EKSPONENCIJALNA_MUTACIJA :
-				return new EksponencijalniMutator(vjerojatnostMutacije, randomGenerator, tau);
 			case UNOFIRMNA_MUTACIJA :
 				return new UniformniMutator(vjerojatnostMutacije, randomGenerator);
 		}
