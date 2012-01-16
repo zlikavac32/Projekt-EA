@@ -16,7 +16,7 @@ import ea.gui.GUI;
 import ea.aco.gui.ACOGUI;
 
 /**
- * Ulaz u nasu aplikaciju.
+ * Ulaz u naš applet za koloniju mrava.
  * 
  * @author Marijan Šuflaj <msufflaj32@gmail.com>
  *
@@ -29,7 +29,7 @@ public class KolonijaMravaAlgoritam extends JApplet {
 	private static final long serialVersionUID = 4803571029460862673L;
 	
 	/**
-	 * Stvara graficko sucelje.
+	 * Stvara grafičko sučelje.
 	 * 
 	 * @see java.applet.Applet#init()
 	 */

@@ -16,7 +16,7 @@ import ea.ais.gui.AISGUI;
 import ea.gui.GUI;
 
 /**
- * Ulaz u nasu aplikaciju.
+ * Ulaz u naš applet za umjetni imunološki sustav.
  * 
  * @author Marijan Šuflaj <msufflaj32@gmail.com>
  *
@@ -29,7 +29,7 @@ public class UmjetniImunoloskiSustavAlgoritam extends JApplet {
 	private static final long serialVersionUID = 4803571029460862673L;
 	
 	/**
-	 * Stvara graficko sucelje.
+	 * Stvara grafičko sučelje.
 	 * 
 	 * @see java.applet.Applet#init()
 	 */

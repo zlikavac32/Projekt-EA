@@ -16,7 +16,7 @@ import ea.gui.GUI;
 import ea.de.gui.DEGUI;
 
 /**
- * Ulaz u nasu aplikaciju.
+ * Ulaz u naš applet za diferencijsku evoluciju.
  * 
  * @author Marijan Šuflaj <msufflaj32@gmail.com>
  *
@@ -29,7 +29,7 @@ public class DiferencijskaEvolucijaAlgoritam extends JApplet {
 	private static final long serialVersionUID = 4803571029460862673L;
 	
 	/**
-	 * Stvara graficko sucelje.
+	 * Stvara grafičko sučelje.
 	 * 
 	 * @see java.applet.Applet#init()
 	 */

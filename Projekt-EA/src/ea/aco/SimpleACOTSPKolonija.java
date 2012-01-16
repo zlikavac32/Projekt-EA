@@ -12,15 +12,28 @@ import ea.util.RandomGenerator;
 import ea.util.Util;
 
 /**
+ * TSP kolonija koja radi na temelju SimpleACO algoritma
  * @author Zlikavac32
  *
  */
 public class SimpleACOTSPKolonija extends TSPKolonija {
 	
+	/**
+	 * @see TSPKolonija#TSPKolonija(List, int, double, RandomGenerator, double)
+	 * @param gradovi
+	 * @param brojMrava
+	 * @param konstantaIsparavanja
+	 * @param generator
+	 * @param alfa
+	 */
 	public SimpleACOTSPKolonija(List<Par<String, Par<Double, Double>>> gradovi, int brojMrava, double konstantaIsparavanja, RandomGenerator generator, double alfa) {
 		super(gradovi, brojMrava, konstantaIsparavanja, generator, alfa);
 	}
 
+	/**
+	 * Obavlja šetnju jednog mrava
+	 * @see TSPKolonija#obaviSetnju(TSPMrav)
+	 */
 	@Override
 	protected void obaviSetnju(TSPMrav mrav) {
 		if (indeksi == null || indeksi.length < 1) { return ; }
@@ -58,9 +71,17 @@ public class SimpleACOTSPKolonija extends TSPKolonija {
 		mrav.dodajGradUPut(dohvatljivi[dohvatljivi.length - 1]);
 	}
 
+	/**
+	 * Ažurira tragove svih mrava u populaciji
+	 * @see TSPKolonija#azurirajTragove()
+	 */
 	@Override
 	public void azurirajTragove() { azurirajTragove(mravi.length); }
 
+	/**
+	 * Obavlja jedan ciklus evolucije
+	 * @see TSPKolonija#evoluiraj(int)
+	 */
 	@Override
 	public void evoluiraj(int brojMravaAzurira) {
 		azurirajTragoviCache();
@@ -70,6 +91,10 @@ public class SimpleACOTSPKolonija extends TSPKolonija {
 		obaviIsparavnje();	
 	}
 
+	/**
+	 * Obavlja jedan ciklus evolucije
+	 * @see TSPKolonija#evoluiraj()
+	 */
 	@Override
 	public void evoluiraj() { evoluiraj(mravi.length); }
 

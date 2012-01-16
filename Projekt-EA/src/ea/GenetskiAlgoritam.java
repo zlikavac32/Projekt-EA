@@ -16,7 +16,7 @@ import ea.ga.gui.GAGUI;
 import ea.gui.GUI;
 
 /**
- * Ulaz u nasu aplikaciju.
+ * Ulaz u naš applet za genetski algoritam.
  * 
  * @author Marijan Šuflaj <msufflaj32@gmail.com>
  *
@@ -29,7 +29,7 @@ public class GenetskiAlgoritam extends JApplet {
 	private static final long serialVersionUID = 4803571029460862673L;
 	
 	/**
-	 * Stvara graficko sucelje.
+	 * Stvara grafičko sučelje.
 	 * 
 	 * @see java.applet.Applet#init()
 	 */

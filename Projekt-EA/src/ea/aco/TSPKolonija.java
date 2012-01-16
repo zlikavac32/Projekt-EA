@@ -8,6 +8,12 @@ import java.util.List;
 import ea.util.Par;
 import ea.util.RandomGenerator;
 
+/**
+ * Apstraktni razred koji predstavlja jednu koloniju
+ * za rješavanje TSPa
+ * @author Zlikavac32
+ *
+ */
 public abstract class TSPKolonija extends Kolonija {
 
 	protected RandomGenerator generator;
@@ -26,6 +32,19 @@ public abstract class TSPKolonija extends Kolonija {
 	
 	protected double konstantaIsparavanja;
 
+	/**
+	 * Stvara novu koloniju. Prvi parametar je lista gradova gdje je
+	 * element liste Par u sa prvim elementom imenom grada, a drugim
+	 * elementom novi razred Par sa koordinama X i Y. Drugi parametar 
+	 * je broj mrava koji će tražiti rješenje. Nakon toga slijede
+	 * konstanta isparavanja, generator pseudosličajih brojeva i 
+	 * konstanta alfa
+	 * @param gradovi
+	 * @param brojMrava
+	 * @param konstantaIspravanja
+	 * @param generator
+	 * @param alfa
+	 */
 	public TSPKolonija(
 		List<Par<String, Par<Double, Double>>> gradovi, int brojMrava, 
 		double konstantaIspravanja, RandomGenerator generator, double alfa
@@ -42,6 +61,10 @@ public abstract class TSPKolonija extends Kolonija {
 		this.konstantaIsparavanja = 1 - konstantaIspravanja;
 	}
 	
+	/**
+	 * Inicijalizira trenutnu populaciju
+	 * @see Kolonija#inicijaliziraj()
+	 */
 	@Override
 	public void inicijaliziraj() {
 		indeksi = new int[gradovi.length];
@@ -64,15 +87,33 @@ public abstract class TSPKolonija extends Kolonija {
 		for (int i = 0; i < mravi.length; i++) { mravi[i] = new TSPMrav(udaljenosti, gradovi); }
 	}
 	
+	/**
+	 * Vraća sve gradove koje možemo proći
+	 * @return Polje svih gradova
+	 */
 	public Grad[] vratiGradove() { return gradovi; }
 	
+	/**
+	 * Obavlja šetnje svih mrava u našoj populaciji
+	 * @see Kolonija#obaviSetnje()
+	 */
 	@Override
 	public void obaviSetnje() {
 		for (int i = 0; i < mravi.length; i++) { obaviSetnju((TSPMrav) mravi[i]); }
 	}
 	
+	/**
+	 * Apstraktna metoda koja će oviso u implementaciji
+	 * obaviti šetnju samo jednog mrava
+	 * @param mrav 
+	 */
 	protected abstract void obaviSetnju(TSPMrav mrav);
 	
+	/**
+	 * Računa sve tragove i sprema ih u privremenu memoriju
+	 * budući da se tokom šetnji ne mjenjaju, već se mjenjaju
+	 * prije novog ciklusa šetnji
+	 */
 	protected void azurirajTragoviCache() {
 		for (int i = 0; i < udaljenosti.length; i++) {
 			tragoviCache[i][i] = 0;
@@ -83,6 +124,10 @@ public abstract class TSPKolonija extends Kolonija {
 		}
 	}
 	
+	/**
+	 * Obavlja isparavnje tragova
+	 * @see Kolonija#obaviIsparavnje()
+	 */
 	@Override
 	public void obaviIsparavnje() {
 		for (int i = 0; i < tragovi.length; i++) {
@@ -100,6 +145,11 @@ public abstract class TSPKolonija extends Kolonija {
 //		}
 	}
 
+	/**
+	 * Ažurira tragove u ovisnosti o tome koliko je najboljih mrava
+	 * odabrano za ažuriranje. Tragovi se ažuriraju na putevima
+	 * kojima je mrav prošao
+	 */
 	@Override
 	public void azurirajTragove(int brojNajboljihMrava) {
 		Arrays.sort(mravi);
